@@ -1,1 +1,1 @@
-print ("Prueba2")
+print ("Hola prueba 2")
