@@ -4,7 +4,7 @@ Programa en interfaz grafica que simulara un centro comercial y simulara como se
 
 ### Librerias necesarias
 
--customtkinter
--tkinter
+- customtkinter
+- tkinter
 
 
