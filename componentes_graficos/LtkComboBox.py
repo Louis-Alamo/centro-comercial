@@ -3,13 +3,13 @@ from customtkinter import CTkComboBox
 class LtkComboBoxFill(CTkComboBox):
     """Representa un ComboBox con un diseño personalizado."""
 
-    def __init__(self, master, valores):
+    def __init__(self, master, opciones):
         """Inicializa el ComboBox con las configuraciones dadas."""
         super().__init__(master)
 
         # Configura el ComboBox
         self.configure(
-            values=valores,
+            values=opciones,
             corner_radius=5,
             fg_color="#cae8d2",
             text_color="#0f2417",
@@ -23,7 +23,7 @@ class LtkComboBoxFill(CTkComboBox):
             button_hover_color="#2f6640",
             font=("Poppins", 12, "bold"),
         )
-        self.set(valores[0])
+        self.set(opciones[0])
 
     def disable(self):
         """Desactiva el ComboBox y cambia su apariencia a desactivado."""
@@ -48,13 +48,13 @@ class LtkComboBoxFill(CTkComboBox):
 class LtkComboBoxLine(CTkComboBox):
     """Representa un ComboBox con un borde."""
 
-    def __init__(self, master, valores):
+    def __init__(self, master, opciones):
         """Inicializa el ComboBox con las configuraciones dadas."""
         super().__init__(master)
 
         # Configura el ComboBox
         self.configure(
-            values=valores,
+            values=opciones,
             corner_radius=5,
             fg_color="#FFFFFF",
             text_color="#23442e",
@@ -68,7 +68,7 @@ class LtkComboBoxLine(CTkComboBox):
             button_hover_color="#3B8752",
             font=("Poppins", 12, "bold"),
         )
-        self.set(valores[0])
+        self.set(opciones[0])
 
     def disable(self):
         """Desactiva el ComboBox y cambia su apariencia a desactivado."""
