@@ -1,6 +1,8 @@
 from tkinter import *
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkButton import LtkButtonFill
+
+from centro_comercial_configuraciones import Centro_comercial_configuraciones
 class Configuraciones:
 
     def __init__(self):
@@ -24,7 +26,10 @@ class Configuraciones:
         self.frame1 = Frame(self.ventana, bg = "#FFFFFF")
         self.frame1.pack()
 
-        self.combo = LtkComboBoxLine(master=self.frame1, valores=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "Libreria", "Restaurante", "Alimentos", "Banco", "Gimnasios", "Supermercado", "Veterinaria"])
+        self.combo = LtkComboBoxLine(master=self.frame1,
+                                     opciones=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "Libreria",
+                                               "Restaurante", "Alimentos", "Banco", "Gimnasios", "Supermercado",
+                                               "Veterinaria"])
         self.combo.pack(pady = 20, padx = 20, side = LEFT)
 
         self.boton_abrir_configuracion = LtkButtonFill(master=self.frame1, funcion=lambda: self.abrir_configuracion(),nombre_boton="Abrir configuracion")
@@ -66,7 +71,7 @@ class Configuraciones:
 
 
     def configuracion_centro_comercial(self):
-        print("Configuracion Centro Comercial")
+        Centro_comercial_configuraciones()
 
     def configuracion_cine(self):
         print("Configuracion Cine")
