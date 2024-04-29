@@ -1,0 +1,16 @@
+{
+  "horario_apertura": "08:00",
+  "horario_cierre": "22:00",
+  "capacidad_maxima_clientes": 500,
+  "frecuencia_eventos_especiales": 0.01,
+  "tipos_eventos_especiales": ["robos", "charlas", "eventos de entretenimiento", "emergencias"],
+  "nivel_seguridad": "medio",
+  "capacidad_areas_comunes": {
+    "areas_descanso": 50,
+    "pasillos": "suficiente",
+    "baños": 10
+  },
+  "politicas_mascotas": "no permitidas",
+  "accesibilidad_discapacidad": "total",
+  "protocolos_emergencia_evacuacion": "estándar"
+}
