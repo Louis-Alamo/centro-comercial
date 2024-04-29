@@ -7,3 +7,4 @@ class LtkLabel(CTkLabel):
     def cambiar_texto(self, texto):
         self.configure(text=texto)
 
+
