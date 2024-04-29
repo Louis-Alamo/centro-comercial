@@ -9,10 +9,13 @@ class LtkEntryFill(CTkEntry):
             placeholder_text_color="#A0D5AF",
             corner_radius=5,
             fg_color="#E4F4E8",
-            text_color="#A0D5AF",
+            text_color="#000000",
             border_color="#6EBA85",
             font=("Poppins", 12, "bold"),
         )
+
+    def get_text(self):
+        return self.get()
 
 
 
@@ -27,10 +30,13 @@ class LtkEntryLine(CTkEntry):
             placeholder_text_color="#A0D5AF",
             corner_radius=5,
             fg_color="#FFFFFF",
-            text_color="#A0D5AF",
+            text_color="#000000",
             border_color="#6EBA85",
             font=("Poppins", 12, "bold"),
         )
+
+    def get_text(self):
+        return self.get()
 
 
 class LtkEntryFillImage(CTkEntry):
