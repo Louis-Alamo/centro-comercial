@@ -3,7 +3,7 @@ from customtkinter import CTkComboBox
 class LtkComboBoxFill(CTkComboBox):
     """Representa un ComboBox con un diseño personalizado."""
 
-    def __init__(self, master, valores,):
+    def __init__(self, master, valores):
         """Inicializa el ComboBox con las configuraciones dadas."""
         super().__init__(master)
 
