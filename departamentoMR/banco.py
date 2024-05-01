@@ -6,7 +6,7 @@ class Banco():
     def __init__(self):
         self.ventana = Tk()
         self.ventana.title("Banco")
-        self.ventana.geometry("800x600")
+        self.ventana.geometry("1500x900")
         self.ventana.resizable(0,0)
         self.ventana.config(bg = "#FFFFFF")
 
