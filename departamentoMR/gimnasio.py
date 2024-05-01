@@ -12,7 +12,7 @@ class Gimnasio():
         self.ventana.resizable(0,0)
         self.ventana.config(bg="#FFFFFF")
 
-        ruta_imagen="D:\\MIIGUEL ROSALES\\Documentos\\ISC - ITSZaS\\Cuarto Semestre\\SIMULACION\\PROYECTO\\centro-comercial\\departamentoMR\\gimnasio.jpg"
+        ruta_imagen="D:/MIIGUEL ROSALES/Documentos/ISC - ITSZaS/Cuarto Semestre/SIMULACION/PROYECTO/centro-comercial/departamentoMR/gimnasio.jpg"
 
         imagen=Image.open(ruta_imagen)
         foto=ImageTk.PhotoImage(imagen)
