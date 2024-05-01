@@ -19,6 +19,12 @@ Las variables de entrada del modelo se clasifican en las siguientes categorías:
 - **Probabilidad de eventos especiales: ** Probabilidad de que ocurran eventos especiales en el cine (estrenos, funciones especiales, etc.).
 - **Probabilidad de fallos en el sistema:** Probabilidad de que ocurran fallos en el sistema (problemas técnicos, retrasos en las funciones, etc.).
 - **Probabilidad de atracción:** Probabilidad de que los clientes sean atraídos al cine por factores externos (publicidad, eventos en el centro comercial, etc.).
+- **Tiempo de espera en la sala:** Tiempo promedio que los clientes esperan para ingresar a una sala de cine.
+- **Tiempo de limpieza entre películas:** Tiempo que se tarda en limpiar una sala de cine después de una función.
+- **Duración promedio de películas:** Duración promedio de las películas por tipo (acción, terror, comedia, drama, infantil, otros).
+- **Tiempo de espera en dulcería:** Tiempo promedio que los clientes esperan para ser atendidos en la dulcería.
+- **Tiempo de espera en taquilla:** Tiempo promedio que los clientes esperan para ser atendidos en la taquilla.
+- **Tiempo de espera en baño:** Tiempo promedio que los clientes esperan para usar un baño.
 
 
 ## 3. Consideraciones:
@@ -30,30 +36,24 @@ Las variables de entrada del modelo se clasifican en las siguientes categorías:
 ### a) Salas de cine:
 
 - **Cantidad de salas:** Número de salas de cine disponibles.
+- **Capacidad de las salas:** Número máximo de personas que pueden estar en una sala de cine simultáneamente.
 - **Cantidad de empleados por sala:** Número de empleados asignados a cada sala de cine.
-- **Tiempo de espera en la sala:** Tiempo promedio que los clientes esperan para ingresar a una sala de cine.
-- **Tiempo de limpieza entre películas:** Tiempo que se tarda en limpiar una sala de cine después de una función.
-- **Duración promedio de películas:** Duración promedio de las películas por tipo (acción, terror, comedia, drama, infantil, otros).
-
 
 
 ### b) Dulcería:
 
 - **Cantidad de cajas:** Número de cajas disponibles en la dulcería.
 - **Cantidad de empleados por caja:** Número de empleados asignados a cada caja de la dulcería.
-- **Tiempo de espera en dulcería:** Tiempo promedio que los clientes esperan para ser atendidos en la dulcería.
 
 ### c) Taquillas:
 
 - **Cantidad de taquillas:** Número de taquillas disponibles.
 - **Cantidad de empleados por taquilla:** Número de empleados asignados a cada taquilla.
-- **Tiempo de espera en taquilla:** Tiempo promedio que los clientes esperan para ser atendidos en la taquilla.
 
 ### d) Baño:
 
 - **Cantidad de baños:** Número de baños disponibles.
 - **Capacidad máxima por baño:** Número máximo de personas que pueden usar un baño simultáneamente.
-- **Tiempo de espera en baño:** Tiempo promedio que los clientes esperan para usar un baño.
 
 # Entidades del modelo
 
