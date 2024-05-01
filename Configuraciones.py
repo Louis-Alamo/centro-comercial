@@ -3,6 +3,7 @@ from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkButton import LtkButtonFill
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
+from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
 class Configuraciones:
 
     def __init__(self):
@@ -74,7 +75,7 @@ class Configuraciones:
         Centro_comercial_configuraciones()
 
     def configuracion_cine(self):
-        print("Configuracion Cine")
+        ConfiguracionCine()
 
     def configuracion_electronica(self):
         print("Configuracion Electronica")
