@@ -1,4 +1,3 @@
-#Aqui puede ir el princial?
 from tkinter import *
 from componentes_graficos.LtkButton import LtkButtonFill
 
@@ -29,3 +28,4 @@ class CentroComercial():
         print("Iniciando simulacion")
 
 
+CentroComercial()
