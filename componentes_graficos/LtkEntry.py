@@ -2,7 +2,7 @@ from customtkinter import CTkEntry
 
 class LtkEntryFill(CTkEntry):
 
-    def __init__(self, master, placeholder = "LtkEntryFill"):
+    def __init__(self, master, placeholder = ""):
         super().__init__(master)
         self.configure(
             placeholder_text=placeholder,
@@ -23,7 +23,7 @@ class LtkEntryFill(CTkEntry):
 
 class LtkEntryLine(CTkEntry):
 
-    def __init__(self, master, placeholder = "LtkEntryLine"):
+    def __init__(self, master, placeholder = ""):
         super().__init__(master)
         self.configure(
             placeholder_text=placeholder,
