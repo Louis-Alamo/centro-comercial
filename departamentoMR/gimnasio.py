@@ -1,16 +1,16 @@
 from componentes_graficos.LtkButton import LtkButtonFill
 from tkinter import *
 
-class Veterinaria():
+class Gimnasio():
 
     def __init__(self):
         self.ventana = Tk()
-        self.ventana.title("Veterinaria")
+        self.ventana.title("Gimnasio")
         self.ventana.geometry("800x600")
         self.ventana.resizable(0,0)
         self.ventana.config(bg = "#FFFFFF")
 
-        self.titulo = Label(self.ventana, text = "Veterinaria", font = ("Poppins", 20, "bold"), bg = "#FFFFFF", fg = "#000000")
+        self.titulo = Label(self.ventana, text = "Gimnasio", font = ("Poppins", 20, "bold"), bg = "#FFFFFF", fg = "#000000")
         self.titulo.place(x = 300, y = 20)
 
         self.crear_componentes()
