@@ -1,6 +1,6 @@
 {
-    "horario_apertura": "08:00",
-    "horario_cierre": "20:00",
+    "horario_apertura": "12",
+    "horario_cierre": "5",
     "capacidad_maxima_clientes": 250,
     "frecuencia_eventos_especiales": 0.1,
     "tipos_eventos_especiales": [
