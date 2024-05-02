@@ -38,7 +38,7 @@ class Configuraciones:
 
         self.combo = LtkComboBoxLine(master=self.frame1,
                                      opciones=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "Libreria",
-                                               "Restaurante", "Alimentos", "Banco", "Gimnasios", "Supermercado",
+                                               "Restaurante", "Alimentos", "Banco", "Gimnasio", "Supermercado",
                                                "Veterinaria"])
         self.combo.pack(pady = 20, padx = 20, side = LEFT)
 
@@ -70,7 +70,7 @@ class Configuraciones:
         elif self.combo.get() == "Banco":
             self.configuracion_banco()
 
-        elif self.combo.get() == "Gimnasios":
+        elif self.combo.get() == "Gimnasio":
             self.configuracion_gimnasios()
 
         elif self.combo.get() == "Supermercado":

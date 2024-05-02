@@ -27,5 +27,3 @@ class CentroComercial():
     def iniciar_simulacion(self):
         print("Iniciando simulacion")
 
-
-CentroComercial()
