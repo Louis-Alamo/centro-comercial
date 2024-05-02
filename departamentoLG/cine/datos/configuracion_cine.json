@@ -1,1 +1,15 @@
-{"cantidad_empleados": 17, "capacidad_cine": 100, "horario_inicio": "08:00", "horario_cierre": "22:00", "cantidad_salas": 5, "capacidad_salas": 50, "cantidad_empleados_sala": 2, "cantidad_empleados_dulceria": 3, "cantidad_cajas_dulceria": 3, "cantidad_empleados_taquilla": 1, "cantidad_cajas_taquilla": 5, "cantidad_ba\u00f1os": 2, "capacidad_ba\u00f1os": 5}
+{
+    "cantidad_empleados": 17,
+    "capacidad_cine": 100,
+    "horario_inicio": "08:00",
+    "horario_cierre": "22:00",
+    "cantidad_salas": 5,
+    "capacidad_salas": 50,
+    "cantidad_empleados_sala": 2,
+    "cantidad_empleados_dulceria": 3,
+    "cantidad_cajas_dulceria": 3,
+    "cantidad_empleados_taquilla": 1,
+    "cantidad_cajas_taquilla": 5,
+    "cantidad_ba\u00f1os": 2,
+    "capacidad_ba\u00f1os": 5
+}
