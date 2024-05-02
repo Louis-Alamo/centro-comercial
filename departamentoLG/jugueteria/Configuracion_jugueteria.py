@@ -28,7 +28,7 @@ class Configuracion_jugueteria:
 
 
         self.ventana.resizable(False, False)
-        self.ventana.configure(fd_color="#FFFFFF")
+        self.ventana.configure(fg_color="#FFFFFF")
 
         self.crear_componentes()
 
