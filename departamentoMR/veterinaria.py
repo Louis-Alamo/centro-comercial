@@ -4,7 +4,7 @@ from tkinter import *
 class Veterinaria():
 
     def __init__(self):
-        self.ventana = Tk()
+        self.ventana = Toplevel()
         self.ventana.title("Veterinaria")
         self.ventana.geometry("1500x900")
         self.ventana.resizable(0,0)

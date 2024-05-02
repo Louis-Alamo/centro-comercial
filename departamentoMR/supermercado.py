@@ -4,7 +4,7 @@ from tkinter import *
 class Supermercado():
 
     def __init__(self):
-        self.ventana = Tk()
+        self.ventana = Toplevel()
         self.ventana.title("Supermercado")
         self.ventana.geometry("1500x900")
         self.ventana.resizable(0,0)
