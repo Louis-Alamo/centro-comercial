@@ -84,4 +84,3 @@ class Gimnasio:
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
 
-Gimnasio()
