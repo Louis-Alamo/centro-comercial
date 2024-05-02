@@ -97,16 +97,16 @@ class LtkFileInputTreeView(Treeview):
         entry.pack()
 
         # Crea un botón que actualiza el valor cuando se hace clic en él
-        button = Button(edit_window, text="Actualizar", command=lambda: self.update_value(item, int(columna[1:]) - 1, entry.get()))
+        button = Button(edit_window, text="Actualizar", command=lambda: self.update_value(item, int(columna[1:]) - 1, entry.get(), edit_window))
         button.pack()
 
-    def update_value(self, item, columna, valor):
+    def update_value(self, item, columna, valor, ventana):
         """Actualiza el valor de una celda."""
         fila = self.item(item)['values']  # Obtiene los valores de la fila seleccionada
         fila[columna] = valor  # Actualiza el valor en la columna especificada
         self.item(item, values=fila)  # Actualiza los valores de la fila en la tabla
-
-    def guardar_informacion(self):
+        ventana.destroy()
+    def guardar_informacion(self, ventana):
         """Guarda la información en el archivo."""
         with open(self.path, 'w') as f:
             # Escribe los nombres de las columnas en el archivo
@@ -119,5 +119,7 @@ class LtkFileInputTreeView(Treeview):
 
                 # Escribe los valores de la fila en el archivo
                 f.write(','.join(str(valor) for valor in fila) + '\n')
+
+        ventana.destroy()
 
 
