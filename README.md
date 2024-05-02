@@ -6,5 +6,6 @@ Programa en interfaz grafica que simulara un centro comercial y simulara como se
 
 - customtkinter
 - tkinter
+- Pillow
 
 
