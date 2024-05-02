@@ -4,6 +4,8 @@ from componentes_graficos.LtkButton import LtkButtonFill
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
 from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
+from departamentoLG.jugueteria.Configuracion_jugueteria import Configuracion_jugueteria
+from departamentoLG.libreria.ConfiguracionLibreria import ConfiguracionLibreria
 
 
 
@@ -90,10 +92,10 @@ class Configuraciones:
         print("Configuracion Electronica")
 
     def configuracion_jugeteria(self):
-        print("Configuracion Jugeteria")
+        Configuracion_jugueteria()
 
     def configuracion_libreria(self):
-        print("Configuracion libreria")
+        ConfiguracionLibreria()
 
     def configuracion_restaurante(self):
         print("Configuracion Restaurante")
