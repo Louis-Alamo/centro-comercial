@@ -1,0 +1,5 @@
+git rm --cached *.pyc
+git rm --cached *.class
+
+*.pyc
+*.class
