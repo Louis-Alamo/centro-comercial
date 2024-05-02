@@ -3,12 +3,17 @@ from customtkinter import *
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
-from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
+from componentes_graficos.LtkComboBox import LtkComboBoxLine
+from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 
 class ConfiguracionCine:
 
     def __init__(self):
 
+        self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de alimentos y bebidas", "Dias de promocion", "Duracion de peliculas", "Eventos especiales", "Fallos en el sistema", "Tiempo de limpieza entre peliculas", "Tipo de visita", "Uso de baño", "Clasificacion de peliculas"]
+        self.nombre_datos_historicos_espera = ["Espera baño", "Espera en la dulceria", "Espera en sala de cine", "Espera en la taquilla"]
+
+        self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
         self.ventana = CTk()
         self.ventana.title("Configuracion Cine")
@@ -37,6 +42,7 @@ class ConfiguracionCine:
         self.crear_componentes_caracteristicas_cine()
 
         self.crear_componentes_edificios_internos()
+        self.crear_componentes_datos_historicos()
 
 
 
@@ -178,7 +184,119 @@ class ConfiguracionCine:
         self.entry_capacidad_baños = LtkEntryLine(self.frame_banos)
         self.entry_capacidad_baños.grid(row=2, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
 
+    def crear_componentes_datos_historicos(self):
+
+        #Frame datos
+        self.frame_datos_historicos = CTkFrame(self.ventana)
+        self.frame_datos_historicos.grid(row=3, column=2, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+
+        self.frame_datos_historicos.columnconfigure(1, weight=1)
+
+        self.etiqueta_titulo_datos_historicos = LtkLabel(self.frame_datos_historicos, texto="Datos historicos")
+        self.etiqueta_titulo_datos_historicos.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_datos_historicos.grid(row=0, column=0, columnspan=2, pady=(5, 10))
+
+        #Probabilidades
+        self.etiqueta_opcion_datos_historicos_probabilidades = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de probabilidades:")
+        self.etiqueta_opcion_datos_historicos_probabilidades.grid(row=1, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_historicos_probabilidades = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_historicos_probabilidades)
+        self.opcion_datos_historicos_probabilidades.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_historicos_probabilidades = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_probabilidades(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_historicos_probabilidades.grid(row=1, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
 
-ConfiguracionCine()
+
+        #Espera
+        self.etiqueta_opcion_datos_historicos_espera = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de espera:")
+        self.etiqueta_opcion_datos_historicos_espera.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_historicos_espera = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_historicos_espera)
+        self.opcion_datos_historicos_espera.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_espera(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_historicos_espera.grid(row=2, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+    def cargar_datos_historicos_probabilidades(self):
+
+
+        if self.opcion_datos_historicos_probabilidades.get() == "Atraccion de clientes":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Atraccion de clientes")
+            self.crear_ventana_emergente("Atraccion de clientes", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Compra de alimentos y bebidas":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Compra de alimentos y bebidas")
+            self.crear_ventana_emergente("Compra de alimentos y bebidas", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Dias de promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion")
+            self.crear_ventana_emergente("Dias de promocion", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Duracion de peliculas":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Duracion de peliculas")
+            self.crear_ventana_emergente("Duracion de peliculas", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Eventos especiales":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Eventos especiales")
+            self.crear_ventana_emergente("Eventos especiales", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Fallos en el sistema":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Fallos en el sistema")
+            self.crear_ventana_emergente("Fallos en el sistema", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Tiempo de limpieza entre peliculas":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tiempo de limpieza entre peliculas")
+            self.crear_ventana_emergente("Tiempo de limpieza entre peliculas", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Tipo de visita":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
+            self.crear_ventana_emergente("Tipo de visita", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Uso de baño":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Uso de baño")
+            self.crear_ventana_emergente("Uso de baño", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Clasificacion de peliculas":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Clasificacion de peliculas")
+            self.crear_ventana_emergente("Clasificacion de peliculas", path)
+
+
+    def cargar_datos_historicos_espera(self):
+
+        if self.opcion_datos_historicos_espera.get() == "Espera baño":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en el baño")
+            self.crear_ventana_emergente("Espera baño", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en la dulceria":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en la dulceria")
+            self.crear_ventana_emergente("Espera en la dulceria", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en sala de cine":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en sala de cine")
+            self.crear_ventana_emergente("Espera en sala de cine", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en la taquilla":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en la taquilla")
+            self.crear_ventana_emergente("Espera en la taquilla", path)
+
+    def crear_ventana_emergente(self,titulo, ruta_archivo):
+
+        self.ventana_emergente = CTkToplevel()
+        self.ventana_emergente.title(titulo)
+
+        # Establecer la ventana como modal
+        self.ventana_emergente.grab_set()
+        self.ventana_emergente.focus_set()
+        self.ventana_emergente.transient(self.ventana)
+        self.ventana_emergente.attributes('-topmost', True)
+
+        self.tabla =  LtkFileInputTreeView(self.ventana_emergente, ruta_archivo)
+        self.tabla.grid(row=0, column=0, padx=(10,10), pady=(10, 20), sticky="nsew")
+
+        self.boton_guardar = LtkButtonFill(self.ventana_emergente, funcion=lambda: self.tabla.guardar_informacion(self.ventana_emergente), nombre_boton="Guardar")
+        self.boton_guardar.grid(row=1, column=0, padx=(10,10), pady=(10, 20), sticky="nsew")
+
+        self.ventana_emergente.mainloop()
+
 
