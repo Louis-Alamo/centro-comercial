@@ -8,9 +8,9 @@ class Banco:
         self.ventana = Tk()
         self.ventana.title("Banco")
         self.ventana.geometry("1500x900")
-        self.ventana.config(bg="#02347C")
+        self.ventana.config(bg="#002C6C")
 
-        self.frame_principal = Frame(self.ventana, bg="#02347C")
+        self.frame_principal = Frame(self.ventana, bg="#002C6C")
         self.frame_principal.pack(expand=True, fill=BOTH)
 
         titulo_label = LtkLabel(self.frame_principal, texto="Banco")
@@ -34,7 +34,7 @@ class Banco:
         self.ventana.mainloop()
 
     def crear_seccion_cajeros(self):
-        frame_cajeros = Frame(self.frame_principal, bg="#02347C")
+        frame_cajeros = Frame(self.frame_principal, bg="#002C6C")
         frame_cajeros.pack(pady=3)
 
         cajeros = [
@@ -80,7 +80,7 @@ class Banco:
         entry_atencion.pack(anchor=W)
 
     def crear_seccion_cajerosautomaticos(self):
-        frame_cajerosautomaticos = Frame(self.frame_principal, bg="#02347C")
+        frame_cajerosautomaticos = Frame(self.frame_principal, bg="#002C6C")
         frame_cajerosautomaticos.pack(pady=3)
 
         cajerosautomaticos = [
@@ -125,7 +125,7 @@ class Banco:
         entry_atencion.pack(anchor=W)
 
     def crear_seccion_secretarias(self):
-        frame_secretarias = Frame(self.frame_principal, bg="#02347C")
+        frame_secretarias = Frame(self.frame_principal, bg="#002C6C")
         frame_secretarias.pack(pady=3)
 
         secretarias = [
@@ -173,4 +173,3 @@ class Banco:
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
 
-Banco()
