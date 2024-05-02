@@ -6,6 +6,8 @@ from centro_comercial_configuraciones import Centro_comercial_configuraciones
 from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
 from departamentoLG.jugueteria.Configuracion_jugueteria import Configuracion_jugueteria
 from departamentoLG.libreria.ConfiguracionLibreria import ConfiguracionLibreria
+from departamentoLG.electronica.ConfiguracionElectronica import ConfiguracionElectronica
+from departamentoLG.restaurante.ConfiguracionRestaurante import ConfiguracionRestaurante
 
 
 
@@ -14,6 +16,14 @@ from departamentoMR.banco import Banco
 from departamentoMR.supermercado import Supermercado
 from departamentoMR.veterinaria import Veterinaria
 from departamentoMR.alimentos import Alimentos
+
+
+
+from departamentoRH.Ropa import ropa
+from departamentoRH.Hogar import hogar
+from departamentoRH.Farmacia import farmacia
+from departamentoRH.Estacionamiento import estacionamiento
+from departamentoRH.Restaurante_serv_com import restaurante_ser_com
 
 class Configuraciones:
 
@@ -41,7 +51,7 @@ class Configuraciones:
         self.combo = LtkComboBoxLine(master=self.frame1,
                                      opciones=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "libreria",
                                                "Restaurante", "Alimentos", "Banco", "Gimnasio", "Supermercado",
-                                               "Veterinaria"])
+                                               "Veterinaria", "Ropa", "Hogar", "Farmacia", "Estacionamiento","Restaurante_serv_com"])
         self.combo.pack(pady = 20, padx = 20, side = LEFT)
 
         self.boton_abrir_configuracion = LtkButtonFill(master=self.frame1, funcion=lambda: self.abrir_configuracion(),nombre_boton="Abrir configuracion")
@@ -81,6 +91,22 @@ class Configuraciones:
         elif self.combo.get() == "Veterinaria":
             self.configuracion_veterinaria()
 
+        elif self.combo.get() == "Ropa":
+            self.configuracion_ropa()
+
+        elif self.combo.get() == "Hogar":
+            self.configuracion_hogar()
+
+        elif self.combo.get() == "Farmacia":
+            self.configuracion_farmacia()
+
+        elif self.combo.get() == "Estacionamiento":
+            self.configuracion_estacionamiento()
+
+        elif self.combo.get() == "Restaurante_serv_com":
+            self.configuracion_restaurante_serv_com()
+
+
 
     def configuracion_centro_comercial(self):
         Centro_comercial_configuraciones()
@@ -89,7 +115,7 @@ class Configuraciones:
         ConfiguracionCine()
 
     def configuracion_electronica(self):
-        print("Configuracion Electronica")
+        ConfiguracionElectronica()
 
     def configuracion_jugeteria(self):
         Configuracion_jugueteria()
@@ -98,7 +124,7 @@ class Configuraciones:
         ConfiguracionLibreria()
 
     def configuracion_restaurante(self):
-        print("Configuracion Restaurante")
+        ConfiguracionRestaurante()
 
     def configuracion_alimentos(self):
         Alimentos()
@@ -114,6 +140,22 @@ class Configuraciones:
 
     def configuracion_veterinaria(self):
         Veterinaria()
+
+    def configuracion_ropa(self):
+        ropa()
+
+    def configuracion_hogar(self):
+        hogar()
+
+    def configuracion_farmacia(self):
+        farmacia()
+
+    def configuracion_estacionamiento(self):
+        estacionamiento()
+
+    def configuracion_restaurante_serv_com(self):
+        restaurante_ser_com()
+
 
 
 
