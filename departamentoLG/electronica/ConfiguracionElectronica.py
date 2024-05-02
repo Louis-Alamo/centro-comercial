@@ -8,7 +8,7 @@ from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 
 
-class Configuracion_jugueteria:
+class ConfiguracionElectronica:
 
     def __init__(self):
         self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de alimentos y bebidas",
@@ -21,14 +21,14 @@ class Configuracion_jugueteria:
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
         self.ventana = CTkToplevel()
-        self.ventana.title("Configuración de la juguetería")
+        self.ventana.title("Configuración de tienda electronica")
 
         self.ventana.grid_columnconfigure(0, weight=1)
         self.ventana.grid_columnconfigure(1, weight=1)
         self.ventana.grid_columnconfigure(2, weight=1)
         self.ventana.grid_columnconfigure(3, weight=1)
 
-        # self.ventana.resizable(False, False)
+        self.ventana.resizable(False, False)
         self.ventana.configure(fd_color="#FFFFFF")
 
         self.crear_componentes()
@@ -36,7 +36,7 @@ class Configuracion_jugueteria:
         self.ventana.mainloop()
 
     def crear_componentes(self):
-        self.etiqueta_titulo_principal = LtkLabel(self.ventana, texto="Configuracion Cine")
+        self.etiqueta_titulo_principal = LtkLabel(self.ventana, texto="Configuracion tienda electronica")
         self.etiqueta_titulo_principal.configure(font=('Poppins', 20, "bold"))
         self.etiqueta_titulo_principal.grid(row=0, column=0, pady=(20, 20), sticky="nsew")
 
