@@ -1,12 +1,14 @@
 from tkinter import *
+from customtkinter import CTk
 from componentes_graficos.LtkLabel import LtkLabel
 from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkButton import LtkButtonFill
 
 class Banco:
     def __init__(self):
-        self.ventana = Tk()
+        self.ventana = CTk()
         self.ventana.title("Banco")
+        
         self.ventana.geometry("1500x900")
         self.ventana.config(bg="#002C6C")
 
@@ -172,4 +174,3 @@ class Banco:
     def iniciar_simulacion(self):
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
-

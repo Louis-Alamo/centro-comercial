@@ -1,10 +1,11 @@
 from componentes_graficos.LtkButton import LtkButtonFill
 from tkinter import *
+from customtkinter import CTk
 
 class Supermercado():
 
     def __init__(self):
-        self.ventana = Toplevel()
+        self.ventana = CTk()
         self.ventana.title("Supermercado")
         self.ventana.geometry("1500x900")
         self.ventana.resizable(0,0)
