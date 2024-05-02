@@ -4,13 +4,22 @@ from componentes_graficos.LtkButton import LtkButtonFill
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
 from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
+
+
+
+from departamentoMR.gimnasio import Gimnasio
+from departamentoMR.banco import Banco
+from departamentoMR.supermercado import Supermercado
+from departamentoMR.veterinaria import Veterinaria
+from departamentoMR.alimentos import Alimentos
+
 class Configuraciones:
 
     def __init__(self):
 
         self.ventana = Tk()
         self.ventana.title("Configuraciones")
-        self.ventana.resizable(0,0)
+        self.ventana.resizable(False, False)
         self.ventana.config(bg = "#FFFFFF")
 
 
@@ -90,20 +99,19 @@ class Configuraciones:
         print("Configuracion Restaurante")
 
     def configuracion_alimentos(self):
-        print("Configuracion Alimentos")
+        Alimentos()
 
     def configuracion_banco(self):
-        print("Configuracion Banco")
+        Banco()
 
     def configuracion_gimnasios(self):
-        print("Configuracion Gimnasios")
+        Gimnasio()
 
     def configuracion_supermercado(self):
-        print("Configuracion Supermercado")
+        Supermercado()
 
     def configuracion_veterinaria(self):
-        print("Configuracion Veterinaria")
-
+        Veterinaria()
 
 
 
