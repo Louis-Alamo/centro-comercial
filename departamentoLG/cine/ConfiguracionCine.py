@@ -28,8 +28,8 @@ class ConfiguracionCine:
         self.ventana.grid_columnconfigure(3, weight=1)
 
 
-        #self.ventana.resizable(False, False)
-        self.ventana.configure(fd_color="#FFFFFF")
+        self.ventana.resizable(False, False)
+        self.ventana.configure(fg_color="#FFFFFF")
 
 
 
