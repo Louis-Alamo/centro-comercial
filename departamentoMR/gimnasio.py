@@ -1,7 +1,6 @@
 from componentes_graficos.LtkButton import LtkButtonFill
 from componentes_graficos.LtkEntry import LtkEntryLine
 from tkinter import *
-from PIL import Image, ImageTk
 
 class Gimnasio():
 
@@ -11,14 +10,6 @@ class Gimnasio():
         self.ventana.geometry("1500x900")
         self.ventana.resizable(0,0)
         self.ventana.config(bg="#FFFFFF")
-
-        ruta_imagen="D:/MIIGUEL ROSALES/Documentos/ISC - ITSZaS/Cuarto Semestre/SIMULACION/PROYECTO/centro-comercial/departamentoMR/gimnasio.jpg"
-        imagen=Image.open(ruta_imagen)
-        foto=ImageTk.PhotoImage(imagen)
-        self.label_imagen=Label(self.ventana, image=foto, bg="#FFFFFF")
-        self.label_imagen.image=foto
-        self.label_imagen.place(x=0, y=0)
-
 
         self.titulo=Label(self.ventana, text="Gimnasio", font=("Poppins", 20, "bold"), bg="#FFFFFF", fg="#000000")
         self.titulo.place(x=690, y=485)
