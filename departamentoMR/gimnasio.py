@@ -14,7 +14,7 @@ class Gimnasio:
         self.frame_principal.pack(expand=True, fill=BOTH)
 
         titulo_label = LtkLabel(self.frame_principal, texto="Gimnasio")
-        titulo_label.configure(font=('Poppins', 80, "bold", "underline"))
+        titulo_label.configure(font=('Poppins', 80, "bold"))
         titulo_label.pack(pady=(20, 20))
 
 
@@ -82,5 +82,3 @@ class Gimnasio:
     def iniciar_simulacion(self):
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
-
-
