@@ -1,10 +1,14 @@
 from customtkinter import *
+from tkinter import messagebox
 
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkTreeView import LtkFileInputTreeView
+
+import json
+import os
 
 class ConfiguracionCine:
 
@@ -44,8 +48,36 @@ class ConfiguracionCine:
         self.crear_componentes_edificios_internos()
         self.crear_componentes_datos_historicos()
 
+        self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
+        self.boton_guardar.grid(row=4, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
 
+    def guardar_informacion(self):
+        informacion = {
+            "cantidad_empleados": int(17 if self.entry_cantidad_empleados.get() == "" else self.entry_cantidad_empleados.get()),
+            "capacidad_cine": int(100 if self.entry_capacidad_cine.get() == "" else self.entry_capacidad_cine.get()),
+            "horario_inicio": str("08:00" if self.entry_horario_inicio.get() == "" else self.entry_horario_inicio.get()),
+            "horario_cierre": str("22:00" if self.entry_horario_cierre.get() == "" else self.entry_horario_cierre.get()),
+            "cantidad_salas": int(5 if self.entry_cantidad_salas.get() == "" else self.entry_cantidad_salas.get()),
+            "capacidad_salas": int(50 if self.entry_capacidad_salas.get() == "" else self.entry_capacidad_salas.get()),
+            "cantidad_empleados_sala": int(2 if self.entry_cantidad_empleados_sala.get() == "" else self.entry_cantidad_empleados_sala.get()),
+            "cantidad_empleados_dulceria": int(3 if self.entry_cantidad_empleados_dulceria.get() == "" else self.entry_cantidad_empleados_dulceria.get()),
+            "cantidad_cajas_dulceria": int(3 if self.entry_cantidad_cajas_dulceria.get() == "" else self.entry_cantidad_cajas_dulceria.get()),
+            "cantidad_empleados_taquilla": int(1 if self.entry_cantidad_empleados_taquilla.get() == "" else self.entry_cantidad_empleados_taquilla.get()),
+            "cantidad_cajas_taquilla": int(5 if self.entry_cantidad_cajas_taquilla.get() == "" else self.entry_cantidad_cajas_taquilla.get()),
+            "cantidad_baños": int(2 if self.entry_cantidad_baños.get() == "" else self.entry_cantidad_baños.get()),
+            "capacidad_baños": int(5 if self.entry_capacidad_baños.get() == "" else self.entry_capacidad_baños.get())
+        }
 
+        informacion_json = json.dumps(informacion, indent=4)
+
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(dir_path, r'datos\configuracion_cine.json')
+
+        # Escribe la cadena JSON en un archivo
+        with open(config_path, 'w') as f:
+            f.write(informacion_json)
+
+        messagebox.showinfo("Informacion", "Informacion guardada correctamente")
 
 
     def crear_componentes_caracteristicas_cine(self):
