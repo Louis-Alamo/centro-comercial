@@ -56,4 +56,3 @@ class Gimnasio():
         print("Iniciando simulacion")
 
 
-Gimnasio()
