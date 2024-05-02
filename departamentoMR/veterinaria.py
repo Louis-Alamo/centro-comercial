@@ -8,9 +8,9 @@ class Veterinaria:
         self.ventana = Tk()
         self.ventana.title("Veterinaria")
         self.ventana.geometry("1500x900")
-        self.ventana.config(bg="#767676")
+        self.ventana.config(bg="#5B2800")
 
-        self.frame_principal = Frame(self.ventana, bg="#767676")
+        self.frame_principal = Frame(self.ventana, bg="#5B2800")
         self.frame_principal.pack(expand=True, fill=BOTH)
 
         titulo_label = LtkLabel(self.frame_principal, texto="Veterinaria")
@@ -32,7 +32,7 @@ class Veterinaria:
         self.ventana.mainloop()
 
     def crear_seccion_veterinarios(self):
-        frame_veterinarios = Frame(self.frame_principal, bg="#767676")
+        frame_veterinarios = Frame(self.frame_principal, bg="#5B2800")
         frame_veterinarios.pack(pady=20)
 
         for i in range(2):
@@ -46,7 +46,7 @@ class Veterinaria:
             entry_atraccion_vet.pack(pady=5)
 
     def crear_seccion_almacen(self):
-        frame_almacen = Frame(self.frame_principal, bg="#767676")
+        frame_almacen = Frame(self.frame_principal, bg="#5B2800")
         frame_almacen.pack(pady=20)
 
         label_almacen = Label(frame_almacen, text="Almacen de mascotas", font=("Poppins", 15, "bold"), bg="#00ABC3", fg="#FFFFFF")
