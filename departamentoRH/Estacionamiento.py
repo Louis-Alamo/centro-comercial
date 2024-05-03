@@ -13,14 +13,14 @@ class estacionamiento:
         self.frame_principal = Frame(self.ventana, bg="#98FF98")
         self.frame_principal.pack(expand=True, fill=BOTH)
 
-        titulo_label = LtkLabel(self.frame_principal, texto="Estacionamiento")
-        titulo_label.configure(font=('Poppins', 50, "bold"))
-        titulo_label.pack(pady=(20, 20))
+        self.titulo_label = LtkLabel(self.frame_principal, texto="Estacionamiento")
+        self.titulo_label.configure(font=('Poppins', 50, "bold"))
+        self.titulo_label.pack(pady=(20, 20))
 
         self.secciones()
 
-        boton_ejecucion = LtkButtonFill(self.frame_principal, nombre_boton="Iniciar simulación", funcion=lambda: self.iniciar_simulacion())
-        boton_ejecucion.pack(pady=20)
+        self.boton_ejecucion = LtkButtonFill(self.frame_principal, nombre_boton="Iniciar simulación", funcion=lambda: self.iniciar_simulacion())
+        self.boton_ejecucion.pack(pady=20)
 
         self.text_area = Text(self.frame_principal, width=100, height=30)
         self.text_area.pack(pady=20, padx=50, fill=BOTH, expand=True)
@@ -41,17 +41,17 @@ class estacionamiento:
             ("Seccion D", 1050)
         ]
 
-        for piso, x_pos in secciones:
-            frame_piso = Frame(frame_pisos, bg="grey")
-            frame_piso.pack(side=LEFT, padx=50)
+        for seccion, x_pos in secciones:
+            frame_seccion = Frame(frame_pisos, bg="grey")
+            frame_seccion.pack(side=LEFT, padx=50)
 
-            label_piso = Label(frame_piso, text=piso, font=("Poppins", 15, "bold"), bg="grey", fg="#FFFFFF")
+            label_piso = Label(frame_seccion, text=seccion, font=("Poppins", 15, "bold"), bg="grey", fg="#FFFFFF")
             label_piso.pack()
 
-            entry_tarifa = LtkEntryLine(frame_piso, "Capacidad de cada seccion")
+            entry_tarifa = LtkEntryLine(frame_seccion, "Capacidad de cada seccion")
             entry_tarifa.pack(pady=10)
 
-            frame_espacios = Frame(frame_piso, bg="#98FF98")
+            frame_espacios = Frame(frame_seccion, bg="#98FF98")
             frame_espacios.pack(pady=10)
 
             for i in range(1):
@@ -104,4 +104,3 @@ class estacionamiento:
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
 
-estacionamiento()
