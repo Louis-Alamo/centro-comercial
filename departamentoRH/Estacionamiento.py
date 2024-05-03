@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 from componentes_graficos.LtkLabel import LtkLabel
 from componentes_graficos.LtkEntry import LtkEntryLine
@@ -5,7 +6,7 @@ from componentes_graficos.LtkButton import LtkButtonFill
 
 class estacionamiento:
     def __init__(self):
-        self.ventana = Tk()
+        self.ventana = tkinter.Toplevel()
         self.ventana.title("Estacionamiento")
         self.ventana.geometry("1300x800")
         self.ventana.config(bg="#6B8E23")
