@@ -64,17 +64,17 @@ class estacionamiento:
         label_nombre = Label(frame_espacio, text=nombre_espacio, font=("Poppins", 12), bg="#E6E6E6", fg="#000000")
         label_nombre.pack(anchor=W)
 
-        label_estado = Label(frame_espacio, text="Espacios Disponibles/No Disponible:", bg="#E6E6E6", fg="#000000")
-        label_estado.pack(anchor=W)
+        label_espacios = Label(frame_espacio, text="Espacios Disponibles/No Disponible:", bg="#E6E6E6", fg="#000000")
+        label_espacios.pack(anchor=W)
 
-        entry_estado = LtkEntryLine(frame_espacio, "Si/ No")
-        entry_estado.pack(anchor=W)
+        entry_espacios = LtkEntryLine(frame_espacio, "Si/ No")
+        entry_espacios.pack(anchor=W)
 
-        label_estado = Label(frame_espacio, text="Tiempo en encontrar estacionamiento:", bg="#E6E6E6", fg="#000000")
-        label_estado.pack(anchor=W)
+        label_tiempo = Label(frame_espacio, text="Tiempo en encontrar estacionamiento:", bg="#E6E6E6", fg="#000000")
+        label_tiempo.pack(anchor=W)
 
-        entry_estado = LtkEntryLine(frame_espacio, "Minutos")
-        entry_estado.pack(anchor=W)
+        entry_tiempo = LtkEntryLine(frame_espacio, "Minutos")
+        entry_tiempo.pack(anchor=W)
 
         label_tiempo_ocupacion = Label(frame_espacio, text="Promedio de tiempo estacionado:", bg="#E6E6E6", fg="#000000")
         label_tiempo_ocupacion.pack(anchor=W)
@@ -82,23 +82,23 @@ class estacionamiento:
         entry_tiempo_ocupacion = LtkEntryLine(frame_espacio, "Minutos")
         entry_tiempo_ocupacion.pack(anchor=W)
 
-        label_tiempo_ocupacion = Label(frame_espacio, text="Prom. de tiempo en salir:", bg="#E6E6E6", fg="#000000")
-        label_tiempo_ocupacion.pack(anchor=W)
+        label_tiempo_salir = Label(frame_espacio, text="Prom. de tiempo en salir:", bg="#E6E6E6", fg="#000000")
+        label_tiempo_salir.pack(anchor=W)
 
-        entry_tiempo_ocupacion = LtkEntryLine(frame_espacio, "Minutos")
-        entry_tiempo_ocupacion.pack(anchor=W)
+        entry_tiempo_salir = LtkEntryLine(frame_espacio, "Minutos")
+        entry_tiempo_salir.pack(anchor=W)
 
-        label_tiempo_ocupacion = Label(frame_espacio, text="Eventos Especiales:", bg="#E6E6E6", fg="#000000")
-        label_tiempo_ocupacion.pack(anchor=W)
+        label_eventos = Label(frame_espacio, text="Eventos Especiales:", bg="#E6E6E6", fg="#000000")
+        label_eventos.pack(anchor=W)
 
-        entry_tiempo_ocupacion = LtkEntryLine(frame_espacio, "Si/No")
-        entry_tiempo_ocupacion.pack(anchor=W)
+        entry_eventos = LtkEntryLine(frame_espacio, "Si/No")
+        entry_eventos.pack(anchor=W)
 
-        label_tiempo_ocupacion = Label(frame_espacio, text="Autos Estacionados:", bg="#E6E6E6", fg="#000000")
-        label_tiempo_ocupacion.pack(anchor=W)
+        label_autos = Label(frame_espacio, text="Autos Estacionados:", bg="#E6E6E6", fg="#000000")
+        label_autos.pack(anchor=W)
 
-        entry_tiempo_ocupacion = LtkEntryLine(frame_espacio, "Pueden ser 0")
-        entry_tiempo_ocupacion.pack(anchor=W)
+        entry_autos= LtkEntryLine(frame_espacio, "Pueden ser 0")
+        entry_autos.pack(anchor=W)
 
     def iniciar_simulacion(self):
         self.text_area.delete(1.0, END)
