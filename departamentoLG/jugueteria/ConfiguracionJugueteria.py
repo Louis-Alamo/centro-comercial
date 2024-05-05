@@ -14,6 +14,8 @@ class Configuracion_jugueteria:
 
         self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de juguetes", "Dias de promocion", "Tipo de visita"]
         self.nombre_datos_historicos_espera = ["Espera por pagar"]
+        self.nombre_datos_precio = ["Precio de juguetes", "Descuento promocion"]
+
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -146,12 +148,52 @@ class Configuracion_jugueteria:
         self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_espera(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_historicos_espera.grid(row=2, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
+        #Precio
+        self.etiqueta_opcion_datos_precio = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de precio:")
+        self.etiqueta_opcion_datos_precio.grid(row=3, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_precio = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_precio)
+        self.opcion_datos_precio.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_precio = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_precios(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_precio.grid(row=3, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+
     def cargar_datos_historicos_probabilidades(self):
-        pass
+
+        if self.opcion_datos_historicos_probabilidades.get() == "Atraccion de clientes":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Atraccion de clientes")
+            self.crear_ventana_emergente("Atraccion de clientes", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Compra de juguetes":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Compra de juguetes")
+            self.crear_ventana_emergente("Compra de juguetes", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Dias de promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion")
+            self.crear_ventana_emergente("Dias de promocion", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Tipo de visita":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
+            self.crear_ventana_emergente("Tipo de visita", path)
+
+
 
     def cargar_datos_historicos_espera(self):
-        pass
 
+        if self.opcion_datos_historicos_espera.get() == "Espera por pagar":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera para pagar")
+            self.crear_ventana_emergente("Espera por pagar", path)
+
+    def cargar_datos_precios(self):
+
+        if self.opcion_datos_precio.get() == "Precio de juguetes":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio juguetes")
+            self.crear_ventana_emergente("Precio de juguetes", path)
+
+        elif self.opcion_datos_precio.get() == "Descuento promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuento promocion")
+            self.crear_ventana_emergente("Descuento promocion", path)
 
     def crear_ventana_emergente(self,titulo, ruta_archivo):
 
