@@ -260,8 +260,6 @@ class ConfiguracionCine:
         self.boton_cargar_datos_precios = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_precios(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_precios.grid(row=3, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
-
-
     def cargar_datos_historicos_probabilidades(self):
 
 
@@ -305,8 +303,6 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Clasificacion de peliculas")
             self.crear_ventana_emergente("Clasificacion de peliculas", path)
 
-
-
     def cargar_datos_historicos_espera(self):
 
         if self.opcion_datos_historicos_espera.get() == "Espera baño":
@@ -328,7 +324,6 @@ class ConfiguracionCine:
     def cargar_datos_precios(self):
 
         if self.opcion_datos_precios.get() == "Precio peliculas":
-            print("Precio peliculas")
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio peliculas")
             self.crear_ventana_emergente("Precio peliculas", path)
 
