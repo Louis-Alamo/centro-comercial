@@ -1,6 +1,8 @@
 from tkinter import *
+from customtkinter import CTkToplevel, CTkFrame
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkButton import LtkButtonFill
+from componentes_graficos.LtkLabel import LtkLabel
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
 from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
@@ -25,18 +27,25 @@ from departamentoRH.Farmacia import farmacia
 from departamentoRH.Estacionamiento import estacionamiento
 from departamentoRH.Restaurante_serv_com import restaurante_ser_com
 
+
+
+from CentroComercial import CentroComercial
+
+
+
 class Configuraciones:
 
     def __init__(self):
 
-        self.ventana = Tk()
+        self.ventana = CTkToplevel()
         self.ventana.title("Configuraciones")
         self.ventana.resizable(False, False)
-        self.ventana.config(bg = "#FFFFFF")
+        #self.ventana.config(bg = "#FFFFFF")
 
 
 
-        self.titulo = Label(self.ventana, text = "Configuraciones", font = ("Poppins", 20, "bold"), bg = "#FFFFFF", fg = "#000000")
+        self.titulo = LtkLabel(self.ventana, texto = "Configuraciones de los departamentos")
+        self.titulo.configure(font = ("Poppins", 20, "bold"))
         self.titulo.pack(pady = 20, fill = X)
 
         self.crear_componentes()
@@ -45,8 +54,8 @@ class Configuraciones:
 
     def crear_componentes(self):
 
-        self.frame1 = Frame(self.ventana, bg = "#FFFFFF")
-        self.frame1.pack()
+        self.frame1 = CTkFrame(self.ventana)
+        self.frame1.pack(pady = 20, padx = 20,  fill = X)
 
         self.combo = LtkComboBoxLine(master=self.frame1,
                                      opciones=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "libreria",
@@ -56,6 +65,14 @@ class Configuraciones:
 
         self.boton_abrir_configuracion = LtkButtonFill(master=self.frame1, funcion=lambda: self.abrir_configuracion(),nombre_boton="Abrir configuracion")
         self.boton_abrir_configuracion.pack(pady = 20, padx = 20, side = LEFT)
+
+        self.boton_comenzar_simulacion = LtkButtonFill(master=self.ventana, funcion=lambda: self.comenzar_simulacion(),nombre_boton="Comenzar simulacion")
+        self.boton_comenzar_simulacion.pack(pady = 20, padx = 20, side = BOTTOM)
+
+
+    def comenzar_simulacion(self):
+        self.ventana.withdraw()
+        CentroComercial()
 
     def abrir_configuracion(self):
         if self.combo.get() == "Centro Comercial":
