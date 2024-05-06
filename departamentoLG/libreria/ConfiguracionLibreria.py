@@ -25,8 +25,12 @@ class ConfiguracionLibreria:
         self.ventana.grid_columnconfigure(2, weight=1)
         self.ventana.grid_columnconfigure(3, weight=1)
 
-        self.ventana.resizable(False, False)
-        self.ventana.configure(fg_color="#FFFFFF")
+        self.ventana.grid_rowconfigure(0, weight=1)
+        self.ventana.grid_rowconfigure(1, weight=1)
+        self.ventana.grid_rowconfigure(2, weight=1)
+
+        #self.ventana.resizable(False, False)
+        #self.ventana.configure(fg_color="#FFFFFF")
 
         self.crear_componentes()
 
