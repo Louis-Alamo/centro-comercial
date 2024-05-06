@@ -206,7 +206,7 @@ class ConfiguracionLibreria:
         self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_espera(),nombre_boton="Cargar datos")
         self.boton_cargar_datos_historicos_espera.grid(row=2, column=3, padx=(5, 10), pady=(5, 5), sticky="nsew")
 
-        # Precios
+        # precios
         self.etiqueta_opcion_datos_precios = LtkLabel(self.frame_datos_historicos,texto="Seleccionar datos de precios:")
         self.etiqueta_opcion_datos_precios.grid(row=3, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 

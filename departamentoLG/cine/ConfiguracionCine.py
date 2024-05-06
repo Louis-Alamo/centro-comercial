@@ -329,9 +329,9 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio peliculas")
             self.crear_ventana_emergente("Precio peliculas", path)
 
-        elif self.opcion_datos_precios.get() == "Precios de alimentos y bebidas":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Precios de alimentos y bebidas")
-            self.crear_ventana_emergente("Precios de alimentos y bebidas", path)
+        elif self.opcion_datos_precios.get() == "precios de alimentos y bebidas":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\precios de alimentos y bebidas")
+            self.crear_ventana_emergente("precios de alimentos y bebidas", path)
 
         elif self.opcion_datos_precios.get() == "Descuentos promocion":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos promocion")
