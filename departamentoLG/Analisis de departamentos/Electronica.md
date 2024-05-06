@@ -4,8 +4,7 @@
    - **Cantidad de empleados:** Total de personal que trabaja en la tienda, incluyendo vendedores, técnicos de servicio, personal de atención al cliente, etc.
    - **Categorías de productos:** Lista de categorías de productos electrónicos disponibles en la tienda (televisores, teléfonos inteligentes, computadoras, electrodomésticos, etc.).
    - **Horario de apertura y cierre:** Horario de funcionamiento de la tienda.
-   - **Rango de precios de productos:** Precios promedio de los productos ofrecidos en la tienda.
-   - **Rango de precios de servicios:** Precios promedio de los servicios de reparación y mantenimiento ofrecidos en la tienda.
+
 
 2. **Datos históricos:**
    - **Días de ofertas especiales:** Días en que se realizan ofertas especiales o promociones en la tienda.
@@ -13,6 +12,8 @@
    - **Tiempo de reparación de productos:** Tiempo promedio que lleva reparar productos en el servicio técnico.
    - **Probabilidad de compra de productos:** Probabilidad de que los clientes compren productos electrónicos en la tienda.
    - **Probabilidad de uso del servicio técnico:** Probabilidad de que los clientes utilicen el servicio técnico para reparar productos.
+   - **Rango de precios de productos:** Precios promedio de los productos ofrecidos en la tienda.
+   - **Rango de precios de servicios:** Precios promedio de los servicios de reparación y mantenimiento ofrecidos en la tienda.
    
 3. **Consideraciones:**
    - **Rotación de inventario:** Frecuencia con la que se actualiza el inventario de productos para ofrecer las últimas novedades y tecnologías.
