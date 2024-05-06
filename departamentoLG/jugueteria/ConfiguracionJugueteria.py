@@ -14,7 +14,7 @@ class Configuracion_jugueteria:
 
         self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de juguetes", "Dias de promocion", "Tipo de visita"]
         self.nombre_datos_historicos_espera = ["Espera por pagar"]
-        self.nombre_datos_precio = ["Precio de juguetes", "Descuento promocion"]
+        self.nombre_datos_precio = ["Precio de juguetes", "Descuentos promocion"]
 
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
@@ -191,9 +191,9 @@ class Configuracion_jugueteria:
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio juguetes")
             self.crear_ventana_emergente("Precio de juguetes", path)
 
-        elif self.opcion_datos_precio.get() == "Descuento promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuento promocion")
-            self.crear_ventana_emergente("Descuento promocion", path)
+        elif self.opcion_datos_precio.get() == "Descuentos promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos promocion")
+            self.crear_ventana_emergente("Descuentos promocion", path)
 
     def crear_ventana_emergente(self,titulo, ruta_archivo):
 

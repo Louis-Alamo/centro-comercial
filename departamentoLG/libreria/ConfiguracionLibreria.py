@@ -11,8 +11,10 @@ from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 class ConfiguracionLibreria:
 
     def __init__(self):
-        self.nombre_datos_historicos_probabilidades = ["Eventos literarios", "Tendencias de venta", "Compra de libros", "Costo por libro", "Tipo de visita"]
+        self.nombre_datos_historicos_probabilidades = ["Eventos literarios", "Compra de libros", "Tipo de visita"]
         self.nombre_datos_historicos_espera = ["Espera en caja", "Espera en eventos", "Espera en lectura", "Espera en exhibicion",]
+        self.nombre_datos_precios = ["Costo por libro", "Descuentos por promocion"]
+
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
         self.ventana = CTkToplevel()
@@ -200,11 +202,60 @@ class ConfiguracionLibreria:
         self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_espera(),nombre_boton="Cargar datos")
         self.boton_cargar_datos_historicos_espera.grid(row=2, column=3, padx=(5, 10), pady=(5, 5), sticky="nsew")
 
+        # Precios
+        self.etiqueta_opcion_datos_precios = LtkLabel(self.frame_datos_historicos,texto="Seleccionar datos de precios:")
+        self.etiqueta_opcion_datos_precios.grid(row=3, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_precios = LtkComboBoxLine(self.frame_datos_historicos,self.nombre_datos_precios)
+        self.opcion_datos_precios.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_precios = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_precios(),nombre_boton="Cargar datos")
+        self.boton_cargar_datos_precios.grid(row=3, column=3, padx=(5, 10), pady=(5, 5), sticky="nsew")
+
+
     def cargar_datos_historicos_probabilidades(self):
-        pass
+
+        if self.opcion_datos_historicos_probabilidades.get() == "Eventos literarios":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Eventos literarios")
+            self.crear_ventana_emergente("Eventos literarios", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Compra de libros":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Compra de libros")
+            self.crear_ventana_emergente("Compra de libros", path)
+
+        elif self.opcion_datos_historicos_probabilidades.get() == "Tipo de visita":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
+            self.crear_ventana_emergente("Tipo de visita", path)
+
+
 
     def cargar_datos_historicos_espera(self):
-        pass
+
+        if self.opcion_datos_historicos_espera.get() == "Espera en caja":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en caja")
+            self.crear_ventana_emergente("Espera en caja", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en eventos":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en eventos")
+            self.crear_ventana_emergente("Espera en eventos", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en lectura":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en lectura")
+            self.crear_ventana_emergente("Espera en lectura", path)
+
+        elif self.opcion_datos_historicos_espera.get() == "Espera en exhibicion":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Espera en exhibicion")
+            self.crear_ventana_emergente("Espera en exhibicion", path)
+
+    def cargar_datos_precios(self):
+
+        if self.opcion_datos_precios.get() == "Costo por libro":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo por libro")
+            self.crear_ventana_emergente("Costo por libro", path)
+
+        elif self.opcion_datos_precios.get() == "Descuentos por promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos promocion")
+            self.crear_ventana_emergente("Descuentos por promocion", path)
 
     def crear_ventana_emergente(self, titulo, ruta_archivo):
         self.ventana_emergente = CTkToplevel()

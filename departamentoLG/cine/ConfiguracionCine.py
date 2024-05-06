@@ -16,7 +16,7 @@ class ConfiguracionCine:
 
         self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de alimentos y bebidas", "Dias de promocion", "Duracion de peliculas", "Eventos especiales", "Fallos en el sistema", "Tiempo de limpieza entre peliculas", "Tipo de visita", "Uso de baño", "Clasificacion de peliculas"]
         self.nombre_datos_historicos_espera = ["Espera baño", "Espera en la dulceria", "Espera en sala de cine", "Espera en la taquilla"]
-        self.nombre_datos_precios = [ "Precio peliculas", "Precios alimentos y bebidas", "Descuento promocion", "Precio baño"]
+        self.nombre_datos_precios = [ "Precio peliculas", "Precios alimentos y bebidas", "Descuentos promocion", "Precio baño"]
 
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,7 +30,7 @@ class ConfiguracionCine:
 
 
         self.ventana.resizable(False, False)
-        self.ventana.configure(fg_color="#FFFFFF")
+        #self.ventana.configure(fg_color="#FFFFFF")
 
 
 
@@ -80,7 +80,6 @@ class ConfiguracionCine:
 
         messagebox.showinfo("Informacion", "Informacion guardada correctamente")
 
-
     def crear_componentes_caracteristicas_cine(self):
 
         self.frame_caracteristicas = CTkFrame(self.ventana)
@@ -112,7 +111,6 @@ class ConfiguracionCine:
         self.entry_horario_inicio.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
         self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
         self.entry_horario_cierre.grid(row=4, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
-
 
     def crear_componentes_edificios_internos(self):
 
@@ -331,13 +329,13 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precios de alimentos y bebidas")
             self.crear_ventana_emergente("Precios de alimentos y bebidas", path)
 
-        elif self.opcion_datos_precios.get() == "Descuento promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuento promocion")
-            self.crear_ventana_emergente("Descuento promocion", path)
+        elif self.opcion_datos_precios.get() == "Descuentos promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos promocion")
+            self.crear_ventana_emergente("Descuentos promocion", path)
 
         elif self.opcion_datos_precios.get() == "Precio baño":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio baño")
-            self.crear_ventana_emergente("Descuento promocion", path)
+            self.crear_ventana_emergente("Descuentos promocion", path)
 
     def crear_ventana_emergente(self,titulo, ruta_archivo):
 
