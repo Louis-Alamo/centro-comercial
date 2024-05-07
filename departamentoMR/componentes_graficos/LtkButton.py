@@ -109,6 +109,26 @@ class LtkButtonLine(CTkButton):
         self.bind("<Enter>", self.hover_on)
         self.bind("<Leave>", self.hover_off)
 
+class LtkButtonTransparentBackground(CTkButton):
+
+    def __init__(self, master, funcion, nombre_boton = "LtkButtonFill"):
+        super().__init__(master)
+
+        self.configure(
+            text=nombre_boton,
+            command=funcion,
+            corner_radius=5,
+            fg_color="transparent",
+            text_color="#4A9D63",
+            border_width=2,
+            font=("Poppins", 12, "bold"),
+            border_color="#4A9D63",
+            border_spacing=5,
+            hover=False,
+        )
+
+
+
 # Las siguientes clases están vacías en tu código original, por lo que no he añadido comentarios
 class LtkButtonFillImage(CTkButton):
     pass
