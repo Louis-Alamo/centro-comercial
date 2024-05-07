@@ -1,5 +1,5 @@
 from tkinter import *
-from customtkinter import CTkToplevel, CTkFrame
+from customtkinter import CTk, CTkFrame
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkButton import LtkButtonFill
 from componentes_graficos.LtkLabel import LtkLabel
@@ -37,7 +37,7 @@ class Configuraciones:
 
     def __init__(self):
 
-        self.ventana = CTkToplevel()
+        self.ventana = CTk()
         self.ventana.title("Configuraciones")
         self.ventana.resizable(False, False)
         #self.ventana.config(bg = "#FFFFFF")
