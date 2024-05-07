@@ -3,3 +3,14 @@ git rm --cached *.class
 
 *.pyc
 *.class
+*.log
+*.iml
+*.idea
+*.ipr
+*.iws
+*.bak
+*.orig
+*.swp
+*.tmp
+*.tmp.*
+*.Temp*

@@ -45,7 +45,7 @@ class Banco:
         self.crear_seccion_cajerosautomaticos()
         
 
-        boton_ejecucion=LtkButtonFill(self.frame_principal, nombre_boton="GUARDAR DATOS", funcion=lambda: self.iniciar_simulacion())
+        boton_ejecucion=LtkButtonFill(self.frame_principal, nombre_boton="GUARDAR DATOS", funcion=lambda: self.guardar_datos())
         boton_ejecucion.pack(pady=3)
 
         self.ventana.columnconfigure(0, weight=1)
@@ -192,7 +192,11 @@ class Banco:
         entry_atencion=LtkEntryLine(frame_cajaSecretaria, "Minutos")
         entry_atencion.pack(anchor=W)
 
-    def iniciar_simulacion(self):
+    def guardar_datos(self):
         self.text_area.delete(1.0, END)
         self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
 
+
+
+
+Banco()
