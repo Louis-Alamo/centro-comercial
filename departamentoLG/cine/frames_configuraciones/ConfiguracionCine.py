@@ -1,7 +1,7 @@
 from customtkinter import *
 from tkinter import messagebox
 
-from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
@@ -23,18 +23,17 @@ class ConfiguracionCine:
         self.ventana = CTk()
         self.ventana.title("Configuracion Cine")
 
-        self.ventana.grid_columnconfigure(0, weight=1)
-        self.ventana.grid_columnconfigure(1, weight=1)
-        self.ventana.grid_columnconfigure(2, weight=1)
-        self.ventana.grid_columnconfigure(3, weight=1)
 
-        self.ventana.grid_rowconfigure(0, weight=1)
+        self.ventana.grid_columnconfigure(1, weight=1)
         self.ventana.grid_rowconfigure(1, weight=1)
-        self.ventana.grid_rowconfigure(2, weight=1)
+
 
 
         # self.ventana.resizable(False, False)
         #self.ventana.configure(fg_color="#FFFFFF")
+
+
+
 
 
 
@@ -44,17 +43,30 @@ class ConfiguracionCine:
 
     def crear_componentes(self):
 
+        self.frame_clasificacion_configuracion = CTkFrame(self.ventana)
+        self.frame_clasificacion_configuracion.grid(row=1, column=0,padx=(10,5),pady=(10,10), sticky="ns")
+
+        self.frame_clasificacion_configuracion.columnconfigure(0, weight=1)
+
+        self.crear_botones_clasificacion_caracteristicas_cine()
+
+        # Frame de características
+        self.frame_caracteristicas = CTkFrame(self.ventana)
+        self.frame_caracteristicas.grid(row=1, column=1,padx=(5,10),pady=(10,10),  sticky="nsew")
+
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+
+        # Etiqueta de título principal
         self.etiqueta_titulo_principal = LtkLabel(self.ventana, texto="Configuracion Cine")
         self.etiqueta_titulo_principal.configure(font=('Poppins', 20, "bold"))
-        self.etiqueta_titulo_principal.grid(row=0, column=0, pady=(20, 20), sticky="nsew")
+        self.etiqueta_titulo_principal.grid(row=0, column=0, pady=(10, 20), sticky="ew", columnspan=2)
+        self.etiqueta_titulo_principal.columnconfigure(0,weight=1)  # Para que la etiqueta se expanda solo horizontalmente y esté centrada
 
-        self.crear_componentes_caracteristicas_cine()
 
-        self.crear_componentes_edificios_internos()
-        self.crear_componentes_datos_historicos()
-
-        self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
-        self.boton_guardar.grid(row=4, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
+        
+        # self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
+        # self.boton_guardar.grid(row=4, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
 
     def guardar_informacion(self):
         informacion = {
@@ -84,10 +96,34 @@ class ConfiguracionCine:
 
         messagebox.showinfo("Informacion", "Informacion guardada correctamente")
 
+
+    def resetear_frame_caracteristicas(self):
+        for widget in self.frame_caracteristicas.winfo_children():
+            widget.destroy()
+
+    def crear_botones_clasificacion_caracteristicas_cine(self):
+        self.boton_caracteristicas_principales = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_caracteristicas_cine(), nombre_boton="Opciones generales")
+        self.boton_caracteristicas_principales.grid(row=0, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_caracteristicas_salas = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_salas_cine(), nombre_boton="Salas de cine")
+        self.boton_caracteristicas_salas.grid(row=1, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_caracteristicas_dulceria = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_dulceria(), nombre_boton="Dulceria")
+        self.boton_caracteristicas_dulceria.grid(row=2, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_caracteristicas_taquilla = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_taquilla(), nombre_boton="Taquilla")
+        self.boton_caracteristicas_taquilla.grid(row=3, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_caracteristicas_baños = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_baños(), nombre_boton="Baños")
+        self.boton_caracteristicas_baños.grid(row=4, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_caracteristicas_datos_historicos = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_datos_historicos(), nombre_boton="Datos historicos")
+        self.boton_caracteristicas_datos_historicos.grid(row=5, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+
     def crear_componentes_caracteristicas_cine(self):
 
-        self.frame_caracteristicas = CTkFrame(self.ventana)
-        self.frame_caracteristicas.grid(row=1, column=0, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
         self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Caracteristicas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
@@ -124,142 +160,133 @@ class ConfiguracionCine:
         self.crear_componentes_baños()
 
     def crear_componentes_salas_cine(self):
-        #Frame salas de cine
 
-        self.frame_salas_cine = CTkFrame(self.ventana)
-        self.frame_salas_cine.grid(row=2, column=0, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_salas_cine.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_salas_cine = LtkLabel(self.frame_salas_cine, texto="Salas de cine")
+        self.etiqueta_titulo_salas_cine = LtkLabel(self.frame_caracteristicas, texto="Salas de cine")
         self.etiqueta_titulo_salas_cine.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_salas_cine.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_salas = LtkLabel(self.frame_salas_cine, texto="Cantidad de salas:")
+        self.etiqueta_cantidad_salas = LtkLabel(self.frame_caracteristicas, texto="Cantidad de salas:")
         self.etiqueta_cantidad_salas.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_salas = LtkEntryLine(self.frame_salas_cine)
+        self.entry_cantidad_salas = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_salas.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
 
-        self.etiqueta_capacidad_salas = LtkLabel(self.frame_salas_cine, texto="Capacidad de las salas:")
+        self.etiqueta_capacidad_salas = LtkLabel(self.frame_caracteristicas, texto="Capacidad de las salas:")
         self.etiqueta_capacidad_salas.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_capacidad_salas = LtkEntryLine(self.frame_salas_cine)
+        self.entry_capacidad_salas = LtkEntryLine(self.frame_caracteristicas)
         self.entry_capacidad_salas.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.etiqueta_cantidad_empleados_sala = LtkLabel(self.frame_salas_cine, texto="Cantidad de empleados por sala:")
+        self.etiqueta_cantidad_empleados_sala = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados por sala:")
         self.etiqueta_cantidad_empleados_sala.grid(row=3, column=0, padx=(10,10), pady=(5, 10), sticky="w")
-        self.entry_cantidad_empleados_sala = LtkEntryLine(self.frame_salas_cine)
+        self.entry_cantidad_empleados_sala = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_sala.grid(row=3, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
 
     def crear_componentes_dulceria(self):
-        #Frame dulceria
 
-        self.frame_dulceria = CTkFrame(self.ventana)
-        self.frame_dulceria.grid(row=3, column=0, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_dulceria.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_dulceria = LtkLabel(self.frame_dulceria, texto="Dulceria")
+        self.etiqueta_titulo_dulceria = LtkLabel(self.frame_caracteristicas, texto="Dulceria")
         self.etiqueta_titulo_dulceria.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_dulceria.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
 
-        self.etiqueta_cantidad_empleados_dulceria = LtkLabel(self.frame_dulceria, texto="Cantidad de empleados:")
+        self.etiqueta_cantidad_empleados_dulceria = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados:")
         self.etiqueta_cantidad_empleados_dulceria.grid(row=1, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados_dulceria = LtkEntryLine(self.frame_dulceria)
+        self.entry_cantidad_empleados_dulceria = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_dulceria.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.etiqueta_cantidad_cajas_dulceria = LtkLabel(self.frame_dulceria, texto="Cantidad de cajas:")
+        self.etiqueta_cantidad_cajas_dulceria = LtkLabel(self.frame_caracteristicas, texto="Cantidad de cajas:")
         self.etiqueta_cantidad_cajas_dulceria.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_cajas_dulceria = LtkEntryLine(self.frame_dulceria)
+        self.entry_cantidad_cajas_dulceria = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_cajas_dulceria.grid(row=2, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
 
     def crear_componentes_taquilla(self):
-        #Frame taquilla
 
-        self.frame_taquilla = CTkFrame(self.ventana)
-        self.frame_taquilla.grid(row=1, column=2, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_taquilla.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_taquilla = LtkLabel(self.frame_taquilla, texto="Taquilla")
+        self.etiqueta_titulo_taquilla = LtkLabel(self.frame_caracteristicas, texto="Taquilla")
         self.etiqueta_titulo_taquilla.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_taquilla.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_empleados_taquilla = LtkLabel(self.frame_taquilla, texto="Cantidad de empleados:")
+        self.etiqueta_cantidad_empleados_taquilla = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados:")
         self.etiqueta_cantidad_empleados_taquilla.grid(row=1, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados_taquilla = LtkEntryLine(self.frame_taquilla)
+        self.entry_cantidad_empleados_taquilla = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_taquilla.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.etiqueta_cantidad_cajas_taquilla = LtkLabel(self.frame_taquilla, texto="Cantidad de cajas:")
+        self.etiqueta_cantidad_cajas_taquilla = LtkLabel(self.frame_caracteristicas, texto="Cantidad de cajas:")
         self.etiqueta_cantidad_cajas_taquilla.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_cajas_taquilla = LtkEntryLine(self.frame_taquilla)
+        self.entry_cantidad_cajas_taquilla = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_cajas_taquilla.grid(row=2, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
 
     def crear_componentes_baños(self):
-        #Frame baños
 
-        self.frame_banos = CTkFrame(self.ventana)
-        self.frame_banos.grid(row=2, column=2, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_banos.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_banos = LtkLabel(self.frame_banos, texto="Baños")
+        self.etiqueta_titulo_banos = LtkLabel(self.frame_caracteristicas, texto="Baños")
         self.etiqueta_titulo_banos.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_banos.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_baños = LtkLabel(self.frame_banos, texto="Cantidad de baños:")
+        self.etiqueta_cantidad_baños = LtkLabel(self.frame_caracteristicas, texto="Cantidad de baños:")
         self.etiqueta_cantidad_baños.grid(row=1, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_baños = LtkEntryLine(self.frame_banos)
+        self.entry_cantidad_baños = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_baños.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         self.etiqueta_capacidad_baños = LtkLabel(self.frame_banos, texto="Capacidad de los baños:")
         self.etiqueta_capacidad_baños.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_capacidad_baños = LtkEntryLine(self.frame_banos)
+        self.entry_capacidad_baños = LtkEntryLine(self.frame_caracteristicas)
         self.entry_capacidad_baños.grid(row=2, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
 
     def crear_componentes_datos_historicos(self):
 
-        #Frame datos
-        self.frame_datos_historicos = CTkFrame(self.ventana)
-        self.frame_datos_historicos.grid(row=3, column=2, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_datos_historicos.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_datos_historicos = LtkLabel(self.frame_datos_historicos, texto="Datos historicos")
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+
+        self.etiqueta_titulo_datos_historicos = LtkLabel(self.frame_caracteristicas, texto="Datos historicos")
         self.etiqueta_titulo_datos_historicos.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_datos_historicos.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
         #Probabilidades
-        self.etiqueta_opcion_datos_historicos_probabilidades = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de probabilidades:")
+        self.etiqueta_opcion_datos_historicos_probabilidades = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de probabilidades:")
         self.etiqueta_opcion_datos_historicos_probabilidades.grid(row=1, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
-        self.opcion_datos_historicos_probabilidades = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_historicos_probabilidades)
+        self.opcion_datos_historicos_probabilidades = LtkComboBoxLine(self.frame_caracteristicas, self.nombre_datos_historicos_probabilidades)
         self.opcion_datos_historicos_probabilidades.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_datos_historicos_probabilidades = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_probabilidades(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_historicos_probabilidades = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_historicos_probabilidades(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_historicos_probabilidades.grid(row=1, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
 
 
         #Espera
-        self.etiqueta_opcion_datos_historicos_espera = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de espera:")
+        self.etiqueta_opcion_datos_historicos_espera = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de espera:")
         self.etiqueta_opcion_datos_historicos_espera.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
-        self.opcion_datos_historicos_espera = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_historicos_espera)
+        self.opcion_datos_historicos_espera = LtkComboBoxLine(self.frame_caracteristicas, self.nombre_datos_historicos_espera)
         self.opcion_datos_historicos_espera.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_historicos_espera(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_historicos_espera = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_historicos_espera(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_historicos_espera.grid(row=2, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
 
-        self.etiqueta_opcion_datos_precios = LtkLabel(self.frame_datos_historicos, texto="Seleccionar datos de precios:")
+        self.etiqueta_opcion_datos_precios = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de precios:")
         self.etiqueta_opcion_datos_precios.grid(row=3, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
-        self.opcion_datos_precios = LtkComboBoxLine(self.frame_datos_historicos, self.nombre_datos_precios)
+        self.opcion_datos_precios = LtkComboBoxLine(self.frame_caracteristicas, self.nombre_datos_precios)
         self.opcion_datos_precios.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_datos_precios = LtkButtonFill(self.frame_datos_historicos,funcion=lambda: self.cargar_datos_precios(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_precios = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_precios(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_precios.grid(row=3, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
     def cargar_datos_historicos_probabilidades(self):
@@ -359,5 +386,8 @@ class ConfiguracionCine:
         self.boton_guardar.grid(row=1, column=0, padx=(10,10), pady=(10, 20), sticky="nsew")
 
         self.ventana_emergente.mainloop()
+
+
+ConfiguracionCine()
 
 
