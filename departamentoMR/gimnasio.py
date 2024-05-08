@@ -188,5 +188,3 @@ class Gimnasio:
         messagebox.showinfo("GUARDADO", "Ajustes Guardados")
         self.ajustes_temporadas.destroy()
 
-
-Gimnasio()
