@@ -20,7 +20,7 @@ class Alimentos:
         #Frame para titulo
         frame_titulo = CTkFrame(ventana)
         frame_titulo.pack(fill=BOTH, expand=True)
-        titulo = LtkLabel(frame_titulo, "Configuracion Alimentos")
+        titulo = LtkLabel(frame_titulo, "BORRAR ALIMENTOS")
         titulo.configure(font=("Poppins", 40, "bold"))
         titulo.pack(side=TOP, padx=20, pady=20)
 
@@ -30,5 +30,3 @@ class Alimentos:
     def salir(self):
         messagebox.showinfo("SALIENDO", "Configuracion Guardada")
         exit()
-
-Alimentos()

@@ -36,6 +36,12 @@ class Veterinaria:
         boton_personal = LtkButtonFill(frame_personal, self.personal, "Personal")
         boton_personal.pack(side=LEFT, padx=70, pady=20)
 
+        #Frame horarios
+        frame_horarios = CTkFrame(ventana)
+        frame_horarios.pack(fill=BOTH, expand=True)
+        boton_horarios = LtkButtonFill(frame_horarios, self.horarios, "Horarios")
+        boton_horarios.pack(side=LEFT, padx=70, pady=10)
+
         #Frame atencion
         frame_atencion = CTkFrame(ventana)
         frame_atencion.pack(fill=BOTH, expand=True)
@@ -95,6 +101,18 @@ class Veterinaria:
     def guardar_personal(self):
         messagebox.showinfo("GUARDADO", "Ajustes Guardados")
         self.personal.destroy()
+
+    def horarios(self):
+        self.horarios=CTk()
+        self.horarios.title("Ajustes Horarios")
+        self.horarios.geometry("800x600+660+210")
+        self.horarios.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.horarios, self.guardar_horarios, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
+        self.horarios.mainloop()
+    def guardar_horarios(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.horarios.destroy()
 
 
     def atencion(self):
