@@ -55,6 +55,12 @@ class Gimnasio:
         boton_maquinas = LtkButtonFill(frame_maquinas, self.maquinas, "Maquinas")
         boton_maquinas.pack(side=LEFT, padx=70, pady=10)
 
+        #Frame para servicio general
+        frame_serviciogeneral = CTkFrame(ventana)
+        frame_serviciogeneral.pack(fill=BOTH, expand=True)
+        boton_serviciogeneral = LtkButtonFill(frame_serviciogeneral, self.serviciogeneral, "Servicio General")
+        boton_serviciogeneral.pack(side=LEFT, padx=70, pady=10)
+
         #Frame para baños
         frame_baños = CTkFrame(ventana)
         frame_baños.pack(fill=BOTH, expand=True)
@@ -73,6 +79,7 @@ class Gimnasio:
         boton_temporadas = LtkButtonFill(frame_temporadas, self.temporadas, "Temporadas")
         boton_temporadas.pack(side=LEFT, padx=70, pady=10)
 
+        #Frame para salir configuracion
         frame_guardar = CTkFrame(ventana)
         frame_guardar.pack(fill=BOTH, expand=True)
         boton_guardar = LtkButtonFill(frame_guardar, self.salir, "Salir de Configuracion Gimnasio")
@@ -151,6 +158,18 @@ class Gimnasio:
         messagebox.showinfo("GUARDADO", "Ajustes Guardados")
         self.ajustes_maquinas.destroy()
 
+    def serviciogeneral(self):
+        self.ajustes_serviciogeneral = CTk()
+        self.ajustes_serviciogeneral.title("Ajustes Servicio General")
+        self.ajustes_serviciogeneral.geometry("800x600+660+210")
+        self.ajustes_serviciogeneral.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_serviciogeneral, self.guardar_serviciogeneral, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_serviciogeneral.mainloop()
+    def guardar_serviciogeneral(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_serviciogeneral.destroy()
+
 
     def baños(self):
         self.ajustes_baños = CTk()
@@ -187,4 +206,3 @@ class Gimnasio:
     def guardar_temporadas(self):
         messagebox.showinfo("GUARDADO", "Ajustes Guardados")
         self.ajustes_temporadas.destroy()
-

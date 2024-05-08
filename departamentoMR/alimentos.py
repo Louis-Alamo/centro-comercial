@@ -1,29 +1,34 @@
-from componentes_graficos.LtkButton import LtkButtonFill
-from customtkinter import CTk
-from tkinter import *
+from customtkinter import *
+from tkinter import messagebox
 
-class Alimentos():
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
+from componentes_graficos.LtkLabel import LtkLabel
+from componentes_graficos.LtkComboBox import LtkComboBoxLine
+from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 
+import json
+import os
+
+class Alimentos:
     def __init__(self):
-        self.ventana = CTk()
-        self.ventana.title("Alimentos")
-        self.ventana.geometry("1500x900")
-        self.ventana.resizable(0,0)
-        self.ventana.config(bg = "#FFFFFF")
+        ventana = CTk()
+        ventana.title("Configuracion Alimentos")
+        ventana.geometry("1200x800+350+100")
+        ventana.configure(bg="#FFFFFF")
 
-        self.titulo = Label(self.ventana, text = "Alimentos", font = ("Poppins", 20, "bold"), bg = "#FFFFFF", fg = "#000000")
-        self.titulo.place(x = 300, y = 20)
+        #Frame para titulo
+        frame_titulo = CTkFrame(ventana)
+        frame_titulo.pack(fill=BOTH, expand=True)
+        titulo = LtkLabel(frame_titulo, "Configuracion Alimentos")
+        titulo.configure(font=("Poppins", 40, "bold"))
+        titulo.pack(side=TOP, padx=20, pady=20)
 
-        self.crear_componentes()
+        
+        ventana.mainloop()
 
-        self.ventana.mainloop()
+    def salir(self):
+        messagebox.showinfo("SALIENDO", "Configuracion Guardada")
+        exit()
 
-    def crear_componentes(self):
-        boton_ejecucion = LtkButtonFill(master=self.ventana, nombre_boton="Iniciar simulacion", funcion=lambda: self.iniciar_simulacion())
-        boton_ejecucion.place(x = 300, y = 100)
-
-
-    def iniciar_simulacion(self):
-        print("Iniciando simulacion")
-
-
+Alimentos()
