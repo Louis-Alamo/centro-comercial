@@ -189,3 +189,4 @@ class Gimnasio:
         self.ajustes_temporadas.destroy()
 
 
+Gimnasio()

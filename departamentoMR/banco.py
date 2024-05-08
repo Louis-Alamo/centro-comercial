@@ -1,200 +1,168 @@
-from tkinter import *
-from customtkinter import CTk
+from customtkinter import *
+from tkinter import messagebox
+
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
-from componentes_graficos.LtkEntry import LtkEntryLine
-from componentes_graficos.LtkButton import LtkButtonFill
+from componentes_graficos.LtkComboBox import LtkComboBoxLine
+from componentes_graficos.LtkTreeView import LtkFileInputTreeView
+
+import json
+import os
 
 class Banco:
     def __init__(self):
-        self.ventana=CTk()
-        self.ventana.title("Banco")
+        ventana = CTk()
+        ventana.title("Configuracion Banco")
+        ventana.geometry("1200x800+350+100")
+        ventana.configure(bg="#FFFFFF")
+
+        #Frame para titulo
+        frame_titulo = CTkFrame(ventana)
+        frame_titulo.pack(fill=BOTH, expand=True)
+        titulo = LtkLabel(frame_titulo, "Configuracion Banco")
+        titulo.configure(font=("Poppins", 40, "bold"))
+        titulo.pack(side=TOP, padx=20, pady=20)
+
+
+        #Frame para personal banco
+        frame_personalbanco = CTkFrame(ventana)
+        frame_personalbanco.pack(fill=BOTH, expand=True)
+        boton_personalbanco = LtkButtonFill(frame_personalbanco, self.personalbanco, "Personal del banco")
+        boton_personalbanco.pack(side=LEFT, padx=70, pady=20)
         
-        self.ventana.geometry("1500x900")
-        self.ventana.config(bg="#002C6C")
+        #Frame para horarios
+        frame_horarios = CTkFrame(ventana)
+        frame_horarios.pack(fill=BOTH, expand=True)
+        boton_horarios = LtkButtonFill(frame_horarios, self.horarios, "Horarios")
+        boton_horarios.pack(side=LEFT, padx=70, pady=10)
 
-        self.frame_principal=Frame(self.ventana, bg="#002C6C")
-        self.frame_principal.pack(expand=True, fill=BOTH)
+        #Frame para usuarios
+        frame_usuarios = CTkFrame(ventana)
+        frame_usuarios.pack(fill=BOTH, expand=True)
+        boton_usuarios = LtkButtonFill(frame_usuarios, self.usuarios, "Usuarios")
+        boton_usuarios.pack(side=LEFT, padx=70, pady=10)
 
-        titulo_label=LtkLabel(self.frame_principal, texto="Banco")
-        titulo_label.configure(font=('Poppins', 80, "bold", "underline"))
-        titulo_label.pack(pady=(3, 3))
+        #Frame para cuentas
+        frame_cuentas = CTkFrame(ventana)
+        frame_cuentas.pack(fill=BOTH, expand=True)
+        boton_cuentas = LtkButtonFill(frame_cuentas, self.cuentas, "Cuentas")
+        boton_cuentas.pack(side=LEFT, padx=70, pady=10)
 
-        frame_horarios=Frame(self.frame_principal, bg="#002C6C")
-        frame_horarios.pack(pady=10)
+        #Frame para cajeros_automaticos
+        frame_cajeros_automaticos = CTkFrame(ventana)
+        frame_cajeros_automaticos.pack(fill=BOTH, expand=True)
+        boton_cajeros_automaticos = LtkButtonFill(frame_cajeros_automaticos, self.cajeros_automaticos, "Cajeros Automaticos")
+        boton_cajeros_automaticos.pack(side=LEFT, padx=70, pady=10)
 
-        label_apertura=Label(frame_horarios, text="Hora de Apertura:", bg="#002C6C", fg="#FFFFFF", font=("Poppins", 15))
-        label_apertura.pack(side=LEFT, padx=(50, 10))
+        #Frame para temporadas
+        frame_temporadas = CTkFrame(ventana)
+        frame_temporadas.pack(fill=BOTH, expand=True)
+        boton_temporadas = LtkButtonFill(frame_temporadas, self.temporadas, "Temporadas")
+        boton_temporadas.pack(side=LEFT, padx=70, pady=10)
 
-        entry_apertura=LtkEntryLine(frame_horarios, "HH:MM")
-        entry_apertura.pack(side=LEFT)
-
-        label_cierre=Label(frame_horarios, text="Hora de Cierre:", bg="#002C6C", fg="#FFFFFF", font=("Poppins", 15))
-        label_cierre.pack(side=LEFT, padx=(50, 10))
-
-        entry_cierre=LtkEntryLine(frame_horarios, "HH:MM")
-        entry_cierre.pack(side=LEFT)
-
-        label_capacidad=Label(frame_horarios, text="Capacidad de Personas:", bg="#002C6C", fg="#FFFFFF", font=("Poppins", 15))
-        label_capacidad.pack(side=LEFT, padx=(50, 10))
-
-        entry_capacidad=LtkEntryLine(frame_horarios, "Usuarios")
-        entry_capacidad.pack(side=LEFT)
+        frame_guardar = CTkFrame(ventana)
+        frame_guardar.pack(fill=BOTH, expand=True)
+        boton_guardar = LtkButtonFill(frame_guardar, self.salir, "Salir de Configuracion Banco")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
         
-        self.crear_seccion_cajeros()
-        self.crear_seccion_secretarias()
-        self.crear_seccion_cajerosautomaticos()
-        
+        ventana.mainloop()
 
-        boton_ejecucion=LtkButtonFill(self.frame_principal, nombre_boton="GUARDAR DATOS", funcion=lambda: self.guardar_datos())
-        boton_ejecucion.pack(pady=3)
-
-        self.ventana.columnconfigure(0, weight=1)
-        self.ventana.rowconfigure(0, weight=1)
-        self.text_area=Text(self.frame_principal, width=10, height=30)
-        self.text_area.pack(pady=10, padx=400, fill=BOTH, expand=True)
-
-
-        self.ventana.mainloop()
-
-    def crear_seccion_cajeros(self):
-        frame_cajeros=Frame(self.frame_principal, bg="#002C6C")
-        frame_cajeros.pack(pady=3)
-
-        cajeros=[
-            ("VENTANILLA 1", 150),
-            ("VENTANILLA 2", 450),
-            ("VENTANILLA 3", 750),
-            ("VENTANILLA 4", 1050)
-        ]
-
-        for caja, x_pos in cajeros:
-            frame_caja=Frame(frame_cajeros, bg="#458FFB")
-            frame_caja.pack(side=LEFT, padx=50)
-
-            label_caja=Label(frame_caja, text=caja, font=("Poppins", 15, "bold"), bg="#458FFB", fg="#FFFFFF")
-            label_caja.pack()
-
-            entry_atraccion=LtkEntryLine(frame_caja, "% de atracción")
-            entry_atraccion.pack(pady=10)
-
-            frame_cajas=Frame(frame_caja, bg="#458FFB")
-            frame_cajas.pack(pady=10)
-
-            for i in range(1):
-                self.crear_caja(frame_cajas, f"ATENCION AL CLIENTE")
-
-    def crear_caja(self, frame_cajas, nombre_caja):
-        frame_caja=Frame(frame_cajas, bg="#E6E6E6", padx=10, pady=10)
-        frame_caja.pack(pady=5, fill=X)
-
-        label_nombre=Label(frame_caja, text=nombre_caja, font=("Poppins", 12), bg="#E6E6E6", fg="#000000")
-        label_nombre.pack(anchor=W)
-
-        label_disponibilidad=Label(frame_caja, text="DISPONIBILIDAD", bg="#E6E6E6", fg="#000000")
-        label_disponibilidad.pack(anchor=W)
-
-        entry_disponibilidad=LtkEntryLine(frame_caja, "True/False")
-        entry_disponibilidad.pack(anchor=W)
-
-        label_atencion=Label(frame_caja, text="Tiempo de atención:", bg="#E6E6E6", fg="#000000")
-        label_atencion.pack(anchor=W)
-
-        entry_atencion=LtkEntryLine(frame_caja, "Minutos")
-        entry_atencion.pack(anchor=W)
-
-    def crear_seccion_cajerosautomaticos(self):
-        frame_cajerosautomaticos=Frame(self.frame_principal, bg="#002C6C")
-        frame_cajerosautomaticos.pack(pady=3)
-
-        cajerosautomaticos=[
-            ("CAJERO AUTOMATICO 1", 150),
-            ("CAJERO AUTOMATICO 2", 450),
-            ("CAJERO AUTOMATICO 3", 750)
-        ]
-
-        for cajero, x_pos in cajerosautomaticos:
-            frame_cajero=Frame(frame_cajerosautomaticos, bg="#458FFB")
-            frame_cajero.pack(side=LEFT, padx=50)
-
-            label_cajero=Label(frame_cajero, text=cajero, font=("Poppins", 15, "bold"), bg="#458FFB", fg="#FFFFFF")
-            label_cajero.pack()
-
-            entry_atraccion=LtkEntryLine(frame_cajero, "% de atracción")
-            entry_atraccion.pack(pady=10)
-
-            frame_cajasca=Frame(frame_cajero, bg="#458FFB")
-            frame_cajasca.pack(pady=10)
-
-            for i in range(1):
-                self.crear_cajaca(frame_cajasca, f"")
-
-    def crear_cajaca(self, frame_cajasca, nombre_cajaca):
-        frame_cajaca=Frame(frame_cajasca, bg="#E6E6E6", padx=10, pady=10)
-        frame_cajaca.pack(pady=5, fill=X)
-
-        label_nombre=Label(frame_cajaca, text=nombre_cajaca, font=("Poppins", 12), bg="#E6E6E6", fg="#000000")
-        label_nombre.pack(anchor=W)
-
-        label_disponibilidad=Label(frame_cajaca, text="DISPONIBILIDAD", bg="#E6E6E6", fg="#000000")
-        label_disponibilidad.pack(anchor=W)
-
-        entry_disponibilidad=LtkEntryLine(frame_cajaca, "True/False")
-        entry_disponibilidad.pack(anchor=W)
-
-        label_atencion=Label(frame_cajaca, text="Tiempo de atención:", bg="#E6E6E6", fg="#000000")
-        label_atencion.pack(anchor=W)
-
-        entry_atencion=LtkEntryLine(frame_cajaca, "Minutos")
-        entry_atencion.pack(anchor=W)
-
-    def crear_seccion_secretarias(self):
-        frame_secretarias=Frame(self.frame_principal, bg="#002C6C")
-        frame_secretarias.pack(pady=3)
-
-        secretarias=[
-            ("Secretaria 1", 150),
-            ("Secretaria 2", 450),
-            ("Secretaria 3", 750)
-        ]
-
-        for secretaria, x_pos in secretarias:
-            frame_secretaria=Frame(frame_secretarias, bg="#458FFB")
-            frame_secretaria.pack(side=LEFT, padx=50)
-
-            label_secretaria=Label(frame_secretaria, text=secretaria, font=("Poppins", 15, "bold"), bg="#458FFB", fg="#FFFFFF")
-            label_secretaria.pack()
-
-            entry_atraccion=LtkEntryLine(frame_secretaria, "% de atracción")
-            entry_atraccion.pack(pady=10)
-
-            frame_cajassecretarias=Frame(frame_secretaria, bg="#458FFB")
-            frame_cajassecretarias.pack(pady=10)
-
-            for i in range(1):
-                self.crear_cajaSecretaria(frame_cajassecretarias, f"ATENCION AL CLIENTE")
-
-    def crear_cajaSecretaria(self, frame_cajassecretarias, nombre_cajasecretaria):
-        frame_cajaSecretaria=Frame(frame_cajassecretarias, bg="#E6E6E6", padx=10, pady=10)
-        frame_cajaSecretaria.pack(pady=5, fill=X)
-
-        label_nombre=Label(frame_cajaSecretaria, text=nombre_cajasecretaria, font=("Poppins", 12), bg="#E6E6E6", fg="#000000")
-        label_nombre.pack(anchor=W)
-
-        label_disponibilidad=Label(frame_cajaSecretaria, text="DISPONIBILIDAD", bg="#E6E6E6", fg="#000000")
-        label_disponibilidad.pack(anchor=W)
-
-        entry_disponibilidad=LtkEntryLine(frame_cajaSecretaria, "True/False")
-        entry_disponibilidad.pack(anchor=W)
-
-        label_atencion=Label(frame_cajaSecretaria, text="Tiempo de atención:", bg="#E6E6E6", fg="#000000")
-        label_atencion.pack(anchor=W)
-
-        entry_atencion=LtkEntryLine(frame_cajaSecretaria, "Minutos")
-        entry_atencion.pack(anchor=W)
-
-    def guardar_datos(self):
-        self.text_area.delete(1.0, END)
-        self.text_area.insert(INSERT, "DATOS GUARDADOS\n")
+    def salir(self):
+        messagebox.showinfo("SALIENDO", "Configuracion Guardada")
+        exit()
 
 
 
+    def personalbanco(self):
+        self.ajustes_personal = CTk()
+        self.ajustes_personal.title("Ajustes Personal del banco")
+        self.ajustes_personal.geometry("800x600+660+210")
+        self.ajustes_personal.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_personal, self.guardar_personal, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_personal.mainloop()
+    def guardar_personal(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_personal.destroy()
+
+
+    def costos(self):
+        self.ajustes_costos = CTk()
+        self.ajustes_costos.title("Ajustes Costos")
+        self.ajustes_costos.geometry("800x600+660+210")
+        self.ajustes_costos.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_costos, self.guardar_costos, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_costos.mainloop()
+    def guardar_costos(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_costos.destroy()
+
+
+
+    def horarios(self):
+        self.ajustes_horarios = CTk()
+        self.ajustes_horarios.title("Ajustes Horarios")
+        self.ajustes_horarios.geometry("800x600+660+210")
+        self.ajustes_horarios.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_horarios, self.guardar_horarios, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_horarios.mainloop()
+    def guardar_horarios(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_horarios.destroy()
+
+
+    def usuarios(self):
+        self.ajustes_usuarios = CTk()
+        self.ajustes_usuarios.title("Ajustes Usuarios")
+        self.ajustes_usuarios.geometry("800x600+660+210")
+        self.ajustes_usuarios.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_usuarios, self.guardar_usuarios, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_usuarios.mainloop()
+    def guardar_usuarios(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_usuarios.destroy()
+
+    def cuentas(self):
+        self.ajustes_cuentas = CTk()
+        self.ajustes_cuentas.title("Ajustes Cuentas")
+        self.ajustes_cuentas.geometry("800x600+660+210")
+        self.ajustes_cuentas.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_cuentas, self.guardar_cuentas, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_cuentas.mainloop()
+    def guardar_cuentas(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_cuentas.destroy()
+
+    
+    def cajeros_automaticos(self):
+        self.ajustes_cajeros_automaticos = CTk()
+        self.ajustes_cajeros_automaticos.title("Ajustes Cajeros Automaticos")
+        self.ajustes_cajeros_automaticos.geometry("800x600+660+210")
+        self.ajustes_cajeros_automaticos.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_cajeros_automaticos, self.guardar_cajeros_automaticos, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_cajeros_automaticos.mainloop()
+    def guardar_cajeros_automaticos(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_cajeros_automaticos.destroy()
+
+
+    def temporadas(self):
+        self.ajustes_temporadas = CTk()
+        self.ajustes_temporadas.title("Ajustes Temporadas")
+        self.ajustes_temporadas.geometry("800x600+660+210")
+        self.ajustes_temporadas.configure(bg="#FFFFFF")
+        boton_guardar = LtkButtonFill(self.ajustes_temporadas, self.guardar_temporadas, "Guardar Y Salir De Ajustes")
+        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+        self.ajustes_temporadas.mainloop()
+    def guardar_temporadas(self):
+        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
+        self.ajustes_temporadas.destroy()
+
+
+Banco()
