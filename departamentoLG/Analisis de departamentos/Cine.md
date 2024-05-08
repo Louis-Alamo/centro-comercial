@@ -93,3 +93,11 @@ Cada punto de espera (taquillas, dulcería, baños) se representará mediante un
 - **Ingresos por venta de entradas:** Ingresos totales generados por la venta de entradas.
 - **Ingresos por venta de alimentos y bebidas:** Ingresos totales generados por la venta de alimentos y bebidas.
 - **Satisfacción del cliente:** Nivel de satisfacción de los clientes con el servicio recibido.
+
+
+otros datos:
+-Sueldo de empleados
+-costo de limpieza(varian segun el tipo de limpieza)
+-costo de mantenimiento de equipo de proyeccion. (Varia en funcion del tipo de equipo)
+-Tiempo de limpieza (varian segun el tipo de limpieza)
+

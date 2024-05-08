@@ -4,6 +4,7 @@ from tkinter import messagebox
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
+from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 
@@ -14,8 +15,8 @@ class ConfiguracionCine:
 
     def __init__(self):
 
-        self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de alimentos y bebidas", "Dias de promocion", "Duracion de peliculas", "Eventos especiales", "Fallos en el sistema", "Tiempo de limpieza entre peliculas", "Tipo de visita", "Uso de baño", "Clasificacion de peliculas"]
-        self.nombre_datos_historicos_espera = ["Espera baño", "Espera en la dulceria", "Espera en sala de cine", "Espera en la taquilla"]
+        self.nombre_datos_historicos_probabilidades = ["Atraccion de clientes", "Compra de alimentos y bebidas", "Dias de promocion", "Duracion de peliculas", "Eventos especiales",  "Tipo de visita", "Uso de baño", "Clasificacion de peliculas"]
+        self.nombre_datos_historicos_espera = ["Espera baño", "Espera en la dulceria", "Espera en la taquilla"]
         self.nombre_datos_precios = [ "Precio peliculas", "Precios alimentos y bebidas", "Descuentos promocion", "Precio baño"]
 
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
@@ -102,6 +103,7 @@ class ConfiguracionCine:
             widget.destroy()
 
     def crear_botones_clasificacion_caracteristicas_cine(self):
+
         self.boton_caracteristicas_principales = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_caracteristicas_cine(), nombre_boton="Opciones generales")
         self.boton_caracteristicas_principales.grid(row=0, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
 
@@ -123,21 +125,25 @@ class ConfiguracionCine:
 
     def crear_componentes_caracteristicas_cine(self):
 
+
+        #Variables
+        self.variable_opcion_eventos_especiales_cine = IntVar()
+        self.variable_opcion_permitir_mascotas_cine = IntVar()
+
+
+        self.lista_opciones_probabilidades_caracteristicas_cine = ["Atraccion de clientes", "Dias de promocion", "Eventos especiales", "Tipo de visita"]
+        self.lista_opciones_precios_caracteristicas_cine = ["Precio de mantenimiento del cine", "Descuentos de promocion"]
+
+
         self.resetear_frame_caracteristicas()
 
         self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Caracteristicas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=2, pady=(5, 10))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
 
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-
-        #Cantidad de empleados
-        self.etiqueta_cantidad_empleados = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados:")
-        self.etiqueta_cantidad_empleados.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados = LtkEntryLine(self.frame_caracteristicas)
-        self.entry_cantidad_empleados.grid(row=2, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
         self.etiqueta_capacidad_cine = LtkLabel(self.frame_caracteristicas, texto="Capacidad del cine:")
         self.etiqueta_capacidad_cine.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -152,6 +158,37 @@ class ConfiguracionCine:
         self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
         self.entry_horario_cierre.grid(row=4, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
 
+
+        #Datos historicos
+
+        #Probabilidades
+        self.etiqueta_opcion_datos_historicos_probabilidades_cine = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de probabilidades:")
+        self.etiqueta_opcion_datos_historicos_probabilidades_cine.grid(row=5, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_historicos_probabilidades_cine = LtkComboBoxLine(self.frame_caracteristicas, self.lista_opciones_probabilidades_caracteristicas_cine)
+        self.opcion_datos_historicos_probabilidades_cine.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_historicos_probabilidades_cine = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_probabilidades_cine(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_historicos_probabilidades_cine.grid(row=5, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+        #Precios
+        self.opcion_datos_precios_cine = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de precios:")
+        self.opcion_datos_precios_cine.grid(row=6, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_precios_cine = LtkComboBoxLine(self.frame_caracteristicas, self.lista_opciones_precios_caracteristicas_cine)
+        self.opcion_datos_precios_cine.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_cargar_datos_precios_cine = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_precios_cine.grid(row=6, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+
+        #Opciones
+        self.opcion_eventos_especiales_cine = LtkCheckBoxFill(self.frame_caracteristicas, texto="Eventos especiales", variable=self.variable_opcion_eventos_especiales_cine)
+        self.opcion_eventos_especiales_cine.grid(row=6, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_permitir_mascotas = LtkCheckBoxFill(self.frame_caracteristicas, texto="Permitir mascotas", variable=self.variable_opcion_permitir_mascotas_cine)
+        self.opcion_permitir_mascotas.grid(row=7, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
     def crear_componentes_edificios_internos(self):
 
         self.crear_componentes_salas_cine()
@@ -159,7 +196,15 @@ class ConfiguracionCine:
         self.crear_componentes_taquilla()
         self.crear_componentes_baños()
 
+
+
     def crear_componentes_salas_cine(self):
+
+        self.opciones_lineas_espera_salas = ["Espera en sala de cine", "Tiempo de limpieza entre peliculas", "Tiempo de salida de sala", "Tiempo de entrada de sala"]
+        self.opciones_probabilidades_salas = ["Fallos en el sistema de sala"]
+
+
+
 
         self.resetear_frame_caracteristicas()
 
@@ -174,7 +219,6 @@ class ConfiguracionCine:
         self.entry_cantidad_salas = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_salas.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-
         self.etiqueta_capacidad_salas = LtkLabel(self.frame_caracteristicas, texto="Capacidad de las salas:")
         self.etiqueta_capacidad_salas.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
         self.entry_capacidad_salas = LtkEntryLine(self.frame_caracteristicas)
@@ -184,6 +228,38 @@ class ConfiguracionCine:
         self.etiqueta_cantidad_empleados_sala.grid(row=3, column=0, padx=(10,10), pady=(5, 10), sticky="w")
         self.entry_cantidad_empleados_sala = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_sala.grid(row=3, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
+
+        self.etiqueta_sueldo_empleados_sala = LtkLabel(self.frame_caracteristicas, texto="Sueldo de empleados por sala:")
+        self.etiqueta_sueldo_empleados_sala.grid(row=4, column=0, padx=(10,10), pady=(5, 10), sticky="w")
+        self.entry_sueldo_empleados_sala = LtkEntryLine(self.frame_caracteristicas)
+        self.entry_sueldo_empleados_sala.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
+
+
+
+        #Datos historicos
+
+        #Lineas de espera
+        self.etiqueta_opcion_datos_espera_sala = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de espera:")
+        self.etiqueta_opcion_datos_espera_sala.grid(row=5, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_espera_sala = LtkComboBoxLine(self.frame_caracteristicas, self.opciones_lineas_espera_salas)
+        self.opcion_datos_espera_sala.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_datos_espera_sala = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_espera_sala(), nombre_boton="Cargar datos")
+        self.boton_datos_espera_sala.grid(row=5, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+        #Probabilidades
+        self.etiqueta_opcion_datos_probabilidades_sala = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de probabilidades:")
+        self.etiqueta_opcion_datos_probabilidades_sala.grid(row=6, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_probabilidades_sala = LtkComboBoxLine(self.frame_caracteristicas, self.opciones_probabilidades_salas)
+        self.opcion_datos_probabilidades_sala.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.boton_datos_probabilidades_sala = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_probabilidades_sala(), nombre_boton="Cargar datos")
+        self.boton_datos_probabilidades_sala.grid(row=6, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
+
+
 
     def crear_componentes_dulceria(self):
 
@@ -241,7 +317,7 @@ class ConfiguracionCine:
         self.entry_cantidad_baños = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_baños.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.etiqueta_capacidad_baños = LtkLabel(self.frame_banos, texto="Capacidad de los baños:")
+        self.etiqueta_capacidad_baños = LtkLabel(self.frame_caracteristicas, texto="Capacidad de los baños:")
         self.etiqueta_capacidad_baños.grid(row=2, column=0, padx=(10,10), pady=(5, 2), sticky="w")
         self.entry_capacidad_baños = LtkEntryLine(self.frame_caracteristicas)
         self.entry_capacidad_baños.grid(row=2, column=1, padx=(5,10), pady=(5, 15), sticky="nsew",columnspan=2)
@@ -388,6 +464,21 @@ class ConfiguracionCine:
         self.ventana_emergente.mainloop()
 
 
-ConfiguracionCine()
+
+    #Carga de datos de datos historicos
 
 
+    #Cine en general
+    def cargar_datos_precios_cine(self):
+        pass
+
+    def cargar_datos_probabilidades_cine(self):
+        pass
+
+
+    #Salas de cine
+    def cargar_datos_espera_sala(self):
+        pass
+
+    def cargar_datos_probabilidades_sala(self):
+        pass
