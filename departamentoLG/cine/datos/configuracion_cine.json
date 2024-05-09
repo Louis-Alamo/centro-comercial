@@ -1,6 +1,6 @@
 {
     "General": {
-        "Capacidad del cine": 100,
+        "Capacidad del cine": 20,
         "Horario": {
             "Entrada": "08:00",
             "Cierre": "22:00"
