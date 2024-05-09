@@ -11,6 +11,7 @@ import os
 
 class Gimnasio:
     def __init__(self):
+        self.lista_personal=[[3, 3, 3, 3, 3]]
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("900x600+350+100")
@@ -67,6 +68,10 @@ class Gimnasio:
         self.frame_caracteristicas.columnconfigure(0, weight=1)
 
 
+        self.personal()
+        self.costos()
+
+
         # Frame para el botón de guardar
         frame_guardar = CTkFrame(self.ventana)
         frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
@@ -83,8 +88,11 @@ class Gimnasio:
 
     def guardar_informacion(self):
         informacion={
-            "cantidad_empleados": self.cantidad_empleados.get()
-            # Agregar más campos según los datos recolectados
+            "cantidad_recepcionistas": self.lista_personal[0][0],
+            "cantidad_personal_limpieza": self.lista_personal[0][1],	
+            "cantidad_gerentes": self.lista_personal[0][2],
+            "cantidad_entrenadores": self.lista_personal[0][3],
+            "cantidad_personal_tecnico": self.lista_personal[0][4]
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -98,35 +106,63 @@ class Gimnasio:
 
     def resetear_frame_caracteristicas(self):
         for widget in self.frame_caracteristicas.winfo_children():
-            widget.destroy()
+            widget.grid_remove()
     
-
     def personal(self):
-
         self.resetear_frame_caracteristicas()
-        
-        self.cantidad_empleados=IntVar()
-
+    
         self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Personal")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        self.label_cantidad_empleados = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Empleados:")
-        self.label_cantidad_empleados.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_empleados = LtkEntryLine(self.frame_caracteristicas)
-        self.cantidad_empleados.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_recepcion = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Recepcionistas:")
+        self.etiqueta_recepcion.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_recepcionistas = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_recepcionistas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_personal_limpieza = LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal De limpieza:")
+        self.etiqueta_personal_limpieza.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_personal_limpieza = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_personal_limpieza.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_gerentes = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Gerentes:")
+        self.etiqueta_gerentes.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_gerentes = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_gerentes.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        
+        self.etiqueta_entrenadores = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Entrenadores:")
+        self.etiqueta_entrenadores.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_entrenadores = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_entrenadores.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal de Tecnico:")
+        self.etiqueta_personal_tecnico.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_personal_tecnico = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_personal_tecnico.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
 
-        self.etiqueta_horario = LtkLabel(self.frame_caracteristicas, texto="Horario:")
-        self.etiqueta_horario.grid(row=4, column=0,padx=(10,10), pady=(5, 10), sticky="w")
-        self.entry_horario_inicio = LtkEntryLine(self.frame_caracteristicas, "Hora inicio")
-        self.entry_horario_inicio.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
-        self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
-        self.entry_horario_cierre.grid(row=4, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
 
-    
+        
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+    def guardar_ajustes(self):
+        cantidad_recepcionistas = self.cantidad_recepcionistas.get()
+        cantidad_personal_limpieza = self.cantidad_personal_limpieza.get()
+        cantidad_gerentes = self.cantidad_gerentes.get()
+        cantidad_entrenadores = self.cantidad_entrenadores.get()
+        cantidad_personal_tecnico = self.cantidad_personal_tecnico.get()
+
+        self.lista_personal.clear()
+        self.lista_personal.append([int(cantidad_recepcionistas), 
+                                    int(cantidad_personal_limpieza), 
+                                    int(cantidad_gerentes), 
+                                    int(cantidad_entrenadores), 
+                                    int(cantidad_personal_tecnico)])
+        
+
 
     def costos(self):
         self.resetear_frame_caracteristicas()
@@ -134,19 +170,14 @@ class Gimnasio:
         self.etiqueta_costos = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Costos")
         self.etiqueta_costos.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_costos.grid(row=0, column=0, columnspan=3, pady=(5, 10))
-
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-
-
-        self.label_cantidad_empleados = LtkLabel(self.frame_caracteristicas, texto="Costo:")
-        self.label_cantidad_empleados.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_empleados = LtkEntryLine(self.frame_caracteristicas)
-        self.cantidad_empleados.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
+        self.etiqueta_recepsion = LtkLabel(self.frame_caracteristicas, texto="Costo:")
+        self.etiqueta_recepsion.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_recepcionistas = LtkEntryLine(self.frame_caracteristicas)
+        self.cantidad_recepcionistas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_horario = LtkLabel(self.frame_caracteristicas, texto="Horario:")
         self.etiqueta_horario.grid(row=4, column=0,padx=(10,10), pady=(5, 10), sticky="w")
-
         self.entry_horario_inicio = LtkEntryLine(self.frame_caracteristicas, "Hora inicio")
         self.entry_horario_inicio.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
         self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")

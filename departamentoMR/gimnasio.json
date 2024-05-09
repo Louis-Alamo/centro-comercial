@@ -1,3 +1,7 @@
 {
-    "cantidad_empleados": "1456"
+    "cantidad_recepcionistas": 9,
+    "cantidad_personal_limpieza": 9,
+    "cantidad_gerentes": 9,
+    "cantidad_entrenadores": 9,
+    "cantidad_personal_tecnico": 9
 }
