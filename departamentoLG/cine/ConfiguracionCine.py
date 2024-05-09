@@ -25,16 +25,6 @@ class ConfiguracionCine:
         self.ventana.grid_columnconfigure(1, weight=1)
         self.ventana.grid_rowconfigure(1, weight=1)
 
-
-
-        # self.ventana.resizable(False, False)
-        #self.ventana.configure(fg_color="#FFFFFF")
-
-
-
-
-
-
         self.crear_componentes()
 
         self.ventana.mainloop()
@@ -62,28 +52,68 @@ class ConfiguracionCine:
         self.etiqueta_titulo_principal.columnconfigure(0,weight=1)  # Para que la etiqueta se expanda solo horizontalmente y esté centrada
 
 
+        self.inicializar_componentes()
+
+
+        self.boton_cerrar = LtkButtonFill(self.ventana,funcion=lambda: self.ventana.destroy(), nombre_boton="Cerrar")
+        self.boton_cerrar.grid(row=2, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="w")
+
+        self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
+        self.boton_guardar.grid(row=2, column=1, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
+
+
         
         # self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
         # self.boton_guardar.grid(row=4, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
 
     def guardar_informacion(self):
-        informacion = {
-            "cantidad_empleados": int(17 if self.entry_cantidad_empleados.get() == "" else self.entry_cantidad_empleados.get()),
-            "capacidad_cine": int(100 if self.entry_capacidad_cine.get() == "" else self.entry_capacidad_cine.get()),
-            "horario_inicio": str("08:00" if self.entry_horario_inicio.get() == "" else self.entry_horario_inicio.get()),
-            "horario_cierre": str("22:00" if self.entry_horario_cierre.get() == "" else self.entry_horario_cierre.get()),
-            "cantidad_salas": int(5 if self.entry_cantidad_salas.get() == "" else self.entry_cantidad_salas.get()),
-            "capacidad_salas": int(50 if self.entry_capacidad_salas.get() == "" else self.entry_capacidad_salas.get()),
-            "cantidad_empleados_sala": int(2 if self.entry_cantidad_empleados_sala.get() == "" else self.entry_cantidad_empleados_sala.get()),
-            "cantidad_empleados_dulceria": int(3 if self.entry_cantidad_empleados_dulceria.get() == "" else self.entry_cantidad_empleados_dulceria.get()),
-            "cantidad_cajas_dulceria": int(3 if self.entry_cantidad_cajas_dulceria.get() == "" else self.entry_cantidad_cajas_dulceria.get()),
-            "cantidad_empleados_taquilla": int(1 if self.entry_cantidad_empleados_taquilla.get() == "" else self.entry_cantidad_empleados_taquilla.get()),
-            "cantidad_cajas_taquilla": int(5 if self.entry_cantidad_cajas_taquilla.get() == "" else self.entry_cantidad_cajas_taquilla.get()),
-            "cantidad_baños": int(2 if self.entry_cantidad_baños.get() == "" else self.entry_cantidad_baños.get()),
-            "capacidad_baños": int(5 if self.entry_capacidad_baños.get() == "" else self.entry_capacidad_baños.get())
+
+        general = {
+            "Capacidad del cine": int(100 if self.entry_capacidad_cine.get() == "" else self.entry_capacidad_cine.get()),
+            "Horario": {
+                "Entrada": "08:00" if self.entry_horario_inicio.get() == "" else self.entry_horario_inicio.get(),
+                "Cierre": "22:00" if self.entry_horario_cierre.get() == "" else self.entry_horario_cierre.get()
+            },
+            "Eventos especiales": self.variable_opcion_eventos_especiales_cine.get(),
+            "Permitir mascotas": self.variable_opcion_permitir_mascotas_cine.get(),
         }
 
-        informacion_json = json.dumps(informacion, indent=4)
+
+        salas_de_cine = {
+            "Cantidad de salas": int(5 if self.entry_cantidad_salas.get() == "" else self.entry_cantidad_salas.get()),
+            "Capacidad de las salas": int(100 if self.entry_capacidad_salas.get() == "" else self.entry_capacidad_salas.get()),
+            "Cantidad de empleados por sala": int(2 if self.entry_cantidad_empleados_sala.get() == "" else self.entry_cantidad_empleados_sala.get()),
+            "Sueldo de empleados por sala": int(1000 if self.entry_sueldo_empleados_sala.get() == "" else self.entry_sueldo_empleados_sala.get())
+        }
+
+        dulceria = {
+            "Cantidad de cajas": int(5 if self.entry_cantidad_cajas_dulceria.get() == "" else self.entry_cantidad_cajas_dulceria.get()),
+            "Sueldo de empleados": int(1000 if self.entry_sueldo_empleados_cine.get() == "" else self.entry_sueldo_empleados_cine.get()),
+            "Rendimiento de empleados": int(100 if self.entry_rendimiento_de_empleados_dulceria.get() == "" else self.entry_rendimiento_de_empleados_dulceria.get()),
+            "Probabilidad de compra de productos": int(100 if self.entry_probabilidad_compra_dulceria.get() == "" else self.entry_probabilidad_compra_dulceria.get())
+        }
+
+        taquilla = {
+            "Cantidad de cajas": int(5 if self.entry_cantidad_cajas_taquilla.get() == "" else self.entry_cantidad_cajas_taquilla.get()),
+            "Sueldo de empleados": int(1000 if self.entry_sueldo_empleado_taquilla.get() == "" else self.entry_sueldo_empleado_taquilla.get()),
+            "Rendimiento de empleados": int(100 if self.entry_rendimiento_empleados_taquilla.get() == "" else self.entry_rendimiento_empleados_taquilla.get())
+        }
+
+        baños = {
+            "Cantidad de baños": int(5 if self.entry_cantidad_baños.get() == "" else self.entry_cantidad_baños.get()),
+            "Capacidad de los baños": int(100 if self.entry_capacidad_baños.get() == "" else self.entry_capacidad_baños.get()),
+            "Precio de entrada": int(5 if self.entry_precio_entrada_baños.get() == "" else self.entry_precio_entrada_baños.get())
+        }
+
+        configuracion_cine ={
+            "General": general,
+            "Salas de cine": salas_de_cine,
+            "Dulceria": dulceria,
+            "Taquilla": taquilla,
+            "Baños": baños
+        }
+
+        informacion_json = json.dumps(configuracion_cine, indent=4)
 
         dir_path = os.path.dirname(os.path.abspath(__file__))
         config_path = os.path.join(dir_path, r'datos\configuracion_cine.json')
@@ -96,7 +126,14 @@ class ConfiguracionCine:
 
     def resetear_frame_caracteristicas(self):
         for widget in self.frame_caracteristicas.winfo_children():
-            widget.destroy()
+            widget.grid_remove()
+
+    def inicializar_componentes(self):
+        self.crear_componentes_caracteristicas_cine()
+        self.crear_componentes_salas_cine()
+        self.crear_componentes_dulceria()
+        self.crear_componentes_taquilla()
+        self.crear_componentes_baños()
 
     def crear_botones_clasificacion_caracteristicas_cine(self):
 
@@ -123,11 +160,11 @@ class ConfiguracionCine:
         self.variable_opcion_permitir_mascotas_cine = IntVar()
 
 
-        self.lista_opciones_probabilidades_caracteristicas_cine = ["Atraccion de clientes", "Dias de promocion", "Eventos especiales", "Tipo de visita"]
+        self.lista_opciones_probabilidades_caracteristicas_cine = ["Atraccion de clientes", "Dias de promocion", "Eventos especiales", "Tipo de visita", "Temporadas de afluencia"]
         self.lista_opciones_precios_caracteristicas_cine = ["Precio de mantenimiento del cine", "Descuentos de promocion"]
 
-
         self.resetear_frame_caracteristicas()
+
 
         self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Caracteristicas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
@@ -170,21 +207,22 @@ class ConfiguracionCine:
         self.opcion_datos_precios_cine = LtkComboBoxLine(self.frame_caracteristicas, self.lista_opciones_precios_caracteristicas_cine)
         self.opcion_datos_precios_cine.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_datos_precios_cine = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar(), nombre_boton="Cargar datos")
+        self.boton_cargar_datos_precios_cine = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_precios_cine(), nombre_boton="Cargar datos")
         self.boton_cargar_datos_precios_cine.grid(row=6, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
 
         #Opciones
         self.opcion_eventos_especiales_cine = LtkCheckBoxFill(self.frame_caracteristicas, texto="Eventos especiales", variable=self.variable_opcion_eventos_especiales_cine)
-        self.opcion_eventos_especiales_cine.grid(row=6, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+        self.opcion_eventos_especiales_cine.grid(row=7, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
         self.opcion_permitir_mascotas = LtkCheckBoxFill(self.frame_caracteristicas, texto="Permitir mascotas", variable=self.variable_opcion_permitir_mascotas_cine)
-        self.opcion_permitir_mascotas.grid(row=7, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+        self.opcion_permitir_mascotas.grid(row=8, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
     def crear_componentes_salas_cine(self):
 
         self.opciones_lineas_espera_salas = ["Espera en sala de cine", "Tiempo de limpieza entre peliculas", "Tiempo de salida de sala", "Tiempo de entrada de sala"]
         self.opciones_probabilidades_salas = ["Fallos en el sistema de sala"]
+        self.opcion_datos_costos_sala = ["Costo de limpieza de la sala", "Costo de operacion de sala", "Costo de mantenimiento de sala"]
 
 
         self.resetear_frame_caracteristicas()
@@ -240,7 +278,19 @@ class ConfiguracionCine:
         self.boton_datos_probabilidades_sala = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_probabilidades_sala(), nombre_boton="Cargar datos")
         self.boton_datos_probabilidades_sala.grid(row=6, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
+        #Costos
+        self.etiqueta_opcion_datos_costos_sala = LtkLabel(self.frame_caracteristicas, texto="Seleccionar datos de costos:")
+        self.etiqueta_opcion_datos_costos_sala.grid(row=7, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.opcion_datos_costos_sala_cine = LtkComboBoxLine(self.frame_caracteristicas, self.opcion_datos_costos_sala)
+        self.opcion_datos_costos_sala_cine.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+        self.boton_datos_costos_sala = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_costos_sala(), nombre_boton="Cargar datos")
+        self.boton_datos_costos_sala.grid(row=7, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
+
     def crear_componentes_dulceria(self):
+
 
         self.lista_opciones_probabilidades_dulceria = ["Demanda de productos", "Fallos en el sistema de dulceria", "Tipo de productos (inventario)", ]
         self.lista_opciones_tiempo_espera_dulceria = ["Tiempo de servicio de dulceria", "Tiempo de espera en la dulceria"]
@@ -469,6 +519,10 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
             self.crear_ventana_emergente("Tipo de visita", path)
 
+        elif self.opcion_datos_historicos_probabilidades_cine.get() == "Temporadas de afluencia":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Temporadas de afluencia")
+            self.crear_ventana_emergente("Tipo de peliculas", path)
+
 
     #Salas de cine
     def cargar_datos_espera_sala(self):
@@ -495,6 +549,19 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Fallos en el sistema de sala")
             self.crear_ventana_emergente("Fallos en el sistema de sala", path)
 
+    def cargar_datos_costos_sala(self):
+
+        if self.opcion_datos_costos_sala_cine.get() == "Costo de mantenimiento de sala":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de sala")
+            self.crear_ventana_emergente("Costo de mantenimiento de sala", path)
+
+        elif self.opcion_datos_costos_sala_cine.get() == "Costo de operacion de sala":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de operacion de sala")
+            self.crear_ventana_emergente("Costo de operacion de sala", path)
+
+        elif self.opcion_datos_costos_sala_cine.get() == "Costo de limpieza de la sala":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de limpieza de sala")
+            self.crear_ventana_emergente("Costo de limpieza de sala", path)
 
     #Dulceria
     def cargar_datos_probabilidades_dulceria(self):
@@ -514,11 +581,11 @@ class ConfiguracionCine:
     def cargar_datos_tiempo_espera_dulceria(self):
 
         if self.opcion_datos_tiempo_espera_dulceria.get() == "Tiempo de servicio de dulceria":
-            path = os.path.join(self.ruta_ventana, "datos\\tiempos de espera\\Tiempo de servicio de dulceria")
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de servicio de dulceria")
             self.crear_ventana_emergente("Tiempo de servicio de dulceria", path)
 
         elif self.opcion_datos_tiempo_espera_dulceria.get() == "Tiempo de espera en la dulceria":
-            path = os.path.join(self.ruta_ventana, "datos\\tiempos de espera\\Tiempo de espera en la dulceria")
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera en la dulceria")
             self.crear_ventana_emergente("Tiempo de espera en la dulceria", path)
 
     def cargar_datos_precios_dulceria(self):
@@ -554,11 +621,11 @@ class ConfiguracionCine:
     def cargar_datos_tiempo_espera_taquilla(self):
 
         if self.opcion_datos_tiempo_espera_taquilla.get() == "Tiempo de espera en la taquilla":
-            path = os.path.join(self.ruta_ventana, "datos\\tiempos de espera\\Tiempo de espera en la taquilla")
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera en la taquilla")
             self.crear_ventana_emergente("Tiempo de espera en la taquilla", path)
 
         elif self.opcion_datos_tiempo_espera_taquilla.get() == "Tiempo de servicio en la taquilla":
-            path = os.path.join(self.ruta_ventana, "datos\\tiempos de espera\\Tiempo de servicio en la taquilla")
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de servicio en la taquilla")
             self.crear_ventana_emergente("Tiempo de servicio en la taquilla", path)
 
     def cargar_datos_precios_taquilla(self):
@@ -568,29 +635,29 @@ class ConfiguracionCine:
             self.crear_ventana_emergente("Precios de entradas", path)
 
         elif self.opcion_datos_precios_taquilla.get() == "Descuentos por promocion o dias especiales":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion o dias especiales")
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion o dias especiales taquilla")
             self.crear_ventana_emergente("Descuentos por promocion o dias especiales", path)
 
         elif self.opcion_datos_precios_taquilla.get() == "Costos de mantenimieto y limpieza":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costos de mantenimieto y limpieza")
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costos de mantenimieto y limpieza taquilla")
             self.crear_ventana_emergente("Costos de mantenimieto y limpieza", path)
 
     def cargar_datos_configuracion_peliculas(self):
 
         if self.opcion_datos_configuracion_peliculas.get() == "Clasificacion de peliculas":
-            path = os.path.join(self.ruta_ventana, "datos\\configuracion peliculas\\Clasificacion de peliculas")
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Clasificacion de peliculas")
             self.crear_ventana_emergente("Clasificacion de peliculas", path)
 
         elif self.opcion_datos_configuracion_peliculas.get() == "Duracion de peliculas":
-            path = os.path.join(self.ruta_ventana, "datos\\configuracion peliculas\\Duracion de peliculas")
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Duracion de peliculas")
             self.crear_ventana_emergente("Duracion de peliculas", path)
 
         elif self.opcion_datos_configuracion_peliculas.get() == "Tipo de peliculas":
-            path = os.path.join(self.ruta_ventana, "datos\\configuracion peliculas\\Tipo de peliculas")
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de peliculas")
             self.crear_ventana_emergente("Tipo de peliculas", path)
 
         elif self.opcion_datos_configuracion_peliculas.get() == "Precio de peliculas":
-            path = os.path.join(self.ruta_ventana, "datos\\configuracion peliculas\\Precio de peliculas")
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio de peliculas")
             self.crear_ventana_emergente("Precio de peliculas", path)
 
 
@@ -618,4 +685,4 @@ class ConfiguracionCine:
             self.crear_ventana_emergente("Costos de mantenimineto", path)
 
 
-ConfiguracionCine()
+
