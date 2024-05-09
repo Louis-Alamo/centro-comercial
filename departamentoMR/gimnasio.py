@@ -12,7 +12,7 @@ import os
 class Gimnasio:
     def __init__(self):
         self.lista_personal=[[3, 3, 3, 3, 3]]
-        self.lista_sueldos=[[4000]]
+        self.lista_sueldos=[[4000, 3000]]
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("900x600+350+100")
@@ -94,7 +94,8 @@ class Gimnasio:
             "cantidad_gerentes": self.lista_personal[0][2],
             "cantidad_entrenadores": self.lista_personal[0][3],
             "cantidad_personal_tecnico": self.lista_personal[0][4],
-            "cantidad_sueldo_gerente": self.lista_sueldos[0][0],
+            "sueldo_mensual_gerente": self.lista_sueldos[0][0],
+            "sueldo_mensual_entrenador": self.lista_sueldos[0][1]
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -177,10 +178,13 @@ class Gimnasio:
 
         self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Para El Gerente:")
         self.etiqueta_sueldo_gerente.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_sueldo_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
-        self.cantidad_sueldo_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.sueldo_mensual_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
+        self.sueldo_mensual_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-
+        self.etiqueta_sueldo_entrenador = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Entrenador:")
+        self.etiqueta_sueldo_entrenador.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.sueldo_mensual_entrenador = LtkEntryLine(self.frame_caracteristicas, "3000")
+        self.sueldo_mensual_entrenador.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
@@ -188,10 +192,13 @@ class Gimnasio:
 
 
     def guardar_ajustes1(self):
-        cantidad_sueldo_gerente=self.cantidad_sueldo_gerente.get()
+        sueldo_mensual_gerente=self.sueldo_mensual_gerente.get()
+        sueldo_mensual_entrenador=self.sueldo_mensual_entrenador.get()
 
         self.lista_sueldos.clear()
-        self.lista_sueldos.append([int(cantidad_sueldo_gerente)])
+        self.lista_sueldos.append([int(sueldo_mensual_gerente),
+                                    int(sueldo_mensual_entrenador)
+                                   ])
 
 
 
