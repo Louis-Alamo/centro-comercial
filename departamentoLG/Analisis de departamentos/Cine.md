@@ -95,9 +95,38 @@ Cada punto de espera (taquillas, dulcería, baños) se representará mediante un
 - **Satisfacción del cliente:** Nivel de satisfacción de los clientes con el servicio recibido.
 
 
-otros datos:
--Sueldo de empleados
--costo de limpieza(varian segun el tipo de limpieza)
--costo de mantenimiento de equipo de proyeccion. (Varia en funcion del tipo de equipo)
--Tiempo de limpieza (varian segun el tipo de limpieza)
+Dulceeria:
+Demanda de productos.|
+Tipo de productos.|
+Precios|
+Tiempo de servicio|
+sueldo de los empleados|
+descuento por promocion o dias especiales|
+costos de operacion|
+Inventario de productos|
+costo mantenimineto y limpieza|
+Tiempo de espera en la fila|
+Rendimiento de los empleados(porcentaje)|
+Horarios de funcionamiento
 
+
+Taquilla:
+Demanda de entradas.
+Precio de las entradas.
+Sueldo de los empleados.
+Tiempo de servicio.
+Tiempo de espera en la fila.
+Rendimiento de los empleados(porcentaje).
+Descuentos por promocion o dias especiales.
+Costos de operacion.
+Costos de mantenimiento y limpieza.
+Numero de cajeros
+
+
+Baños:
+Demanda de baños.
+Tiempo de espera en la fila.
+Capacidad de los baños.
+Costos de mantenimiento y limpieza.
+Numero de baños.
+Tiempo de espera de uso.

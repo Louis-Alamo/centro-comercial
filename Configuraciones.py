@@ -5,7 +5,7 @@ from componentes_graficos.LtkButton import LtkButtonFill
 from componentes_graficos.LtkLabel import LtkLabel
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
-from departamentoLG.cine.frames_configuraciones.ConfiguracionCine import ConfiguracionCine
+from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
 from departamentoLG.jugueteria.ConfiguracionJugueteria import Configuracion_jugueteria
 from departamentoLG.libreria.ConfiguracionLibreria import ConfiguracionLibreria
 from departamentoLG.electronica.ConfiguracionElectronica import ConfiguracionElectronica

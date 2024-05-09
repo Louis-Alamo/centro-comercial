@@ -1,5 +1,3 @@
-Tipo,Probabilidad
-Comprar entradas,0.5
-Comprar alimentos,0.3
-Usar el baño,0.1
-Otros,0.1
+Tipo de visita,Probabilidad
+Uso baños,0.1
+Ver una película,0.9
