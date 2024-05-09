@@ -728,6 +728,4 @@ class ConfiguracionCine:
         messagebox.showinfo("Se guardo", "Se guardo la configuracion local ")
 
 
-ConfiguracionCine()
-
 

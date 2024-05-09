@@ -217,6 +217,5 @@ class Gimnasio:
     def temporadas(self):
         pass
 
-Gimnasio()
-      
+
 
