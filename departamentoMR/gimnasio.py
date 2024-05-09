@@ -12,6 +12,7 @@ import os
 class Gimnasio:
     def __init__(self):
         self.lista_personal=[[3, 3, 3, 3, 3]]
+        self.lista_sueldos=[[4000]]
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("900x600+350+100")
@@ -42,8 +43,8 @@ class Gimnasio:
 
         boton_opciones=LtkButtonLine(frame_opciones, self.personal, "Personal del GYM")
         boton_opciones.grid(row=0, column=0, padx=(5,5), pady=(5, 5))
-        boton_costos=LtkButtonLine(frame_opciones, self.costos, "Costos")
-        boton_costos.grid(row=1, column=0, padx=(5,5), pady=(5, 5))
+        boton_sueldo=LtkButtonLine(frame_opciones, self.sueldo, "Sueldo")
+        boton_sueldo.grid(row=1, column=0, padx=(5,5), pady=(5, 5))
         boton_horarios=LtkButtonLine(frame_opciones, self.horarios, "Horarios")
         boton_horarios.grid(row=2, column=0, padx=(5,5), pady=(5, 5))
         boton_usuarios=LtkButtonLine(frame_opciones, self.usuarios, "Usuarios")
@@ -69,7 +70,7 @@ class Gimnasio:
 
 
         self.personal()
-        self.costos()
+        self.sueldo()
 
 
         # Frame para el botón de guardar
@@ -92,7 +93,8 @@ class Gimnasio:
             "cantidad_personal_limpieza": self.lista_personal[0][1],	
             "cantidad_gerentes": self.lista_personal[0][2],
             "cantidad_entrenadores": self.lista_personal[0][3],
-            "cantidad_personal_tecnico": self.lista_personal[0][4]
+            "cantidad_personal_tecnico": self.lista_personal[0][4],
+            "cantidad_sueldo_gerente": self.lista_sueldos[0][0],
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -164,24 +166,33 @@ class Gimnasio:
         
 
 
-    def costos(self):
+    def sueldo(self):
         self.resetear_frame_caracteristicas()
-
-        self.etiqueta_costos = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Costos")
-        self.etiqueta_costos.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_costos.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+    
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Sueldo")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_recepsion = LtkLabel(self.frame_caracteristicas, texto="Costo:")
-        self.etiqueta_recepsion.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_recepcionistas = LtkEntryLine(self.frame_caracteristicas)
-        self.cantidad_recepcionistas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario = LtkLabel(self.frame_caracteristicas, texto="Horario:")
-        self.etiqueta_horario.grid(row=4, column=0,padx=(10,10), pady=(5, 10), sticky="w")
-        self.entry_horario_inicio = LtkEntryLine(self.frame_caracteristicas, "Hora inicio")
-        self.entry_horario_inicio.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
-        self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
-        self.entry_horario_cierre.grid(row=4, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
+
+        self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Para El Gerente:")
+        self.etiqueta_sueldo_gerente.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_sueldo_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
+        self.cantidad_sueldo_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+
+        
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+
+    def guardar_ajustes1(self):
+        cantidad_sueldo_gerente=self.cantidad_sueldo_gerente.get()
+
+        self.lista_sueldos.clear()
+        self.lista_sueldos.append([int(cantidad_sueldo_gerente)])
+
 
 
     def horarios(self):
