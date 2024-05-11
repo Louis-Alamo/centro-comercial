@@ -1,203 +1,276 @@
 from customtkinter import *
-from tkinter import messagebox
-
-from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from tkinter import messagebox, simpledialog
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
+from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
 from componentes_graficos.LtkComboBox import LtkComboBoxLine
 from componentes_graficos.LtkTreeView import LtkFileInputTreeView
-
 import json
 import os
 
 class Supermercado:
     def __init__(self):
-        ventana = CTk()
-        ventana.title("Configuracion Supermercado")
-        ventana.geometry("1200x800+350+100")
-        ventana.configure(bg="#FFFFFF")
-
-        #Frame para titulo
-        frame_titulo = CTkFrame(ventana)
-        frame_titulo.pack(fill=BOTH, expand=True)
-        titulo = LtkLabel(frame_titulo, "Configuracion Supermercado")
-        titulo.configure(font=("Poppins", 40, "bold"))
-        titulo.pack(side=TOP, padx=20, pady=20)
-
-        #Frame para empleados supermercado
-        frame_empleados = CTkFrame(ventana)
-        frame_empleados.pack(fill=BOTH, expand=True)
-        boton_empleados = LtkButtonFill(frame_empleados, self.empleados_super, "Empleados")
-        boton_empleados.pack(side=LEFT, padx=70, pady=20)
-
-        #Frame para servicio general
-        frame_serviciogeneral = CTkFrame(ventana)
-        frame_serviciogeneral.pack(fill=BOTH, expand=True)
-        boton_serviciogeneral = LtkButtonFill(frame_serviciogeneral, self.serviciogeneral, "Servicio General")
-        boton_serviciogeneral.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame cajas
-        frame_cajas = CTkFrame(ventana)
-        frame_cajas.pack(fill=BOTH, expand=True)
-        boton_cajas = LtkButtonFill(frame_cajas, self.cajas, "Cajas")
-        boton_cajas.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame para horarios
-        frame_horarios = CTkFrame(ventana)
-        frame_horarios.pack(fill=BOTH, expand=True)
-        boton_horarios = LtkButtonFill(frame_horarios, self.horarios, "Horarios")
-        boton_horarios.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame para inventario productos
-        frame_inventario = CTkFrame(ventana)
-        frame_inventario.pack(fill=BOTH, expand=True)
-        boton_inventario = LtkButtonFill(frame_inventario, self.inventario, "Inventario Productos")
-        boton_inventario.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame proveedores
-        frame_proveedores = CTkFrame(ventana)
-        frame_proveedores.pack(fill=BOTH, expand=True)
-        boton_proveedores = LtkButtonFill(frame_proveedores, self.proveedores, "Proveedores")
-        boton_proveedores.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame clientes
-        frame_clientes = CTkFrame(ventana)
-        frame_clientes.pack(fill=BOTH, expand=True)
-        boton_clientes = LtkButtonFill(frame_clientes, self.clientes, "Clientes")
-        boton_clientes.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame pagos
-        frame_pagos = CTkFrame(ventana)
-        frame_pagos.pack(fill=BOTH, expand=True)
-        boton_pagos = LtkButtonFill(frame_pagos, self.pagos, "Pagos")
-        boton_pagos.pack(side=LEFT, padx=70, pady=10)
-
-        #Frame temporadas
-        frame_temporadas = CTkFrame(ventana)
-        frame_temporadas.pack(fill=BOTH, expand=True)
-        boton_temporadas = LtkButtonFill(frame_temporadas, self.temporadas, "Temporadas")
-        boton_temporadas.pack(side=LEFT, padx=70, pady=10)
+        self.lista_personal=[[1, 7, 3, 3]]
+        self.lista_sueldos=[[4000, 3000, 3000, 3000]]
+        self.lista_horarios=[["8:00", "17:00", "12:00", "13:00"]]
 
 
-        #Frame para salir configuracion
-        frame_guardar = CTkFrame(ventana)
-        frame_guardar.pack(fill=BOTH, expand=True)
-        boton_guardar = LtkButtonFill(frame_guardar, self.salir, "Salir de Configuracion Supermercado")
-        boton_guardar.pack(side=BOTTOM, padx=20, pady=20)
+
+        self.ventana=CTk()
+        self.ventana.title("Supermercado")
+        self.ventana.geometry("900x600+350+100")
+        self.ventana.configure(bg="#FFFFFF")
+        self.ventana.columnconfigure(0, weight=1)
+        self.ventana.rowconfigure(0, weight=1)
+        self.ventana.rowconfigure(1, weight=1)
+
+        self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
         
-        ventana.mainloop()
+        # Frame para el título
+        frame_titulo = CTkFrame(self.ventana)
+        frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
+        self.ventana.columnconfigure(0, weight=1)
+        self.ventana.rowconfigure(0, weight=1)
+        titulo=LtkLabel(frame_titulo, texto="Configuración del Supermercado")
+        titulo.configure(font=('Poppins', 30, "bold"))
+        titulo.grid(row=0, column=0, pady=(1, 1), sticky="nsew")
+        frame_titulo.columnconfigure(0, weight=1)
+        frame_titulo.rowconfigure(0, weight=1)
 
-    def salir(self):
-        messagebox.showinfo("SALIENDO", "Configuracion Guardada")
-        exit()
-
-    def empleados_super(self):
-        self.empleados_supermercado=CTk()
-        self.empleados_supermercado.title("Ajustes Empleados Supermercado")
-        self.empleados_supermercado.geometry("800x600+660+210")
-        self.empleados_supermercado.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.empleados_supermercado, self.guardar_empleados_super, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.empleados_supermercado.mainloop()
-    def guardar_empleados_super(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.empleados_supermercado.destroy()
+        # Frame para las opciones
+        frame_opciones=CTkFrame(self.ventana)
+        frame_opciones.grid(row=1, column=0, pady=(10, 10))
+        self.ventana.columnconfigure(0, weight=2)
+        self.ventana.rowconfigure(1, weight=1)
 
 
-    def serviciogeneral(self):
-        self.serviciogeneral=CTk()
-        self.serviciogeneral.title("Ajustes Servicio General")
-        self.serviciogeneral.geometry("800x600+660+210")
-        self.serviciogeneral.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.serviciogeneral, self.guardar_serviciogeneral, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.serviciogeneral.mainloop()
-    def guardar_serviciogeneral(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.serviciogeneral.destroy()
+        boton_personal_supermercado=LtkButtonLine(frame_opciones, self.personal, "Personal De Supermercado")
+        boton_personal_supermercado.grid(row=0, column=0, padx=(5,5), pady=(5, 5))
+        boton_sueldo=LtkButtonLine(frame_opciones, self.sueldo, "Sueldos")
+        boton_sueldo.grid(row=1, column=0, padx=(5,5), pady=(5, 5))
+        boton_horarios=LtkButtonLine(frame_opciones, self.horarios, "Horarios")
+        boton_horarios.grid(row=2, column=0, padx=(5,5), pady=(5, 5))
+        boton_cajas=LtkButtonLine(frame_opciones, self.cajas, "Cajas")
+        boton_cajas.grid(row=3, column=0, padx=(5,5), pady=(5, 5))
+        boton_servicios_generales=LtkButtonLine(frame_opciones, self.servicios_generales, "Servicios Generales")
+        boton_servicios_generales.grid(row=4, column=0, padx=(5,5), pady=(5, 5))
+        boton_inventario_productos=LtkButtonLine(frame_opciones, self.inventario_productos, "Inventario De Productos")
+        boton_inventario_productos.grid(row=5, column=0, padx=(5,5), pady=(5, 5))
+        boton_proveedores=LtkButtonLine(frame_opciones, self.proveedores, "Proveedores")
+        boton_proveedores.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
+        boton_clientes=LtkButtonLine(frame_opciones, self.clientes, "Clientes")
+        boton_clientes.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
+        boton_pagos=LtkButtonLine(frame_opciones, self.pagos, "Pagos")
+        boton_pagos.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
+        boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
+        boton_temporadas.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
 
-    def cajas(self):
-        self.cajas=CTk()
-        self.cajas.title("Ajustes Cajas")
-        self.cajas.geometry("800x600+660+210")
-        self.cajas.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.cajas, self.guardar_cajas, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.cajas.mainloop()
-    def guardar_cajas(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.cajas.destroy()
+
+
+        # Frame de características
+        self.frame_caracteristicas = CTkFrame(self.ventana)
+        self.frame_caracteristicas.grid(row=1, column=1, sticky="nsew")
+        self.ventana.columnconfigure(1, weight=25)
+        self.ventana.rowconfigure(1, weight=2)
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+
+
+        self.personal()
+        self.sueldo()
+        self.horarios()
+
+
+        # Frame para el botón de guardar
+        frame_guardar = CTkFrame(self.ventana)
+        frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
+        self.ventana.columnconfigure(0, weight=1)
+        self.ventana.rowconfigure(2, weight=1)
+        boton_guardar = LtkButtonFill(frame_guardar, self.guardar_informacion, "Guardar Y Salir De Configuracion Supermercado")
+        boton_guardar.grid(row=0, column=0, padx=100, pady=40, sticky="nsew")
+        frame_guardar.columnconfigure(0, weight=1)
+        frame_guardar.rowconfigure(0, weight=1)
+
+
+        self.ventana.mainloop()
+
+
+    def guardar_informacion(self):
+        informacion={
+            "cantidad_gerentes": self.lista_personal[0][0],
+            "cantidad_cajeras": self.lista_personal[0][1],
+            "cantidad_guardias_seguridad": self.lista_personal[0][2],
+            "cantidad_personal_tecnico": self.lista_personal[0][3],
+            "sueldo_mensual_gerente": self.lista_sueldos[0][0],
+            "sueldo_mensual_cajera": self.lista_sueldos[0][1],
+            "sueldo_mensual_guardia_seguridad": self.lista_sueldos[0][2],
+            "sueldo_mensual_personal_tecnico": self.lista_sueldos[0][3],
+            "horario_entrada": self.lista_horarios[0][0],
+            "horario_salida": self.lista_horarios[0][1],
+            "horario_entrada_almuerzo": self.lista_horarios[0][2],
+            "horario_salida_almuerzo": self.lista_horarios[0][3]
+            
+        }
+        
+        informacion_json=json.dumps(informacion, indent=4)
+        config_path=os.path.join(self.ruta_ventana, 'supermercado.json')
+
+        with open(config_path, 'w') as f:
+            f.write(informacion_json)
+
+        messagebox.showinfo("Informacion", "Informacion guardada correctamente")
+        self.ventana.destroy()
+
+    def resetear_frame_caracteristicas(self):
+        for widget in self.frame_caracteristicas.winfo_children():
+            widget.grid_remove()
+    
+    def personal(self):
+        self.resetear_frame_caracteristicas()
+    
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Personal")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        self.etiqueta_gerentes = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Gerentes:")
+        self.etiqueta_gerentes.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_gerentes = LtkEntryLine(self.frame_caracteristicas, "1")
+        self.cantidad_gerentes.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_cajeras = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Cajeras:")
+        self.etiqueta_cajeras.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_cajeras = LtkEntryLine(self.frame_caracteristicas, "7")
+        self.cantidad_cajeras.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        
+        self.etiqueta_guardias_seguridad = LtkLabel(self.frame_caracteristicas, texto="Cantidad Guardias De Seguridad:")
+        self.etiqueta_guardias_seguridad.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_guardias_seguridad = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_guardias_seguridad.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Personal Tecnico Y Limpieza:")
+        self.etiqueta_personal_tecnico.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_personal_tecnico = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_personal_tecnico.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+
+        
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+    def guardar_ajustes(self):
+        cantidad_gerentes=self.cantidad_gerentes.get()
+        cantidad_cajeras=self.cantidad_cajeras.get()
+        cantidad_guardias_seguridad=self.cantidad_guardias_seguridad.get()
+        cantidad_personal_tecnico=self.cantidad_personal_tecnico.get()
+
+        self.lista_personal.clear()
+        self.lista_personal.append([int(cantidad_gerentes),
+                                   int(cantidad_cajeras),
+                                   int(cantidad_guardias_seguridad),
+                                   int(cantidad_personal_tecnico)
+                                   ])
+
+
+    def sueldo(self):
+        self.resetear_frame_caracteristicas()
+    
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Sueldo")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+        self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Gerente:")
+        self.etiqueta_sueldo_gerente.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.sueldo_mensual_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
+        self.sueldo_mensual_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_sueldo_cajera= LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Cajera:")
+        self.etiqueta_sueldo_cajera.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.sueldo_mensual_cajera = LtkEntryLine(self.frame_caracteristicas, "3000")
+        self.sueldo_mensual_cajera.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_sueldo_guardia_seguridad = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Guardia De Seguridad:")
+        self.etiqueta_sueldo_guardia_seguridad.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.sueldo_mensual_guardia_seguridad = LtkEntryLine(self.frame_caracteristicas, "3000")
+        self.sueldo_mensual_guardia_seguridad.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_sueldo_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Personal Tecnico:")
+        self.etiqueta_sueldo_personal_tecnico.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.sueldo_mensual_personal_tecnico = LtkEntryLine(self.frame_caracteristicas, "3000")
+        self.sueldo_mensual_personal_tecnico.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+
+    def guardar_ajustes1(self):
+        sueldo_mensual_gerente=self.sueldo_mensual_gerente.get()
+        sueldo_mensual_cajera=self.sueldo_mensual_cajera.get()
+        sueldo_mensual_guardia_seguridad=self.sueldo_mensual_guardia_seguridad.get()
+        sueldo_mensual_personal_tecnico=self.sueldo_mensual_personal_tecnico.get()
+
+        self.lista_sueldos.clear()
+        self.lista_sueldos.append([int(sueldo_mensual_gerente),
+                                   int(sueldo_mensual_cajera),
+                                   int(sueldo_mensual_guardia_seguridad),
+                                   int(sueldo_mensual_personal_tecnico)
+                                   ])
+
 
     def horarios(self):
-        self.horarios=CTk()
-        self.horarios.title("Ajustes Horarios")
-        self.horarios.geometry("800x600+660+210")
-        self.horarios.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.horarios, self.guardar_horarios, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.horarios.mainloop()
-    def guardar_horarios(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.horarios.destroy()
+        self.resetear_frame_caracteristicas()
+    
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+        self.etiqueta_horario_entrada = LtkLabel(self.frame_caracteristicas, texto="Horario De Entrada:")
+        self.etiqueta_horario_entrada.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.horario_entrada = LtkEntryLine(self.frame_caracteristicas, "8:00")
+        self.horario_entrada.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_horario_salida = LtkLabel(self.frame_caracteristicas, texto="Horario De Salida:")
+        self.etiqueta_horario_salida.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.horario_salida = LtkEntryLine(self.frame_caracteristicas, "17:00")
+        self.horario_salida.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_horario_entrada_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Entrada Al Almuerzo:")
+        self.etiqueta_horario_entrada_almuerzo.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.horario_entrada_almuerzo = LtkEntryLine(self.frame_caracteristicas, "12:00")
+        self.horario_entrada_almuerzo.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_horario_salida_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Salida Al Almuerzo:")
+        self.etiqueta_horario_salida_almuerzo.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.horario_salida_almuerzo = LtkEntryLine(self.frame_caracteristicas, "13:00")
+        self.horario_salida_almuerzo.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
-    def inventario(self):
-        self.inventario=CTk()
-        self.inventario.title("Ajustes Inventario")
-        self.inventario.geometry("800x600+660+210")
-        self.inventario.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.inventario, self.guardar_inventario, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.inventario.mainloop()
-    def guardar_inventario(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.inventario.destroy()
+    def guardar_ajustes2(self):
+        horario_entrada=self.horario_entrada.get()
+        horario_salida=self.horario_salida.get()
+        horario_entrada_almuerzo=self.horario_entrada_almuerzo.get()
+        horario_salida_almuerzo=self.horario_salida_almuerzo.get()
 
-    def proveedores(self):
-        self.proveedores=CTk()
-        self.proveedores.title("Ajustes Proveedores")
-        self.proveedores.geometry("800x600+660+210")
-        self.proveedores.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.proveedores, self.guardar_proveedores, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.proveedores.mainloop()
-    def guardar_proveedores(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.proveedores.destroy()
+        self.lista_horarios.clear()
+        self.lista_horarios.append([horario_entrada,
+                                   horario_salida,
+                                   horario_entrada_almuerzo,
+                                   horario_salida_almuerzo
+                                   ])
 
-    def clientes(self):
-        self.clientes=CTk()
-        self.clientes.title("Ajustes Clientes")
-        self.clientes.geometry("800x600+660+210")
-        self.clientes.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.clientes, self.guardar_clientes, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.clientes.mainloop()
-    def guardar_clientes(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.clientes.destroy()
-
-    def pagos(self):
-        self.pagos=CTk()
-        self.pagos.title("Ajustes Pagos")
-        self.pagos.geometry("800x600+660+210")
-        self.pagos.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.pagos, self.guardar_pagos, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.pagos.mainloop()
-    def guardar_pagos(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.pagos.destroy()
-
-    def temporadas(self):
-        self.temporadas=CTk()
-        self.temporadas.title("Ajustes Temporadas")
-        self.temporadas.geometry("800x600+660+210")
-        self.temporadas.configure(bg="#FFFFFF")
-        boton_guardar = LtkButtonFill(self.temporadas, self.guardar_temporadas, "Guardar Y Salir De Ajustes")
-        boton_guardar.pack(side=BOTTOM, padx=70, pady=20)
-        self.temporadas.mainloop()
-    def guardar_temporadas(self):
-        messagebox.showinfo("GUARDADO", "Ajustes Guardados")
-        self.temporadas.destroy()
+    def cajas():
+        pass
+    def servicios_generales():
+        pass
+    def inventario_productos():
+        pass
+    def proveedores():
+        pass
+    def clientes():
+        pass
+    def pagos():
+        pass
+    def temporadas():
+        pass
 

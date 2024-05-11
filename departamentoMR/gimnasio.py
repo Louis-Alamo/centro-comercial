@@ -13,6 +13,9 @@ class Gimnasio:
     def __init__(self):
         self.lista_personal=[[3, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000]]
+
+
+
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("900x600+350+100")
@@ -41,9 +44,9 @@ class Gimnasio:
         self.ventana.rowconfigure(1, weight=1)
 
 
-        boton_opciones=LtkButtonLine(frame_opciones, self.personal, "Personal del GYM")
-        boton_opciones.grid(row=0, column=0, padx=(5,5), pady=(5, 5))
-        boton_sueldo=LtkButtonLine(frame_opciones, self.sueldo, "Sueldo")
+        boton_personal_gimnasio=LtkButtonLine(frame_opciones, self.personal, "Personal De Gimnasio")
+        boton_personal_gimnasio.grid(row=0, column=0, padx=(5,5), pady=(5, 5))
+        boton_sueldo=LtkButtonLine(frame_opciones, self.sueldos, "Sueldos")
         boton_sueldo.grid(row=1, column=0, padx=(5,5), pady=(5, 5))
         boton_horarios=LtkButtonLine(frame_opciones, self.horarios, "Horarios")
         boton_horarios.grid(row=2, column=0, padx=(5,5), pady=(5, 5))
@@ -70,7 +73,7 @@ class Gimnasio:
 
 
         self.personal()
-        self.sueldo()
+        self.sueldos()
 
 
         # Frame para el botón de guardar
@@ -119,28 +122,23 @@ class Gimnasio:
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-
-        self.etiqueta_recepcion = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Recepcionistas:")
+        self.etiqueta_recepcion = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Recepcionistas:")
         self.etiqueta_recepcion.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_recepcionistas = LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_recepcionistas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
         self.etiqueta_personal_limpieza = LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal De limpieza:")
         self.etiqueta_personal_limpieza.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_personal_limpieza = LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_personal_limpieza.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
-        self.etiqueta_gerentes = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Gerentes:")
+        self.etiqueta_gerentes = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Gerentes:")
         self.etiqueta_gerentes.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_gerentes = LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_gerentes.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        
-        self.etiqueta_entrenadores = LtkLabel(self.frame_caracteristicas, texto="Cantidad de Entrenadores:")
+        self.etiqueta_entrenadores = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Entrenadores:")
         self.etiqueta_entrenadores.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_entrenadores = LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_entrenadores.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
-        self.etiqueta_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal de Tecnico:")
+        self.etiqueta_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Personal Tecnico Y Limpieza:")
         self.etiqueta_personal_tecnico.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_personal_tecnico = LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_personal_tecnico.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
@@ -167,7 +165,7 @@ class Gimnasio:
         
 
 
-    def sueldo(self):
+    def sueldos(self):
         self.resetear_frame_caracteristicas()
     
         self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Sueldo")
@@ -175,12 +173,10 @@ class Gimnasio:
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-
-        self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Para El Gerente:")
+        self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Gerente:")
         self.etiqueta_sueldo_gerente.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.sueldo_mensual_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
         self.sueldo_mensual_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
         self.etiqueta_sueldo_entrenador = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Entrenador:")
         self.etiqueta_sueldo_entrenador.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.sueldo_mensual_entrenador = LtkEntryLine(self.frame_caracteristicas, "3000")
@@ -216,6 +212,4 @@ class Gimnasio:
         pass
     def temporadas(self):
         pass
-
-
 

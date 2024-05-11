@@ -1,0 +1,16 @@
+{
+    "cantidad_gerentes": 1,
+    "cantidad_cajeras": 3,
+    "cantidad_secretarias": 3,
+    "cantidad_guardias_seguridad": 3,
+    "cantidad_personal_tecnico": 3,
+    "sueldo_gerente": 4000,
+    "sueldo_cajera": 3000,
+    "sueldo_secretaria": 3000,
+    "sueldo_guardia_seguridad": 3000,
+    "sueldo_personal_tecnico": 3000,
+    "horario_entrada": "8:00",
+    "horario_salida": "17:00",
+    "horario_entrada_almuerzo": "12:00",
+    "horario_salida_almuerzo": "13:00"
+}

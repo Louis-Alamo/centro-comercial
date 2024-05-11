@@ -1,9 +1,9 @@
 {
-    "cantidad_recepcionistas": 2,
-    "cantidad_personal_limpieza": 1,
-    "cantidad_gerentes": 5,
-    "cantidad_entrenadores": 10,
-    "cantidad_personal_tecnico": 2,
-    "sueldo_mensual_gerente": 5000,
-    "sueldo_mensual_entrenador": 1000
+    "cantidad_recepcionistas": 3,
+    "cantidad_personal_limpieza": 3,
+    "cantidad_gerentes": 3,
+    "cantidad_entrenadores": 3,
+    "cantidad_personal_tecnico": 3,
+    "sueldo_mensual_gerente": 4000,
+    "sueldo_mensual_entrenador": 3000
 }

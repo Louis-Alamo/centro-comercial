@@ -1,0 +1,14 @@
+{
+    "cantidad_gerentes": 1,
+    "cantidad_cajeras": 7,
+    "cantidad_guardias_seguridad": 3,
+    "cantidad_personal_tecnico": 3,
+    "sueldo_mensual_gerente": 4000,
+    "sueldo_mensual_cajera": 3000,
+    "sueldo_mensual_guardia_seguridad": 3000,
+    "sueldo_mensual_personal_tecnico": 3000,
+    "horario_entrada": "8:00",
+    "horario_salida": "17:00",
+    "horario_entrada_almuerzo": "12:00",
+    "horario_salida_almuerzo": "13:00"
+}
