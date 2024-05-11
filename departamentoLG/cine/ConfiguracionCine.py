@@ -15,6 +15,8 @@ class ConfiguracionCine:
 
     def __init__(self):
 
+
+
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
         self.ventana = CTk()
@@ -99,12 +101,50 @@ class ConfiguracionCine:
         self.crear_componentes_baños()
         self.crear_componentes_caracteristicas_cine()
 
-        self.guardar_datos_cine()
-        self.guardar_datos_sala()
-        self.guardar_datos_dulceria()
-        self.guardar_datos_taquilla()
-        self.guardar_datos_baños()
-
+        self.general = {
+            "Capacidad del cine": int(
+                100 if self.entry_capacidad_cine.get() == "" else self.entry_capacidad_cine.get()),
+            "Horario": {
+                "Entrada": "08:00" if self.entry_horario_inicio.get() == "" else self.entry_horario_inicio.get(),
+                "Cierre": "22:00" if self.entry_horario_cierre.get() == "" else self.entry_horario_cierre.get()
+            },
+            "Eventos especiales": self.variable_opcion_eventos_especiales_cine.get(),
+            "Permitir mascotas": self.variable_opcion_permitir_mascotas_cine.get(),
+        }
+        self.salas_de_cine = {
+            "Cantidad de salas": int(5 if self.entry_cantidad_salas.get() == "" else self.entry_cantidad_salas.get()),
+            "Capacidad de las salas": int(
+                100 if self.entry_capacidad_salas.get() == "" else self.entry_capacidad_salas.get()),
+            "Cantidad de empleados por sala": int(
+                2 if self.entry_cantidad_empleados_sala.get() == "" else self.entry_cantidad_empleados_sala.get()),
+            "Sueldo de empleados por sala": int(
+                1000 if self.entry_sueldo_empleados_sala.get() == "" else self.entry_sueldo_empleados_sala.get())
+        }
+        self.dulceria = {
+            "Cantidad de cajas": int(
+                5 if self.entry_cantidad_cajas_dulceria.get() == "" else self.entry_cantidad_cajas_dulceria.get()),
+            "Sueldo de empleados": int(
+                1000 if self.entry_sueldo_empleados_cine.get() == "" else self.entry_sueldo_empleados_cine.get()),
+            "Rendimiento de empleados": int(
+                100 if self.entry_rendimiento_de_empleados_dulceria.get() == "" else self.entry_rendimiento_de_empleados_dulceria.get()),
+            "Probabilidad de compra de productos": int(
+                100 if self.entry_probabilidad_compra_dulceria.get() == "" else self.entry_probabilidad_compra_dulceria.get())
+        }
+        self.taquilla = {
+            "Cantidad de cajas": int(
+                5 if self.entry_cantidad_cajas_taquilla.get() == "" else self.entry_cantidad_cajas_taquilla.get()),
+            "Sueldo de empleados": int(
+                1000 if self.entry_sueldo_empleado_taquilla.get() == "" else self.entry_sueldo_empleado_taquilla.get()),
+            "Rendimiento de empleados": int(
+                100 if self.entry_rendimiento_empleados_taquilla.get() == "" else self.entry_rendimiento_empleados_taquilla.get())
+        }
+        self.baños = {
+            "Cantidad de baños": int(5 if self.entry_cantidad_baños.get() == "" else self.entry_cantidad_baños.get()),
+            "Capacidad de los baños": int(
+                100 if self.entry_capacidad_baños.get() == "" else self.entry_capacidad_baños.get()),
+            "Precio de entrada": int(
+                5 if self.entry_precio_entrada_baños.get() == "" else self.entry_precio_entrada_baños.get())
+        }
 
     def crear_botones_clasificacion_caracteristicas_cine(self):
 
@@ -132,7 +172,7 @@ class ConfiguracionCine:
 
 
         self.lista_opciones_probabilidades_caracteristicas_cine = ["Atraccion de clientes", "Dias de promocion", "Eventos especiales", "Tipo de visita", "Temporadas de afluencia"]
-        self.lista_opciones_precios_caracteristicas_cine = ["Precio de mantenimiento del cine", "Descuentos de promocion"]
+        self.lista_opciones_precios_caracteristicas_cine = ["Precio de mantenimiento del cine", "Descuentos por promocion productos"]
 
         self.resetear_frame_caracteristicas()
 
@@ -488,9 +528,9 @@ class ConfiguracionCine:
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio de mantenimiento del cine")
             self.crear_ventana_emergente("Precio de mantenimiento del cine", path)
 
-        elif self.opcion_datos_precios_cine.get() == "Descuentos de promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos de promocion")
-            self.crear_ventana_emergente("Descuentos de promocion", path)
+        elif self.opcion_datos_precios_cine.get() == "Descuentos por promocion productos":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion productos")
+            self.crear_ventana_emergente("Descuentos por promocion productos", path)
 
     def cargar_datos_probabilidades_cine(self):
 
