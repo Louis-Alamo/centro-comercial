@@ -44,106 +44,139 @@ class ConfiguracionElectronica:
 
     def crear_componentes(self):
 
-        self.etiqueta_titulo_principal = LtkLabel(self.ventana, texto="Configuracion de la tienda de electronicas")
+        self.frame_clasificacion_configuracion = CTkFrame(self.ventana)
+        self.frame_clasificacion_configuracion.grid(row=1, column=0,padx=(10,5),pady=(10,10), sticky="ns")
+
+        self.frame_clasificacion_configuracion.columnconfigure(0, weight=1)
+
+        self.crear_botones_clasificacion_caracteristicas_cine()
+
+        # Frame de características
+        self.frame_caracteristicas = CTkFrame(self.ventana)
+        self.frame_caracteristicas.grid(row=1, column=1,padx=(5,10),pady=(10,10),  sticky="nsew")
+
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+
+        # Etiqueta de título principal
+        self.etiqueta_titulo_principal = LtkLabel(self.ventana, texto="Configuracion tiendo electronica")
         self.etiqueta_titulo_principal.configure(font=('Poppins', 20, "bold"))
-        self.etiqueta_titulo_principal.grid(row=0, column=0, pady=(20, 20), sticky="nsew")
+        self.etiqueta_titulo_principal.grid(row=0, column=0, pady=(10, 20), sticky="ew", columnspan=2)
+        self.etiqueta_titulo_principal.columnconfigure(0,weight=1)  # Para que la etiqueta se expanda solo horizontalmente y esté centrada
 
-        self.caracteristicas_electronica()
-        self.crear_componentes_edificio_caja()
-        self.crear_componetes_area_de_servicio_tecnico()
-        self.crear_componentes_datos_historicos()
 
+        #self.inicializar_componentes()
+
+
+        self.boton_cerrar = LtkButtonFill(self.ventana,funcion=lambda: self.ventana.destroy(), nombre_boton="Cerrar")
+        self.boton_cerrar.grid(row=2, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="w")
 
         self.boton_guardar = LtkButtonFill(self.ventana,funcion=lambda: self.guardar_informacion(), nombre_boton="Guardar")
-        self.boton_guardar.grid(row=4, column=0, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
+        self.boton_guardar.grid(row=2, column=1, columnspan=4, padx=(10,10), pady=(10, 20), sticky="nsew")
+
+    def resetear_frame_caracteristicas(self):
+        for widget in self.frame_caracteristicas.winfo_children():
+            widget.grid_remove()
+
+    def crear_botones_clasificacion_caracteristicas_cine(self):
+
+        self.boton_caracteristicas_principales = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_caracteristicas_electronica(), nombre_boton="Opciones generales")
+        self.boton_caracteristicas_principales.grid(row=0, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_crear_componentes_edificio_caja = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componentes_edificio_caja(), nombre_boton="Opciones generales")
+        self.boton_crear_componentes_edificio_caja.grid(row=1, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+        self.boton_crear_componentes_area_servicio = LtkButtonLine(self.frame_clasificacion_configuracion, funcion=lambda: self.crear_componetes_area_de_servicio_tecnico(), nombre_boton="Opciones generales")
+        self.boton_crear_componentes_area_servicio.grid(row=2, column=0, padx=(5,5), pady=(5, 5), sticky="nsew")
+
+    def inicializar_componentes(self):
+        self.crear_componentes_edificio_caja()
+        self.crear_componetes_area_de_servicio_tecnico()
+        self.crear_caracteristicas_electronica()
 
 
-    def caracteristicas_electronica(self):
+    def crear_caracteristicas_electronica(self):
 
-        #Frame caracteristicas jugueteria
-        self.frame_caracteristicas_jugueteria = CTkFrame(self.ventana)
-        self.frame_caracteristicas_jugueteria.grid(row=1, column=0, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
 
-        self.frame_caracteristicas_jugueteria.columnconfigure(1, weight=1)
+        self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas_jugueteria = LtkLabel(self.frame_caracteristicas_jugueteria, texto="Caracteristicas de la tienda de electronica")
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+
+        self.etiqueta_titulo_caracteristicas_jugueteria = LtkLabel(self.frame_caracteristicas, texto="Caracteristicas de la tienda de electronica")
         self.etiqueta_titulo_caracteristicas_jugueteria.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas_jugueteria.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_empleados = LtkLabel(self.frame_caracteristicas_jugueteria, texto="Cantidad de empleados:")
+        self.etiqueta_cantidad_empleados = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados:")
         self.etiqueta_cantidad_empleados.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados = LtkEntryLine(self.frame_caracteristicas_jugueteria)
+        self.entry_cantidad_empleados = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados.grid(row=2, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_cantidad_maxima_personas = LtkLabel(self.frame_caracteristicas_jugueteria, texto="Cantidad maxima de personas:")
+        self.etiqueta_cantidad_maxima_personas = LtkLabel(self.frame_caracteristicas, texto="Cantidad maxima de personas:")
         self.etiqueta_cantidad_maxima_personas.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_maxima_personas = LtkEntryLine(self.frame_caracteristicas_jugueteria)
+        self.entry_cantidad_maxima_personas = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_maxima_personas.grid(row=3, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_horario = LtkLabel(self.frame_caracteristicas_jugueteria, texto="Horario:")
+        self.etiqueta_horario = LtkLabel(self.frame_caracteristicas, texto="Horario:")
         self.etiqueta_horario.grid(row=4, column=0,padx=(10,10), pady=(5, 10), sticky="w")
 
-        self.entry_horario_inicio = LtkEntryLine(self.frame_caracteristicas_jugueteria, "Hora inicio")
+        self.entry_horario_inicio = LtkEntryLine(self.frame_caracteristicas, "Hora inicio")
         self.entry_horario_inicio.grid(row=4, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
-        self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas_jugueteria, "Hora cierre")
+        self.entry_horario_cierre = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
         self.entry_horario_cierre.grid(row=4, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
 
     def crear_componentes_edificio_caja(self):
 
-        #Frame edificio caja
-        self.frame_edificio_caja = CTkFrame(self.ventana)
-        self.frame_edificio_caja.grid(row=2, column=0, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_edificio_caja.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
 
-        self.etiqueta_titulo_edificio_caja = LtkLabel(self.frame_edificio_caja, texto="Edificio caja")
+        self.etiqueta_titulo_edificio_caja = LtkLabel(self.frame_caracteristicas, texto="Edificio caja")
         self.etiqueta_titulo_edificio_caja.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_edificio_caja.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_cajas = LtkLabel(self.frame_edificio_caja, texto="Cantidad de cajas:")
+        self.etiqueta_cantidad_cajas = LtkLabel(self.frame_caracteristicas, texto="Cantidad de cajas:")
         self.etiqueta_cantidad_cajas.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_cajas = LtkEntryLine(self.frame_edificio_caja)
+        self.entry_cantidad_cajas = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_cajas.grid(row=1, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_cantidad_empleados_caja = LtkLabel(self.frame_edificio_caja, texto="Cantidad de empleados por caja:")
+        self.etiqueta_cantidad_empleados_caja = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados por caja:")
         self.etiqueta_cantidad_empleados_caja.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados_caja = LtkEntryLine(self.frame_edificio_caja)
+        self.entry_cantidad_empleados_caja = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_caja.grid(row=2, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_paga_empleado_caja = LtkLabel(self.frame_edificio_caja, texto="Pago por empleado:")
+        self.etiqueta_paga_empleado_caja = LtkLabel(self.frame_caracteristicas, texto="Pago por empleado:")
         self.etiqueta_paga_empleado_caja.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_paga_empleado_caja = LtkEntryLine(self.frame_edificio_caja)
+        self.entry_paga_empleado_caja = LtkEntryLine(self.frame_caracteristicas)
         self.entry_paga_empleado_caja.grid(row=3, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
     def crear_componetes_area_de_servicio_tecnico(self):
 
         #Frame area de servicio tecnico
-        self.frame_area_servicio_tecnico = CTkFrame(self.ventana)
-        self.frame_area_servicio_tecnico.grid(row=1, column=2, columnspan=2,padx = (10,10), pady=(10, 20), sticky="nsew")
+        self.resetear_frame_caracteristicas()
 
-        self.frame_area_servicio_tecnico.columnconfigure(1, weight=1)
-        self.frame_area_servicio_tecnico.columnconfigure(2, weight=1)
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        self.etiqueta_titulo_area_servicio_tecnico = LtkLabel(self.frame_area_servicio_tecnico, texto="Area de servicio tecnico")
+        self.etiqueta_titulo_area_servicio_tecnico = LtkLabel(self.frame_caracteristicas, texto="Area de servicio tecnico")
         self.etiqueta_titulo_area_servicio_tecnico.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_area_servicio_tecnico.grid(row=0, column=0, columnspan=2, pady=(5, 10))
 
-        self.etiqueta_cantidad_empleados_servicio_tecnico = LtkLabel(self.frame_area_servicio_tecnico, texto="Cantidad de empleados:")
+        self.etiqueta_cantidad_empleados_servicio_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad de empleados:")
         self.etiqueta_cantidad_empleados_servicio_tecnico.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_cantidad_empleados_servicio_tecnico = LtkEntryLine(self.frame_area_servicio_tecnico)
+        self.entry_cantidad_empleados_servicio_tecnico = LtkEntryLine(self.frame_caracteristicas)
         self.entry_cantidad_empleados_servicio_tecnico.grid(row=1, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_paga_empleado_servicio_tecnico = LtkLabel(self.frame_area_servicio_tecnico, texto="Pago por empleado:")
+        self.etiqueta_paga_empleado_servicio_tecnico = LtkLabel(self.frame_caracteristicas, texto="Pago por empleado:")
         self.etiqueta_paga_empleado_servicio_tecnico.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_paga_empleado_servicio_tecnico = LtkEntryLine(self.frame_area_servicio_tecnico)
+        self.entry_paga_empleado_servicio_tecnico = LtkEntryLine(self.frame_caracteristicas)
         self.entry_paga_empleado_servicio_tecnico.grid(row=2, column=1,padx=(5,10),pady=(5, 5),sticky="nsew",columnspan=2)
 
-        self.etiqueta_horario_servicio = LtkLabel(self.frame_area_servicio_tecnico, texto="Horario de servicio:")
+        self.etiqueta_horario_servicio = LtkLabel(self.frame_caracteristicas, texto="Horario de servicio:")
         self.etiqueta_horario_servicio.grid(row=3, column=0,padx=(10,10), pady=(5, 10), sticky="w")
 
-        self.entry_horario_inicio_servicio = LtkEntryLine(self.frame_area_servicio_tecnico, "Hora inicio")
+        self.entry_horario_inicio_servicio = LtkEntryLine(self.frame_caracteristicas, "Hora inicio")
         self.entry_horario_inicio_servicio.grid(row=3, column=1, padx=(5,10), pady=(5, 15), sticky="nsew")
-        self.entry_horario_cierre_servicio = LtkEntryLine(self.frame_area_servicio_tecnico, "Hora cierre")
+        self.entry_horario_cierre_servicio = LtkEntryLine(self.frame_caracteristicas, "Hora cierre")
         self.entry_horario_cierre_servicio.grid(row=3, column=2, padx=(5,10), pady=(5, 15), sticky="nsew")
 
 
