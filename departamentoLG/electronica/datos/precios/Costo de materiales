@@ -1,0 +1,4 @@
+Tipo,Stock,Precio compra,Probabilidad
+Mantenimiento,10,100,0.2
+Reparacion,5,200,0.5
+Componentes,20,50,0.3
