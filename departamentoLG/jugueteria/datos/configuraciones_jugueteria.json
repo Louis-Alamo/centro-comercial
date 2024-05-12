@@ -1,0 +1,12 @@
+{
+    "General": {
+        "capacidad_maxima_personas": 50,
+        "horario_inicio": "08:00",
+        "horario_cierre": "20:00"
+    },
+    "Caja": {
+        "Cantidad de cajas": 2,
+        "Pago por empleado": 1000,
+        "Rendimiento por empleado": 10
+    }
+}
