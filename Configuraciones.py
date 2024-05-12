@@ -58,7 +58,7 @@ class Configuraciones:
         self.frame1.pack(pady = 20, padx = 20,  fill = X)
 
         self.combo = LtkComboBoxLine(master=self.frame1,
-                                     opciones=["Centro Comercial", "Cine", "Electronica", "Jugeteria", "libreria",
+                                     opciones=["Centro Comercial", "Cine", "Electronica", "libreria",
                                                "Restaurante", "Alimentos", "Banco", "Gimnasio", "Supermercado",
                                                "Veterinaria", "Ropa", "Hogar", "Farmacia", "Estacionamiento","Restaurante_serv_com"])
         self.combo.pack(pady = 20, padx = 20, side = LEFT)
