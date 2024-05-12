@@ -15,8 +15,6 @@ class ConfiguracionCine:
 
     def __init__(self):
 
-
-
         self.ruta_ventana = os.path.dirname(os.path.abspath(__file__))
 
         self.ventana = CTk()
