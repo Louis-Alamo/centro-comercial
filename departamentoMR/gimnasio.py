@@ -17,7 +17,7 @@ import os
 class Gimnasio:
     def __init__(self):
 
-        self.lista_personal=[[3, 3, 1, 3, 3]]
+        self.lista_personal=[[3, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios=[["6:00", "22:00", 1, 15, 10, 10]]
         self.lista_usuarios=[[100, 50, 50, 750]]
@@ -25,10 +25,9 @@ class Gimnasio:
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
-        self.lista_temporadas=[[0.7, True], [0.15, False], [0.15, False]]
+        self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
         self.lista_atencion=[["0.05","0.05","0.10","0.15","0.25","0.25","0.15"]]
         self.lista_descompostura=[["0.15","0.20","0.30","0.20","0.15"]]
-
 
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
@@ -553,21 +552,21 @@ class Gimnasio:
         seleccion=self.temporada_var.get()
 
         if seleccion == 1:
-            temporada_regular=[0.70, True]
-            temporada_alta=[0.15, False]
-            temporada_baja=[0.15, False]
+            temporada_regular=[0.70,True]
+            temporada_alta=[0.15,False]
+            temporada_baja=[0.15,False]
         elif seleccion == 2:
-            temporada_regular=[0.15, False]
-            temporada_alta=[0.70, True]
-            temporada_baja=[0.15, False]
+            temporada_regular=[0.15,False]
+            temporada_alta=[0.70,True]
+            temporada_baja=[0.15,False]
         elif seleccion == 3:
-            temporada_regular=[0.15, False]
-            temporada_alta=[0.15, False]
-            temporada_baja=[0.70, True]
+            temporada_regular=[0.15,False]
+            temporada_alta=[0.15,False]
+            temporada_baja=[0.70,True]
         else:
-            temporada_regular=[0.70, True]
-            temporada_alta=[0.15, False]
-            temporada_baja=[0.15, False]
+            temporada_regular=[0.70,True]
+            temporada_alta=[0.15,False]
+            temporada_baja=[0.15,False]
 
         self.lista_temporadas.clear()
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])

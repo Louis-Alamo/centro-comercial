@@ -265,7 +265,20 @@ class Banco:
 
 
     def usuarios(self):
-        pass
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        self.etiqueta_cantidad_usuarios = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Usuarios:")
+        self.etiqueta_cantidad_usuarios.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_usuarios = LtkEntryLine(self.frame_caracteristicas, "100")
+        self.cantidad_usuarios.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta
+
 
     def servicios_generales(self):
         pass
