@@ -34,12 +34,12 @@
     "cantidad_vestidores_mujeres": 3,
     "cantidad_vestidores_hombres": 3,
     "temporada_regular": [
-        0.7,
-        true
-    ],
-    "temporada_alta": [
         0.15,
         false
+    ],
+    "temporada_alta": [
+        0.7,
+        true
     ],
     "temporada_baja": [
         0.15,

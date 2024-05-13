@@ -73,10 +73,11 @@ class Gimnasio:
         boton_baños.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
         boton_vestidores=LtkButtonLine(frame_opciones, self.vestidores, "Vestidores")
         boton_vestidores.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
-        boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
-        boton_temporadas.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
         boton_lista_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Historicos")
-        boton_lista_historicos.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
+        boton_lista_historicos.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
+        boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
+        boton_temporadas.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
+        
 
 
         # Frame de características
@@ -524,6 +525,109 @@ class Gimnasio:
         
 
 
+    def datos_historicos(self):
+        num_minutos = simpledialog.askinteger("Entrada", "¿Cuántos minutos desea ingresar?", minvalue=1)
+        num_maquinas = simpledialog.askinteger("Entrada", "¿Cuántas máquinas desea ingresar?", minvalue=1)
+
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        # Probabilidad de atención
+        self.check_atencion = StringVar()
+        self.checkbutton_atencion = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de atención", variable=self.check_atencion, onvalue="Si", offvalue="No")
+        self.checkbutton_atencion.deselect()
+        self.checkbutton_atencion.grid(row=4, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+
+        self.entries_minutos = []
+        for i in range(num_minutos):
+            label = LtkLabel(self.frame_caracteristicas, texto=f"Minutos {i+1}:")
+            label.grid(row=5 + i, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+            entry = LtkEntryLine(self.frame_caracteristicas, ".05")
+            entry.grid(row=5 + i, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            self.entries_minutos.append(entry)
+
+        # Probabilidad de descompostura de máquinas
+        self.check_descompostura = StringVar()
+        self.checkbutton_descompostura = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de descompostura de máquinas", variable=self.check_descompostura, onvalue="Si", offvalue="No")
+        self.checkbutton_descompostura.deselect()
+        self.checkbutton_descompostura.grid(row=5 + num_minutos + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+
+        self.entries_maquinas = []
+        for i in range(num_maquinas):
+            label = LtkLabel(self.frame_caracteristicas, texto=f"Maquina {i+1}:")
+            label.grid(row=6 + num_minutos + i + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry.grid(row=6 + num_minutos + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            self.entries_maquinas.append(entry)
+
+        boton_guardar_y_ver = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(num_minutos, num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver.grid(row=7 + num_minutos + num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
+
+    def guardar_ajustes9(self, num_minutos, num_maquinas):
+        if self.check_atencion.get() == "Si":
+            self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos]
+        else:
+            self.lista_atencion = [0.05] * num_minutos
+
+        if self.check_descompostura.get() == "Si":
+            self.lista_descompostura = [float(entry.get()) for entry in self.entries_maquinas]
+        else:
+            self.lista_descompostura = [0.15] * num_maquinas
+
+        self.imprimir_tabla_atencion(num_minutos)
+        self.imprimir_tabla_descompostura(num_maquinas)
+
+    def imprimir_tabla_atencion(self, num_minutos):
+        ventana1 = CTkToplevel()
+        ventana1.title("Tabla de Atención")
+        ventana1.geometry("610x300+1100+100")
+        ventana1.configure(bg="#FFFFFF")
+        area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
+        area_texto.pack()
+
+        minutos = range(1, num_minutos + 1)
+        probabilidades = self.lista_atencion
+        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        datos_tabla = []
+        for i in range(num_minutos):
+            prob = probabilidades[i]
+            acum = probabilidad_acumulada[i]
+            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin = acum
+            datos_tabla.append([minutos[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
+
+        titulos_tabla = ["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        area_texto.insert(tk.INSERT, tabla)
+
+    def imprimir_tabla_descompostura(self, num_maquinas):
+        ventana2 = CTkToplevel()
+        ventana2.title("Tabla de Descompostura")
+        ventana2.geometry("620x240+1100+450")
+        ventana2.configure(bg="#FFFFFF")
+        area_texto = scrolledtext.ScrolledText(ventana2, width=600, height=300)
+        area_texto.pack()
+
+        maquinas = range(1, num_maquinas + 1)
+        probabilidades = self.lista_descompostura
+        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        datos_tabla = []
+        for i in range(num_maquinas):
+            prob = probabilidades[i]
+            acum = probabilidad_acumulada[i]
+            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin = acum
+            datos_tabla.append([maquinas[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
+
+        titulos_tabla = ["MAQUINAS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        area_texto.insert(tk.INSERT, tabla)
+
+
 
     def temporadas(self):
         self.resetear_frame_caracteristicas()
@@ -570,183 +674,6 @@ class Gimnasio:
 
         self.lista_temporadas.clear()
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
-
-
-    def datos_historicos(self):
-        self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
-        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
-        self.frame_caracteristicas.columnconfigure(1, weight=1)
-        self.frame_caracteristicas.columnconfigure(2, weight=1)
-
-        # Probabilidad de atención
-        self.check_atencion=StringVar()
-        self.checkbutton_atencion=Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de atención", variable=self.check_atencion, onvalue="Si", offvalue="No")
-        self.checkbutton_atencion.deselect()
-        self.checkbutton_atencion.grid(row=4, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-
-        self.minutos1=LtkLabel(self.frame_caracteristicas, texto="Minutos 1:")
-        self.minutos1.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry1=LtkEntryLine(self.frame_caracteristicas, ".05")
-        self.entry1.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos2=LtkLabel(self.frame_caracteristicas, texto="Minutos 2:")
-        self.minutos2.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry2=LtkEntryLine(self.frame_caracteristicas, ".05")
-        self.entry2.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos3=LtkLabel(self.frame_caracteristicas, texto="Minutos 3:")
-        self.minutos3.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry3=LtkEntryLine(self.frame_caracteristicas, ".1")
-        self.entry3.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos4=LtkLabel(self.frame_caracteristicas, texto="Minutos 4:")
-        self.minutos4.grid(row=8, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry4=LtkEntryLine(self.frame_caracteristicas, ".15")
-        self.entry4.grid(row=8, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos5=LtkLabel(self.frame_caracteristicas, texto="Minutos 5:")
-        self.minutos5.grid(row=9, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry5=LtkEntryLine(self.frame_caracteristicas, ".25")
-        self.entry5.grid(row=9, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos6=LtkLabel(self.frame_caracteristicas, texto="Minutos 6:")
-        self.minutos6.grid(row=10, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry6=LtkEntryLine(self.frame_caracteristicas, ".25")
-        self.entry6.grid(row=10, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.minutos7=LtkLabel(self.frame_caracteristicas, texto="Minutos 7:")
-        self.minutos7.grid(row=11, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry7=LtkEntryLine(self.frame_caracteristicas, ".15")
-        self.entry7.grid(row=11, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
-
-        # Probabilidad de descompostura de máquinas
-        self.check_descompostura=StringVar()
-        self.checkbutton_descompostura=Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de descompostura de máquinas", variable=self.check_descompostura, onvalue="Si", offvalue="No")
-        self.checkbutton_descompostura.deselect()
-        self.checkbutton_descompostura.grid(row=12, column=0, padx=(10,10), pady=(5, 2), sticky="w")
-
-        self.maquina1=LtkLabel(self.frame_caracteristicas, texto="Maquina 1:")
-        self.maquina1.grid(row=13, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_m1=LtkEntryLine(self.frame_caracteristicas, ".15")
-        self.entry_m1.grid(row=13, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.maquina2=LtkLabel(self.frame_caracteristicas, texto="Maquina 2:")
-        self.maquina2.grid(row=14, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_m2=LtkEntryLine(self.frame_caracteristicas, ".20")
-        self.entry_m2.grid(row=14, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.maquina3=LtkLabel(self.frame_caracteristicas, texto="Maquina 3:")
-        self.maquina3.grid(row=15, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_m3=LtkEntryLine(self.frame_caracteristicas, ".30")
-        self.entry_m3.grid(row=15, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.maquina4=LtkLabel(self.frame_caracteristicas, texto="Maquina 4:")
-        self.maquina4.grid(row=16, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_m4=LtkEntryLine(self.frame_caracteristicas, ".20")
-        self.entry_m4.grid(row=16, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.maquina5=LtkLabel(self.frame_caracteristicas, texto="Maquina 5:")
-        self.maquina5.grid(row=17, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.entry_m5=LtkEntryLine(self.frame_caracteristicas, ".15")
-        self.entry_m5.grid(row=17, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
-
-
-        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(), "Guardar Ajustes Y Ver Tablas De Probabilidad")
-        boton_guardar_y_ver.grid(row=18, column=0, columnspan=3, pady=(5, 10))
-
-
-    def guardar_ajustes9(self):
-        if self.check_atencion.get() == "Si":
-            minutos1 = self.entry1.get()
-            minutos2 = self.entry2.get()
-            minutos3 = self.entry3.get()
-            minutos4 = self.entry4.get()
-            minutos5 = self.entry5.get()
-            minutos6 = self.entry6.get()
-            minutos7 = self.entry7.get()
-
-            self.lista_atencion.clear()
-            self.lista_atencion.append([float(minutos1), float(minutos2), float(minutos3), float(minutos4), float(minutos5), float(minutos6), float(minutos7)])
-
-            minutos = [minutos1, minutos2, minutos3, minutos4, minutos5, minutos6, minutos7]
-            self.lista_atencion1 = {'minutos': [float(m) for m in minutos]}
-        else:
-            self.lista_atencion1 = {'minutos': [0.05, 0.05, 0.1, 0.15, 0.25, 0.25, 0.15]}
-
-        self.imprimir_tabla_atencion()
-
-        if self.check_descompostura.get() == "Si":
-            maquina1 = self.entry_m1.get()
-            maquina2 = self.entry_m2.get()
-            maquina3 = self.entry_m3.get()
-            maquina4 = self.entry_m4.get()
-            maquina5 = self.entry_m5.get()
-
-            self.lista_descompostura.clear()
-            self.lista_descompostura.append([float(maquina1), float(maquina2), float(maquina3), float(maquina4), float(maquina5)])
-
-            maquinas = [maquina1, maquina2, maquina3, maquina4, maquina5]
-            self.lista_descompostura1 = {'maquinas': [float(m) for m in maquinas]}
-        else:
-            self.lista_descompostura1 = {'maquinas': [0.15, 0.20, 0.30, 0.20, 0.15]}
-
-
-        self.imprimir_tabla_descompostura()
-
-
-    
-
-    def imprimir_tabla_atencion(self):
-        ventana1 = CTkToplevel()
-        ventana1.title("Tabla de Atención")
-        ventana1.geometry("610x300+1100+100")
-        ventana1.configure(bg="#FFFFFF")
-        area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
-        area_texto.pack()
-        
-
-        if 'minutos' in self.lista_atencion1:
-            minutos = range(1, 8)
-            probabilidades = self.lista_atencion1['minutos']
-            probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
-            datos_tabla = []
-            for i in range(7):
-                prob = probabilidades[i] if i < len(probabilidades) else 0.0
-                acum = probabilidad_acumulada[i] if i < len(probabilidades) else probabilidad_acumulada[-1]
-                rango_inicio = probabilidad_acumulada[i - 1]+0.0001 if i > 0 else 0.0
-                rango_fin = acum
-                datos_tabla.append([minutos[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
-            
-            titulos_tabla = ["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-            tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
-            area_texto.insert(tk.INSERT, tabla)
-        else:
-            area_texto.insert(tk.INSERT, "No se ingresaron listas para la probabilidad de atención.\n")
-
-        
-
-    def imprimir_tabla_descompostura(self):
-        ventana2 = CTkToplevel()
-        ventana2.title("Tabla de Descompostura")
-        ventana2.geometry("620x240+1100+450")
-        ventana2.configure(bg="#FFFFFF")
-        area_texto = scrolledtext.ScrolledText(ventana2, width=600, height=300)
-        area_texto.pack()
-        
-
-        if 'maquinas' in self.lista_descompostura1:
-            maquinas = range(1, 6)
-            probabilidades = self.lista_descompostura1['maquinas']
-            probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
-            datos_tabla = []
-            for i in range(5):
-                prob = probabilidades[i] if i < len(probabilidades) else 0.0
-                acum = probabilidad_acumulada[i] if i < len(probabilidades) else probabilidad_acumulada[-1]
-                rango_inicio = probabilidad_acumulada[i - 1]+0.0001 if i > 0 else 0.0
-                rango_fin = acum
-                datos_tabla.append([maquinas[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
-
-            titulos_tabla = ["MAQUINAS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-            tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
-            area_texto.insert(tk.INSERT, tabla)
-        else:
-            area_texto.insert(tk.INSERT, "No se ingresaron listas para la probabilidad de descompostura de máquinas.\n")
-
-
 
 Gimnasio()
 
