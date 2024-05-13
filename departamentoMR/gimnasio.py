@@ -1,4 +1,6 @@
 from customtkinter import *
+import tkinter
+from tkinter import Checkbutton, Entry, StringVar
 from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
@@ -15,17 +17,19 @@ class Gimnasio:
         self.lista_personal=[[3, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios=[["6:00", "22:00", 1, 15, 10, 10]]
-        self.lista_usuarios=[[100, 50, 50]]
+        self.lista_usuarios=[[100, 50, 50, 750]]
         self.lista_maquinas=[[50, 20, 30]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
-        self.lista_banos=[[6, 3, 3]]
+        self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
-        self.lista_temporadas=[["True","False","False"]]
+        self.lista_temporadas=[[True,False,False]]
+        self.lista_atencion=[["0.05","0.05","0.10","0.15","0.25","0.25","0.15"]]
+        self.lista_descompostura=[["0.15","0.20","0.30","0.20","0.15"]]
 
 
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
-        self.ventana.geometry("900x600+350+100")
+        self.ventana.geometry("750x800+450+100")
         self.ventana.configure(bg="#FFFFFF")
         self.ventana.columnconfigure(0, weight=1)
         self.ventana.rowconfigure(0, weight=1)
@@ -63,12 +67,14 @@ class Gimnasio:
         boton_maquinas.grid(row=4, column=0, padx=(5,5), pady=(5, 5))
         boton_servicios_generales=LtkButtonLine(frame_opciones, self.servicios_generales, "Servicios Generales")
         boton_servicios_generales.grid(row=5, column=0, padx=(5,5), pady=(5, 5))
-        boton_banos=LtkButtonLine(frame_opciones, self.banos, "Banos")
-        boton_banos.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
+        boton_baños=LtkButtonLine(frame_opciones, self.baños, "Baños")
+        boton_baños.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
         boton_vestidores=LtkButtonLine(frame_opciones, self.vestidores, "Vestidores")
         boton_vestidores.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
         boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
         boton_temporadas.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
+        boton_datos_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Historicos")
+        boton_datos_historicos.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
 
 
         # Frame de características
@@ -85,8 +91,12 @@ class Gimnasio:
         self.usuarios()
         self.maquinas()
         self.servicios_generales()
-        self.banos()
+        self.baños()
         self.vestidores()
+        self.temporadas()
+        self.datos_historicos()
+        
+
 
 
         # Frame para el botón de guardar
@@ -119,11 +129,12 @@ class Gimnasio:
             "horario_cierre": self.lista_horarios[0][1],
             "tiempo_sesion_usuarios": self.lista_horarios[0][2],
             "tiempo_uso_maquina": self.lista_horarios[0][3],
-            "tiempo_uso_bano": self.lista_horarios[0][4],
+            "tiempo_uso_baño": self.lista_horarios[0][4],
             "tiempo_uso_vestidor": self.lista_horarios[0][5],
             "capacidad_gym": self.lista_usuarios[0][0],
             "cantidad_mujeres": self.lista_usuarios[0][1],
             "cantidad_hombres": self.lista_usuarios[0][2],
+            "cobro_mensual_usuario": self.lista_usuarios[0][3],
             "cantidad_maquinas": self.lista_maquinas[0][0],
             "cantidad_maquinas_cardio": self.lista_maquinas[0][1],
             "cantidad_maquinas_musculacion": self.lista_maquinas[0][2],
@@ -132,16 +143,17 @@ class Gimnasio:
             "pago_mensual_internet": self.lista_servicios_generales[0][2],
             "pago_mensual_spotify": self.lista_servicios_generales[0][3],
             "pago_mensual_renta_local": self.lista_servicios_generales[0][4],
-            "cantidad_banos": self.lista_banos[0][0],
-            "cantidad_banos_mujeres": self.lista_banos[0][1],
-            "cantidad_banos_hombres": self.lista_banos[0][2],
+            "cantidad_baños": self.lista_baños[0][0],
+            "cantidad_baños_mujeres": self.lista_baños[0][1],
+            "cantidad_baños_hombres": self.lista_baños[0][2],
             "cantidad_vestidores": self.lista_vestidores[0][0],
             "cantidad_vestidores_mujeres": self.lista_vestidores[0][1],
             "cantidad_vestidores_hombres": self.lista_vestidores[0][2],
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
-            "temporada_baja": self.lista_temporadas[0][2]
-
+            "temporada_baja": self.lista_temporadas[0][2],
+            "atencion":[self.lista_atencion[0][0],self.lista_atencion[0][1],self.lista_atencion[0][2],self.lista_atencion[0][3],self.lista_atencion[0][4],self.lista_atencion[0][5],self.lista_atencion[0][6]],
+            "descompostura":[self.lista_descompostura[0][0],self.lista_descompostura[0][1],self.lista_descompostura[0][2],self.lista_descompostura[0][3],self.lista_descompostura[0][4]],
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -277,8 +289,8 @@ class Gimnasio:
         self.etiqueta_tiempo_uso_maquina.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_maquina=LtkEntryLine(self.frame_caracteristicas, "15")
         self.tiempo_uso_maquina.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_bano=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Bano (Minutos):")
-        self.etiqueta_tiempo_uso_bano.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.etiqueta_tiempo_uso_baño=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Baño (Minutos):")
+        self.etiqueta_tiempo_uso_baño.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_bano=LtkEntryLine(self.frame_caracteristicas, "10")
         self.tiempo_uso_bano.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_tiempo_uso_vestidor=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Vestidor (Minutos):")
@@ -326,6 +338,10 @@ class Gimnasio:
         self.etiqueta_cantidad_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_hombres=LtkEntryLine(self.frame_caracteristicas, "50")
         self.cantidad_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_cobro_mensual_usuario=LtkLabel(self.frame_caracteristicas, texto="Cobro Mensual Por Usuario:")
+        self.etiqueta_cobro_mensual_usuario.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cobro_mensual_usuario=LtkEntryLine(self.frame_caracteristicas, "750")
+        self.cobro_mensual_usuario.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
 
 
@@ -337,11 +353,13 @@ class Gimnasio:
         capacidad_gym = self.capacidad_gym.get()
         cantidad_mujeres = self.cantidad_mujeres.get()
         cantidad_hombres = self.cantidad_hombres.get()
+        cobro_mensual_usuario = self.cobro_mensual_usuario.get()
 
         self.lista_usuarios.clear()
         self.lista_usuarios.append([int(capacidad_gym), 
                                     int(cantidad_mujeres), 
-                                    int(cantidad_hombres)])
+                                    int(cantidad_hombres),
+                                    int(cobro_mensual_usuario)])
 
 
 
@@ -431,39 +449,39 @@ class Gimnasio:
         
 
 
-    def banos(self):
+    def baños(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Banos")
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Baños")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_banos = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Banos:")
-        self.etiqueta_banos.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_banos = LtkEntryLine(self.frame_caracteristicas, "6")
-        self.cantidad_banos.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_banos_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Banos Para Mujeres:")
-        self.etiqueta_banos_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_banos_mujeres=LtkEntryLine(self.frame_caracteristicas, "3")
-        self.cantidad_banos_mujeres.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_banos_hombres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Banos Para Hombres:")
-        self.etiqueta_banos_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_banos_hombres=LtkEntryLine(self.frame_caracteristicas, "3")
-        self.cantidad_banos_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_baños = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños:")
+        self.etiqueta_baños.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_baños = LtkEntryLine(self.frame_caracteristicas, "6")
+        self.cantidad_baños.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_baños_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños Para Mujeres:")
+        self.etiqueta_baños_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_baños_mujeres=LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_baños_mujeres.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_baños_hombres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños Para Hombres:")
+        self.etiqueta_baños_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_baños_hombres=LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_baños_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
     
     def guardar_ajustes6(self):
-        cantidad_banos = self.cantidad_banos.get()
-        cantidad_banos_mujeres = self.cantidad_banos_mujeres.get()
-        cantidad_banos_hombres = self.cantidad_banos_hombres.get()
+        cantidad_baños = self.cantidad_baños.get()
+        cantidad_baños_mujeres = self.cantidad_baños_mujeres.get()
+        cantidad_baños_hombres = self.cantidad_baños_hombres.get()
 
-        self.lista_banos.clear()
-        self.lista_banos.append([int(cantidad_banos), 
-                                int(cantidad_banos_mujeres), 
-                                int(cantidad_banos_hombres)])
+        self.lista_baños.clear()
+        self.lista_baños.append([int(cantidad_baños), 
+                                int(cantidad_baños_mujeres), 
+                                int(cantidad_baños_hombres)])
 
 
 
@@ -511,33 +529,162 @@ class Gimnasio:
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_temporada_regular=LtkLabel(self.frame_caracteristicas, texto="Temporada Regular:")
-        self.etiqueta_temporada_regular.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.temporada_regular=LtkEntryLine(self.frame_caracteristicas, "True")
-        self.temporada_regular.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_temporada_alta=LtkLabel(self.frame_caracteristicas, texto="Temporada Alta:")
-        self.etiqueta_temporada_alta.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.temporada_alta=LtkEntryLine(self.frame_caracteristicas, "False")
-        self.temporada_alta.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_temporada_baja=LtkLabel(self.frame_caracteristicas, texto="Temporada Baja:")
-        self.etiqueta_temporada_baja.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.temporada_baja=LtkEntryLine(self.frame_caracteristicas, "False")
-        self.temporada_baja.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        self.temporada_var = tkinter.IntVar()
+
+        self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
+        self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
+        self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
+        self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+
+
+
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
+
     def guardar_ajustes8(self):
-        temporada_regular = self.temporada_regular.get()
-        temporada_alta = self.temporada_alta.get()
-        temporada_baja = self.temporada_baja.get()
+        seleccion = self.temporada_var.get()
+
+        if seleccion == 1:
+            temporada_regular = True
+            temporada_alta = False
+            temporada_baja = False
+        elif seleccion == 2:
+            temporada_regular = False
+            temporada_alta = True
+            temporada_baja = False
+        elif seleccion == 3:
+            temporada_regular = False
+            temporada_alta = False
+            temporada_baja = True
+        else:
+            temporada_regular = True
+            temporada_alta = False
+            temporada_baja = False
 
         self.lista_temporadas.clear()
-        self.lista_temporadas.append([temporada_regular, 
-                                    temporada_alta, 
-                                    temporada_baja])
+        self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
+
+    def datos_historicos(self):
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        # Probabilidad de atención
+        self.check_atencion = StringVar()
+        self.checkbutton_atencion = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de atención", variable=self.check_atencion, onvalue="Si", offvalue="No")
+        self.checkbutton_atencion.deselect()
+        self.checkbutton_atencion.grid(row=4, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.minutos1=LtkLabel(self.frame_caracteristicas, texto="Minutos 1:")
+        self.minutos1.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry1=LtkEntryLine(self.frame_caracteristicas, ".05")
+        self.entry1.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos2=LtkLabel(self.frame_caracteristicas, texto="Minutos 2:")
+        self.minutos2.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry2=LtkEntryLine(self.frame_caracteristicas, ".05")
+        self.entry2.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos3=LtkLabel(self.frame_caracteristicas, texto="Minutos 3:")
+        self.minutos3.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry3=LtkEntryLine(self.frame_caracteristicas, ".1")
+        self.entry3.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos4=LtkLabel(self.frame_caracteristicas, texto="Minutos 4:")
+        self.minutos4.grid(row=8, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry4=LtkEntryLine(self.frame_caracteristicas, ".15")
+        self.entry4.grid(row=8, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos5=LtkLabel(self.frame_caracteristicas, texto="Minutos 5:")
+        self.minutos5.grid(row=9, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry5=LtkEntryLine(self.frame_caracteristicas, ".25")
+        self.entry5.grid(row=9, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos6=LtkLabel(self.frame_caracteristicas, texto="Minutos 6:")
+        self.minutos6.grid(row=10, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry6=LtkEntryLine(self.frame_caracteristicas, ".25")
+        self.entry6.grid(row=10, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.minutos7=LtkLabel(self.frame_caracteristicas, texto="Minutos 7:")
+        self.minutos7.grid(row=11, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry7=LtkEntryLine(self.frame_caracteristicas, ".15")
+        self.entry7.grid(row=11, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+        # Probabilidad de descompostura de máquinas
+        self.check_descompostura = StringVar()
+        self.checkbutton_descompostura = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de descompostura de máquinas", variable=self.check_descompostura, onvalue="Si", offvalue="No")
+        self.checkbutton_descompostura.deselect()
+        self.checkbutton_descompostura.grid(row=12, column=0, padx=(10,10), pady=(5, 2), sticky="w")
+
+        self.maquina1=LtkLabel(self.frame_caracteristicas, texto="Maquina 1:")
+        self.maquina1.grid(row=13, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry_m1=LtkEntryLine(self.frame_caracteristicas, ".15")
+        self.entry_m1.grid(row=13, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.maquina2=LtkLabel(self.frame_caracteristicas, texto="Maquina 2:")
+        self.maquina2.grid(row=14, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry_m2=LtkEntryLine(self.frame_caracteristicas, ".20")
+        self.entry_m2.grid(row=14, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.maquina3=LtkLabel(self.frame_caracteristicas, texto="Maquina 3:")
+        self.maquina3.grid(row=15, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry_m3=LtkEntryLine(self.frame_caracteristicas, ".30")
+        self.entry_m3.grid(row=15, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.maquina4=LtkLabel(self.frame_caracteristicas, texto="Maquina 4:")
+        self.maquina4.grid(row=16, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry_m4=LtkEntryLine(self.frame_caracteristicas, ".20")
+        self.entry_m4.grid(row=16, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.maquina5=LtkLabel(self.frame_caracteristicas, texto="Maquina 5:")
+        self.maquina5.grid(row=17, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.entry_m5=LtkEntryLine(self.frame_caracteristicas, ".15")
+        self.entry_m5.grid(row=17, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+
+        boton_guardar_y_ver = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver.grid(row=18, column=0, columnspan=3, pady=(5, 10))
+
+
+    def guardar_ajustes9(self):
+        if self.check_atencion.get() == "Si":
+            minutos1=self.entry1.get()
+            minutos2=self.entry2.get()
+            minutos3=self.entry3.get()
+            minutos4=self.entry4.get()
+            minutos5=self.entry5.get()
+            minutos6=self.entry6.get()
+            minutos7=self.entry7.get()
+            self.lista_atencion.clear()
+            self.lista_atencion.append([float(minutos1),float(minutos2),float(minutos3),float(minutos4),float(minutos5),float(minutos6),float(minutos7)])
+    
+
+        else:
+            self.lista_atencion = self.lista_atencion
+
+        
+
+        if self.check_descompostura.get() == "Si":
+            maquina1=self.entry_m1.get()
+            maquina2=self.entry_m2.get()
+            maquina3=self.entry_m3.get()
+            maquina4=self.entry_m4.get()
+            maquina5=self.entry_m5.get()
+
+            self.lista_descompostura.clear()
+            self.lista_descompostura.append([float(maquina1),float(maquina2),float(maquina3),float(maquina4),float(maquina5)])
+
+        else:
+            self.lista_descompostura = self.lista_descompostura
+
+        
+        
 
 
 
 Gimnasio()
+
+
+
+
+
