@@ -1,7 +1,7 @@
 {
     "cantidad_recepcionistas": 3,
     "cantidad_personal_limpieza": 3,
-    "cantidad_gerentes": 3,
+    "cantidad_gerentes": 1,
     "cantidad_entrenadores": 3,
     "cantidad_personal_tecnico": 3,
     "sueldo_mensual_gerente": 4000,
@@ -33,9 +33,18 @@
     "cantidad_vestidores": 6,
     "cantidad_vestidores_mujeres": 3,
     "cantidad_vestidores_hombres": 3,
-    "temporada_regular": true,
-    "temporada_alta": false,
-    "temporada_baja": false,
+    "temporada_regular": [
+        0.15,
+        false
+    ],
+    "temporada_alta": [
+        0.7,
+        true
+    ],
+    "temporada_baja": [
+        0.15,
+        false
+    ],
     "atencion": [
         "0.05",
         "0.05",
