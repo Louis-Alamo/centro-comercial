@@ -38,7 +38,7 @@ class Gimnasio:
         self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
         
         # Frame para el título
-        frame_titulo = CTkFrame(self.ventana)
+        frame_titulo=CTkFrame(self.ventana)
         frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
         self.ventana.rowconfigure(0, weight=1)
@@ -73,12 +73,12 @@ class Gimnasio:
         boton_vestidores.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
         boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
         boton_temporadas.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
-        boton_datos_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Historicos")
-        boton_datos_historicos.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
+        boton_lista_historicos=LtkButtonLine(frame_opciones, self.lista_historicos, "lista Historicos")
+        boton_lista_historicos.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
 
 
         # Frame de características
-        self.frame_caracteristicas = CTkFrame(self.ventana)
+        self.frame_caracteristicas=CTkFrame(self.ventana)
         self.frame_caracteristicas.grid(row=1, column=1, sticky="nsew")
         self.ventana.columnconfigure(1, weight=25)
         self.ventana.rowconfigure(1, weight=2)
@@ -94,17 +94,17 @@ class Gimnasio:
         self.baños()
         self.vestidores()
         self.temporadas()
-        self.datos_historicos()
+        self.lista_historicos()
         
 
 
 
         # Frame para el botón de guardar
-        frame_guardar = CTkFrame(self.ventana)
+        frame_guardar=CTkFrame(self.ventana)
         frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
         self.ventana.rowconfigure(2, weight=1)
-        boton_guardar = LtkButtonFill(frame_guardar, self.guardar_informacion, "Guardar Y Salir De Configuracion Gimnasio")
+        boton_guardar=LtkButtonFill(frame_guardar, self.guardar_informacion, "Guardar Y Salir De Configuracion Gimnasio")
         boton_guardar.grid(row=0, column=0, padx=100, pady=40, sticky="nsew")
         frame_guardar.columnconfigure(0, weight=1)
         frame_guardar.rowconfigure(0, weight=1)
@@ -153,7 +153,8 @@ class Gimnasio:
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
             "atencion":[self.lista_atencion[0][0],self.lista_atencion[0][1],self.lista_atencion[0][2],self.lista_atencion[0][3],self.lista_atencion[0][4],self.lista_atencion[0][5],self.lista_atencion[0][6]],
-            "descompostura":[self.lista_descompostura[0][0],self.lista_descompostura[0][1],self.lista_descompostura[0][2],self.lista_descompostura[0][3],self.lista_descompostura[0][4]],
+            "descompostura":[self.lista_descompostura[0][0],self.lista_descompostura[0][1],self.lista_descompostura[0][2],self.lista_descompostura[0][3],self.lista_descompostura[0][4]]
+            
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -172,41 +173,41 @@ class Gimnasio:
     def personal(self):
         self.resetear_frame_caracteristicas()
     
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Personal")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Personal")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_recepcion = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Recepcionistas:")
+        self.etiqueta_recepcion=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Recepcionistas:")
         self.etiqueta_recepcion.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_recepcionistas = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_recepcionistas=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_recepcionistas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_personal_limpieza = LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal De limpieza:")
+        self.etiqueta_personal_limpieza=LtkLabel(self.frame_caracteristicas, texto="Cantidad Personal De limpieza:")
         self.etiqueta_personal_limpieza.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_personal_limpieza = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_personal_limpieza=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_personal_limpieza.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_gerentes = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Gerentes:")
+        self.etiqueta_gerentes=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Gerentes:")
         self.etiqueta_gerentes.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_gerentes = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_gerentes=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_gerentes.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_entrenadores = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Entrenadores:")
+        self.etiqueta_entrenadores=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Entrenadores:")
         self.etiqueta_entrenadores.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_entrenadores = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_entrenadores=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_entrenadores.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_personal_tecnico = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Personal Tecnico Y Limpieza:")
+        self.etiqueta_personal_tecnico=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Personal Tecnico Y Limpieza:")
         self.etiqueta_personal_tecnico.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_personal_tecnico = LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_personal_tecnico=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_personal_tecnico.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes(self):
-        cantidad_recepcionistas = self.cantidad_recepcionistas.get()
-        cantidad_personal_limpieza = self.cantidad_personal_limpieza.get()
-        cantidad_gerentes = self.cantidad_gerentes.get()
-        cantidad_entrenadores = self.cantidad_entrenadores.get()
-        cantidad_personal_tecnico = self.cantidad_personal_tecnico.get()
+        cantidad_recepcionistas=self.cantidad_recepcionistas.get()
+        cantidad_personal_limpieza=self.cantidad_personal_limpieza.get()
+        cantidad_gerentes=self.cantidad_gerentes.get()
+        cantidad_entrenadores=self.cantidad_entrenadores.get()
+        cantidad_personal_tecnico=self.cantidad_personal_tecnico.get()
 
         self.lista_personal.clear()
         self.lista_personal.append([int(cantidad_recepcionistas), 
@@ -220,18 +221,18 @@ class Gimnasio:
     def sueldos(self):
         self.resetear_frame_caracteristicas()
     
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Sueldo")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes Del Sueldo")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_sueldo_gerente = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Gerente:")
+        self.etiqueta_sueldo_gerente=LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Gerente:")
         self.etiqueta_sueldo_gerente.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.sueldo_mensual_gerente = LtkEntryLine(self.frame_caracteristicas, "4000")
+        self.sueldo_mensual_gerente=LtkEntryLine(self.frame_caracteristicas, "4000")
         self.sueldo_mensual_gerente.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_sueldo_entrenador = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Entrenador:")
+        self.etiqueta_sueldo_entrenador=LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Entrenador:")
         self.etiqueta_sueldo_entrenador.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.sueldo_mensual_entrenador = LtkEntryLine(self.frame_caracteristicas, "3000")
+        self.sueldo_mensual_entrenador=LtkEntryLine(self.frame_caracteristicas, "3000")
         self.sueldo_mensual_entrenador.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.sueldo_mensual_recepcionista=LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Recepcionista:")
         self.sueldo_mensual_recepcionista.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -246,16 +247,16 @@ class Gimnasio:
         self.sueldo_mensual_personal_tecnico=LtkEntryLine(self.frame_caracteristicas, "2000")
         self.sueldo_mensual_personal_tecnico.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
     def guardar_ajustes1(self):
-        sueldo_mensual_gerente = self.sueldo_mensual_gerente.get()
-        sueldo_mensual_entrenador = self.sueldo_mensual_entrenador.get()
-        sueldo_mensual_recepcionista = self.sueldo_mensual_recepcionista.get()
-        sueldo_mensual_personal_limpieza = self.sueldo_mensual_personal_limpieza.get()
-        sueldo_mensual_personal_tecnico = self.sueldo_mensual_personal_tecnico.get()
+        sueldo_mensual_gerente=self.sueldo_mensual_gerente.get()
+        sueldo_mensual_entrenador=self.sueldo_mensual_entrenador.get()
+        sueldo_mensual_recepcionista=self.sueldo_mensual_recepcionista.get()
+        sueldo_mensual_personal_limpieza=self.sueldo_mensual_personal_limpieza.get()
+        sueldo_mensual_personal_tecnico=self.sueldo_mensual_personal_tecnico.get()
 
         self.lista_sueldos.clear()
         self.lista_sueldos.append([int(sueldo_mensual_gerente), 
@@ -268,22 +269,22 @@ class Gimnasio:
     def horarios(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_horario_apertura = LtkLabel(self.frame_caracteristicas, texto="Horario De Apertura:") 
+        self.etiqueta_horario_apertura=LtkLabel(self.frame_caracteristicas, texto="Horario De Apertura:") 
         self.etiqueta_horario_apertura.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_apertura = LtkEntryLine(self.frame_caracteristicas, "6:00")
+        self.horario_apertura=LtkEntryLine(self.frame_caracteristicas, "6:00")
         self.horario_apertura.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario_cierre = LtkLabel(self.frame_caracteristicas, texto="Horario De Cierre:")
+        self.etiqueta_horario_cierre=LtkLabel(self.frame_caracteristicas, texto="Horario De Cierre:")
         self.etiqueta_horario_cierre.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_cierre = LtkEntryLine(self.frame_caracteristicas, "22:00")
+        self.horario_cierre=LtkEntryLine(self.frame_caracteristicas, "22:00")
         self.horario_cierre.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_sesion_usuarios = LtkLabel(self.frame_caracteristicas, texto="Tiempo Sesion De Usuarios (Horas):")
+        self.etiqueta_tiempo_sesion_usuarios=LtkLabel(self.frame_caracteristicas, texto="Tiempo Sesion De Usuarios (Horas):")
         self.etiqueta_tiempo_sesion_usuarios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_sesion_usuarios = LtkEntryLine(self.frame_caracteristicas, "1")
+        self.tiempo_sesion_usuarios=LtkEntryLine(self.frame_caracteristicas, "1")
         self.tiempo_sesion_usuarios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_tiempo_uso_maquina=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Maquina (Minutos):")
         self.etiqueta_tiempo_uso_maquina.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -298,16 +299,16 @@ class Gimnasio:
         self.tiempo_uso_vestidor=LtkEntryLine(self.frame_caracteristicas, "10")
         self.tiempo_uso_vestidor.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes2(self):
-        horario_apertura = self.horario_apertura.get()
-        horario_cierre = self.horario_cierre.get()
-        tiempo_sesion_usuarios = self.tiempo_sesion_usuarios.get()
-        tiempo_uso_maquina = self.tiempo_uso_maquina.get()
-        tiempo_uso_bano = self.tiempo_uso_bano.get()
-        tiempo_uso_vestidor = self.tiempo_uso_vestidor.get()
+        horario_apertura=self.horario_apertura.get()
+        horario_cierre=self.horario_cierre.get()
+        tiempo_sesion_usuarios=self.tiempo_sesion_usuarios.get()
+        tiempo_uso_maquina=self.tiempo_uso_maquina.get()
+        tiempo_uso_bano=self.tiempo_uso_bano.get()
+        tiempo_uso_vestidor=self.tiempo_uso_vestidor.get()
 
         self.lista_horarios.clear()
         self.lista_horarios.append([horario_apertura, 
@@ -321,14 +322,14 @@ class Gimnasio:
     def usuarios(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Usuarios")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Usuarios")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_capacidad_gym = LtkLabel(self.frame_caracteristicas, texto="Capacidad De Usuarios En El Gimnasio:")
+        self.etiqueta_capacidad_gym=LtkLabel(self.frame_caracteristicas, texto="Capacidad De Usuarios En El Gimnasio:")
         self.etiqueta_capacidad_gym.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.capacidad_gym = LtkEntryLine(self.frame_caracteristicas, "100")
+        self.capacidad_gym=LtkEntryLine(self.frame_caracteristicas, "100")
         self.capacidad_gym.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_cantidad_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Mujeres:")
         self.etiqueta_cantidad_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -345,15 +346,15 @@ class Gimnasio:
 
 
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes3(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes3(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
     def guardar_ajustes3(self):
-        capacidad_gym = self.capacidad_gym.get()
-        cantidad_mujeres = self.cantidad_mujeres.get()
-        cantidad_hombres = self.cantidad_hombres.get()
-        cobro_mensual_usuario = self.cobro_mensual_usuario.get()
+        capacidad_gym=self.capacidad_gym.get()
+        cantidad_mujeres=self.cantidad_mujeres.get()
+        cantidad_hombres=self.cantidad_hombres.get()
+        cobro_mensual_usuario=self.cobro_mensual_usuario.get()
 
         self.lista_usuarios.clear()
         self.lista_usuarios.append([int(capacidad_gym), 
@@ -367,31 +368,31 @@ class Gimnasio:
     def maquinas(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Maquinas")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Maquinas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_maquinas = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas:")
+        self.etiqueta_maquinas=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas:")
         self.etiqueta_maquinas.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_maquinas = LtkEntryLine(self.frame_caracteristicas, "50")
+        self.cantidad_maquinas=LtkEntryLine(self.frame_caracteristicas, "50")
         self.cantidad_maquinas.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_maquinas_cardio = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas De Cardio:")
+        self.etiqueta_maquinas_cardio=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas De Cardio:")
         self.etiqueta_maquinas_cardio.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_maquinas_cardio = LtkEntryLine(self.frame_caracteristicas, "20")
+        self.cantidad_maquinas_cardio=LtkEntryLine(self.frame_caracteristicas, "20")
         self.cantidad_maquinas_cardio.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_maquinas_musculacion = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas De Musculacion:")
+        self.etiqueta_maquinas_musculacion=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Maquinas De Musculacion:")
         self.etiqueta_maquinas_musculacion.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_maquinas_musculacion = LtkEntryLine(self.frame_caracteristicas, "30")
+        self.cantidad_maquinas_musculacion=LtkEntryLine(self.frame_caracteristicas, "30")
         self.cantidad_maquinas_musculacion.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes4(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes4(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes4(self):
-        cantidad_maquinas = self.cantidad_maquinas.get()
-        cantidad_maquinas_cardio = self.cantidad_maquinas_cardio.get()
-        cantidad_maquinas_musculacion = self.cantidad_maquinas_musculacion.get()
+        cantidad_maquinas=self.cantidad_maquinas.get()
+        cantidad_maquinas_cardio=self.cantidad_maquinas_cardio.get()
+        cantidad_maquinas_musculacion=self.cantidad_maquinas_musculacion.get()
 
         self.lista_maquinas.clear()
         self.lista_maquinas.append([int(cantidad_maquinas), 
@@ -404,41 +405,41 @@ class Gimnasio:
     def servicios_generales(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Servicios Generales")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Servicios Generales")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_pago_mensual_luz = LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Luz:")
+        self.etiqueta_pago_mensual_luz=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Luz:")
         self.etiqueta_pago_mensual_luz.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.pago_mensual_luz = LtkEntryLine(self.frame_caracteristicas, "300")
+        self.pago_mensual_luz=LtkEntryLine(self.frame_caracteristicas, "300")
         self.pago_mensual_luz.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_pago_mensual_agua = LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Agua:")
+        self.etiqueta_pago_mensual_agua=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Agua:")
         self.etiqueta_pago_mensual_agua.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.pago_mensual_agua = LtkEntryLine(self.frame_caracteristicas, "200")
+        self.pago_mensual_agua=LtkEntryLine(self.frame_caracteristicas, "200")
         self.pago_mensual_agua.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_pago_mensual_internet = LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Internet Y Telefono:")
+        self.etiqueta_pago_mensual_internet=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Internet Y Telefono:")
         self.etiqueta_pago_mensual_internet.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.pago_mensual_internet = LtkEntryLine(self.frame_caracteristicas, "420")
+        self.pago_mensual_internet=LtkEntryLine(self.frame_caracteristicas, "420")
         self.pago_mensual_internet.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_pago_mensual_spotify = LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Spotify:")
+        self.etiqueta_pago_mensual_spotify=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Spotify:")
         self.etiqueta_pago_mensual_spotify.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.pago_mensual_spotify = LtkEntryLine(self.frame_caracteristicas, "200")
+        self.pago_mensual_spotify=LtkEntryLine(self.frame_caracteristicas, "200")
         self.pago_mensual_spotify.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.pago_mensual_renta_local = LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Renta Del Local:")
+        self.pago_mensual_renta_local=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Renta Del Local:")
         self.pago_mensual_renta_local.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.pago_mensual_renta_local = LtkEntryLine(self.frame_caracteristicas, "2000")
+        self.pago_mensual_renta_local=LtkEntryLine(self.frame_caracteristicas, "2000")
         self.pago_mensual_renta_local.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes5(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes5(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
     
     def guardar_ajustes5(self):
-        pago_mensual_luz = self.pago_mensual_luz.get()
-        pago_mensual_agua = self.pago_mensual_agua.get()
-        pago_mensual_internet = self.pago_mensual_internet.get()
-        pago_mensual_spotify = self.pago_mensual_spotify.get()
-        pago_mensual_renta_local = self.pago_mensual_renta_local.get()
+        pago_mensual_luz=self.pago_mensual_luz.get()
+        pago_mensual_agua=self.pago_mensual_agua.get()
+        pago_mensual_internet=self.pago_mensual_internet.get()
+        pago_mensual_spotify=self.pago_mensual_spotify.get()
+        pago_mensual_renta_local=self.pago_mensual_renta_local.get()
 
         self.lista_servicios_generales.clear()
         self.lista_servicios_generales.append([int(pago_mensual_luz), 
@@ -452,14 +453,14 @@ class Gimnasio:
     def baños(self):
         self.resetear_frame_caracteristicas()
 
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Baños")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Baños")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_baños = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños:")
+        self.etiqueta_baños=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños:")
         self.etiqueta_baños.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_baños = LtkEntryLine(self.frame_caracteristicas, "6")
+        self.cantidad_baños=LtkEntryLine(self.frame_caracteristicas, "6")
         self.cantidad_baños.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_baños_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños Para Mujeres:")
         self.etiqueta_baños_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -470,13 +471,13 @@ class Gimnasio:
         self.cantidad_baños_hombres=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_baños_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
     
     def guardar_ajustes6(self):
-        cantidad_baños = self.cantidad_baños.get()
-        cantidad_baños_mujeres = self.cantidad_baños_mujeres.get()
-        cantidad_baños_hombres = self.cantidad_baños_hombres.get()
+        cantidad_baños=self.cantidad_baños.get()
+        cantidad_baños_mujeres=self.cantidad_baños_mujeres.get()
+        cantidad_baños_hombres=self.cantidad_baños_hombres.get()
 
         self.lista_baños.clear()
         self.lista_baños.append([int(cantidad_baños), 
@@ -488,14 +489,14 @@ class Gimnasio:
 
     def vestidores(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Vestidores")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Vestidores")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_vestidores = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Vestidores:")
+        self.etiqueta_vestidores=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Vestidores:")
         self.etiqueta_vestidores.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_vestidores = LtkEntryLine(self.frame_caracteristicas, "10")
+        self.cantidad_vestidores=LtkEntryLine(self.frame_caracteristicas, "10")
         self.cantidad_vestidores.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_vestidores_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Vestidores Para Mujeres:")
         self.etiqueta_vestidores_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -506,13 +507,13 @@ class Gimnasio:
         self.cantidad_vestidores_hombres=LtkEntryLine(self.frame_caracteristicas, "5")
         self.cantidad_vestidores_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes7(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes7(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
     
     def guardar_ajustes7(self):
-        cantidad_vestidores = self.cantidad_vestidores.get()
-        cantidad_vestidores_mujeres = self.cantidad_vestidores_mujeres.get()
-        cantidad_vestidores_hombres = self.cantidad_vestidores_hombres.get()
+        cantidad_vestidores=self.cantidad_vestidores.get()
+        cantidad_vestidores_mujeres=self.cantidad_vestidores_mujeres.get()
+        cantidad_vestidores_hombres=self.cantidad_vestidores_hombres.get()
 
         self.lista_vestidores.clear()
         self.lista_vestidores.append([int(cantidad_vestidores), 
@@ -524,62 +525,62 @@ class Gimnasio:
 
     def temporadas(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        self.temporada_var = tkinter.IntVar()
+        self.temporada_var=tkinter.IntVar()
 
-        self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
+        self.temporada_regular=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
         self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
+        self.temporada_alta=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
         self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
+        self.temporada_baja=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
         self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
 
 
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
     def guardar_ajustes8(self):
-        seleccion = self.temporada_var.get()
+        seleccion=self.temporada_var.get()
 
         if seleccion == 1:
-            temporada_regular = True
-            temporada_alta = False
-            temporada_baja = False
+            temporada_regular=True
+            temporada_alta=False
+            temporada_baja=False
         elif seleccion == 2:
-            temporada_regular = False
-            temporada_alta = True
-            temporada_baja = False
+            temporada_regular=False
+            temporada_alta=True
+            temporada_baja=False
         elif seleccion == 3:
-            temporada_regular = False
-            temporada_alta = False
-            temporada_baja = True
+            temporada_regular=False
+            temporada_alta=False
+            temporada_baja=True
         else:
-            temporada_regular = True
-            temporada_alta = False
-            temporada_baja = False
+            temporada_regular=True
+            temporada_alta=False
+            temporada_baja=False
 
         self.lista_temporadas.clear()
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
 
-    def datos_historicos(self):
+    def lista_historicos(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De lista Historicos")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
         # Probabilidad de atención
-        self.check_atencion = StringVar()
-        self.checkbutton_atencion = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de atención", variable=self.check_atencion, onvalue="Si", offvalue="No")
+        self.check_atencion=StringVar()
+        self.checkbutton_atencion=Checkbutton(self.frame_caracteristicas, text="Ingresar lista históricos para la probabilidad de atención", variable=self.check_atencion, onvalue="Si", offvalue="No")
         self.checkbutton_atencion.deselect()
         self.checkbutton_atencion.grid(row=4, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
@@ -614,8 +615,8 @@ class Gimnasio:
 
 
         # Probabilidad de descompostura de máquinas
-        self.check_descompostura = StringVar()
-        self.checkbutton_descompostura = Checkbutton(self.frame_caracteristicas, text="Ingresar datos históricos para la probabilidad de descompostura de máquinas", variable=self.check_descompostura, onvalue="Si", offvalue="No")
+        self.check_descompostura=StringVar()
+        self.checkbutton_descompostura=Checkbutton(self.frame_caracteristicas, text="Ingresar lista históricos para la probabilidad de descompostura de máquinas", variable=self.check_descompostura, onvalue="Si", offvalue="No")
         self.checkbutton_descompostura.deselect()
         self.checkbutton_descompostura.grid(row=12, column=0, padx=(10,10), pady=(5, 2), sticky="w")
 
@@ -642,43 +643,80 @@ class Gimnasio:
 
 
 
-        boton_guardar_y_ver = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(), "Guardar Ajustes Y Ver Tablas De Probabilidad")
         boton_guardar_y_ver.grid(row=18, column=0, columnspan=3, pady=(5, 10))
 
 
     def guardar_ajustes9(self):
         if self.check_atencion.get() == "Si":
-            minutos1=self.entry1.get()
-            minutos2=self.entry2.get()
-            minutos3=self.entry3.get()
-            minutos4=self.entry4.get()
-            minutos5=self.entry5.get()
-            minutos6=self.entry6.get()
-            minutos7=self.entry7.get()
+            minutos1 = self.entry1.get()
+            minutos2 = self.entry2.get()
+            minutos3 = self.entry3.get()
+            minutos4 = self.entry4.get()
+            minutos5 = self.entry5.get()
+            minutos6 = self.entry6.get()
+            minutos7 = self.entry7.get()
+
             self.lista_atencion.clear()
-            self.lista_atencion.append([float(minutos1),float(minutos2),float(minutos3),float(minutos4),float(minutos5),float(minutos6),float(minutos7)])
-    
+            self.lista_atencion.append([float(minutos1), float(minutos2), float(minutos3), float(minutos4), float(minutos5), float(minutos6), float(minutos7)])
 
+            minutos = [minutos1, minutos2, minutos3, minutos4, minutos5, minutos6, minutos7]
+            self.lista_atencion1 = {'minutos': [float(m) for m in minutos]}
         else:
-            self.lista_atencion = self.lista_atencion
+            self.lista_atencion1 = {'minutos': [0.05, 0.05, 0.1, 0.15, 0.25, 0.25, 0.15]}
 
-        
+        print("Tabla de Probabilidad de Atención:")
+        self.imprimir_tabla_atencion()
 
         if self.check_descompostura.get() == "Si":
-            maquina1=self.entry_m1.get()
-            maquina2=self.entry_m2.get()
-            maquina3=self.entry_m3.get()
-            maquina4=self.entry_m4.get()
-            maquina5=self.entry_m5.get()
+            maquina1 = self.entry_m1.get()
+            maquina2 = self.entry_m2.get()
+            maquina3 = self.entry_m3.get()
+            maquina4 = self.entry_m4.get()
+            maquina5 = self.entry_m5.get()
 
             self.lista_descompostura.clear()
-            self.lista_descompostura.append([float(maquina1),float(maquina2),float(maquina3),float(maquina4),float(maquina5)])
+            self.lista_descompostura.append([float(maquina1), float(maquina2), float(maquina3), float(maquina4), float(maquina5)])
 
+            maquinas = [maquina1, maquina2, maquina3, maquina4, maquina5]
+            self.lista_descompostura1 = {'maquinas': [float(m) for m in maquinas]}
         else:
-            self.lista_descompostura = self.lista_descompostura
+            self.lista_descompostura1 = {'maquinas': [0.15, 0.20, 0.30, 0.20, 0.15]}
 
-        
-        
+        print("\nTabla de Probabilidad de Descompostura de Máquinas:")
+        self.imprimir_tabla_descompostura()
+
+
+    def imprimir_tabla_atencion(self):
+        if 'minutos' in self.lista_atencion1:
+            minutos = range(1, 8)
+            probabilidades = self.lista_atencion1['minutos']
+            probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+            print("MINUTOS\tPROBABILIDAD\tPROBABILIDAD ACUMULADA\tRANGO")
+            for i in range(7):
+                prob = probabilidades[i] if i < len(probabilidades) else 0.0
+                acum = probabilidad_acumulada[i] if i < len(probabilidades) else probabilidad_acumulada[-1]
+                rango_inicio = probabilidad_acumulada[i - 1]+0.0001 if i > 0 else 0.0
+                rango_fin = acum
+                print(f"{minutos[i]}\t{prob:.2f}\t{acum:.2f}\t{rango_inicio:.4f}-{rango_fin:.4f}")
+        else:
+            print("No se ingresaron listas para la probabilidad de atención.")
+
+
+    def imprimir_tabla_descompostura(self):
+        if 'maquinas' in self.lista_descompostura1:
+            maquinas = range(1, 6)
+            probabilidades = self.lista_descompostura1['maquinas']
+            probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+            print("MÁQUINA\tPROBABILIDAD\tPROBABILIDAD ACUMULADA\tRANGO")
+            for i in range(5):
+                prob = probabilidades[i] if i < len(probabilidades) else 0.0
+                acum = probabilidad_acumulada[i] if i < len(probabilidades) else probabilidad_acumulada[-1]
+                rango_inicio = probabilidad_acumulada[i - 1]+0.0001 if i > 0 else 0.0
+                rango_fin = acum
+                print(f"{maquinas[i]}\t{prob:.2f}\t{acum:.2f}\t{rango_inicio:.4f}-{rango_fin:.4f}")
+        else:
+            print("No se ingresaron listas para la probabilidad de descompostura de máquinas.")
 
 
 
