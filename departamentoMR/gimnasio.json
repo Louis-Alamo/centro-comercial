@@ -36,32 +36,6 @@
     "rangos_atencion": [
         [
             0.0,
-            0.1
-        ],
-        [
-            0.1,
-            0.30000000000000004
-        ],
-        [
-            0.30000000000000004,
-            0.6
-        ],
-        [
-            0.6,
-            0.8
-        ],
-        [
-            0.8,
-            0.9
-        ],
-        [
-            0.9,
-            1.0
-        ]
-    ],
-    "rangos_descompostura": [
-        [
-            0.0,
             0.25
         ],
         [
@@ -77,16 +51,26 @@
             1.0
         ]
     ],
+    "rangos_descompostura": [
+        [
+            0.0,
+            0.8
+        ],
+        [
+            0.8,
+            1.0
+        ]
+    ],
     "temporada_regular": [
-        0.15,
-        false
+        0.7,
+        true
     ],
     "temporada_alta": [
         0.15,
         false
     ],
     "temporada_baja": [
-        0.7,
-        true
+        0.15,
+        false
     ]
 }
