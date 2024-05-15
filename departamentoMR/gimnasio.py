@@ -28,7 +28,7 @@ class Gimnasio:
         self.rangos_atencion=[]
         self.rangos_descompostura=[]
         self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
-        self.usuarios_espera = 75
+        self.usuarios_espera = 20
 
         self.ventana=CTk()
         self.ventana.title("Gimnasio")

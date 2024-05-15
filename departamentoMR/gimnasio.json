@@ -36,16 +36,16 @@
     "rangos_atencion": [],
     "rangos_descompostura": [],
     "temporada_regular": [
-        0.7,
-        true
+        0.15,
+        false
     ],
     "temporada_alta": [
         0.15,
         false
     ],
     "temporada_baja": [
-        0.15,
-        false
+        0.7,
+        true
     ],
-    "usuarios_en_espera": 75
+    "usuarios_en_espera": 10
 }
