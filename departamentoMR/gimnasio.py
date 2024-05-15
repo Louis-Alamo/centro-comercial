@@ -28,6 +28,7 @@ class Gimnasio:
         self.rangos_atencion=[]
         self.rangos_descompostura=[]
         self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
+        self.usuarios_espera = 75
 
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
@@ -157,7 +158,8 @@ class Gimnasio:
             "rangos_descompostura": self.rangos_descompostura,
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
-            "temporada_baja": self.lista_temporadas[0][2]
+            "temporada_baja": self.lista_temporadas[0][2],
+            "usuarios_en_espera": self.usuarios_espera
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -294,13 +296,13 @@ class Gimnasio:
         self.tiempo_uso_maquina=LtkEntryLine(self.frame_caracteristicas, "15")
         self.tiempo_uso_maquina.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_tiempo_uso_baño=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Baño (Minutos):")
-        self.etiqueta_tiempo_uso_baño.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.etiqueta_tiempo_uso_baño.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_bano=LtkEntryLine(self.frame_caracteristicas, "10")
-        self.tiempo_uso_bano.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.tiempo_uso_bano.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_tiempo_uso_vestidor=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Vestidor (Minutos):")
-        self.etiqueta_tiempo_uso_vestidor.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.etiqueta_tiempo_uso_vestidor.grid(row=8, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_vestidor=LtkEntryLine(self.frame_caracteristicas, "10")
-        self.tiempo_uso_vestidor.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.tiempo_uso_vestidor.grid(row=8, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))

@@ -33,34 +33,8 @@
     "cantidad_vestidores": 6,
     "cantidad_vestidores_mujeres": 3,
     "cantidad_vestidores_hombres": 3,
-    "rangos_atencion": [
-        [
-            0.0,
-            0.25
-        ],
-        [
-            0.25,
-            0.5
-        ],
-        [
-            0.5,
-            0.75
-        ],
-        [
-            0.75,
-            1.0
-        ]
-    ],
-    "rangos_descompostura": [
-        [
-            0.0,
-            0.8
-        ],
-        [
-            0.8,
-            1.0
-        ]
-    ],
+    "rangos_atencion": [],
+    "rangos_descompostura": [],
     "temporada_regular": [
         0.7,
         true
@@ -72,5 +46,6 @@
     "temporada_baja": [
         0.15,
         false
-    ]
+    ],
+    "usuarios_en_espera": 75
 }
