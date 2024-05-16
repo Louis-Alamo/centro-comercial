@@ -1,6 +1,5 @@
 from customtkinter import CTk, CTkLabel
 import json
-import random
 
 def cargar_datos():
     with open('D:\\MIIGUEL ROSALES\\Documentos\\ISC - ITSZaS\\Cuarto Semestre\\SIMULACION\\PROYECTO\\centro-comercial\\departamentoMR\\gimnasio.json', 'r') as file:
@@ -11,30 +10,26 @@ class SimulacionGimnasio:
         self.ventana = CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("950x800+350+100")
-        self.ventana.configure(bg="#FFFFFF")
         self.ventana.columnconfigure(0, weight=1)
         self.ventana.rowconfigure(0, weight=1)
         self.ventana.rowconfigure(1, weight=1)
+        self.ventana.rowconfigure(2, weight=1)
+        
         datos = cargar_datos()
 
-        usuarios_en_espera = datos.get("usuarios_en_espera", 0)
         rangos_atencion = datos.get("rangos_atencion", [])
+        rangos_descompostura = datos.get("rangos_descompostura", [])
 
-        aleatorios = [round(random.random(), 4) for i in range(usuarios_en_espera)]
+        # Crear una etiqueta para mostrar todos los datos de la simulación
+        datos_1 = CTkLabel(self.ventana, text=f"Datos de la simulación:\n{json.dumps(datos, indent=2)}", font=("Arial", 20))
+        datos_1.grid(row=0, column=0, padx=20, pady=20)
 
-        # Función para determinar el rango
-        def determinar_rango(valor):
-            for rango in rangos_atencion:
-                if rango["inicio"] <= valor < rango["fin"]:
-                    return f"{rango['nombre']} ({rango['inicio']} - {rango['fin']})"
-            return "Fuera de rango"
-
-        # Mostrar resultados aleatorios con rangos correspondientes
-        for i in range(usuarios_en_espera):
-            valor_aleatorio = aleatorios[i]
-            rango = determinar_rango(valor_aleatorio)
-            label_resultado = CTkLabel(self.ventana, text=f"Usuario {i+1}: {valor_aleatorio} - {rango}")
-            label_resultado.grid(row=i+1, column=0, padx=10, pady=5)
+        # Crear etiquetas para mostrar los rangos de atención y descompostura
+        etiqueta_atencion = CTkLabel(self.ventana, text=f"Rangos de Atención: {rangos_atencion}", font=("Arial", 14))
+        etiqueta_atencion.grid(row=1, column=0, padx=20, pady=20)
+        
+        etiqueta_descompostura = CTkLabel(self.ventana, text=f"Rangos de Descompostura: {rangos_descompostura}", font=("Arial", 14))
+        etiqueta_descompostura.grid(row=2, column=0, padx=20, pady=20)
 
         self.ventana.mainloop()
 

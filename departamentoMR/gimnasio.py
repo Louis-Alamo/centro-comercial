@@ -539,14 +539,14 @@ class Gimnasio:
         boton.grid(row=1, column=0, columnspan=3, pady=(5, 10))
 
     def pedir_datos(self):
-        self.num_minutos=simpledialog.askinteger("Entrada", "MAXIMO DE MINUTOS PARA SER ATENDIDO", minvalue=1)
+        self.num_personas=simpledialog.askinteger("Entrada", "MAXIMO DE PERSONAS POR DIA", minvalue=1)
         self.num_maquinas=simpledialog.askinteger("Entrada", "MAXIMO DE MAQUINAS A DESCOMPONER", minvalue=1, parent=self.frame_caracteristicas)
 
         self.entries_minutos=[]
-        for i in range(self.num_minutos):
-            label=LtkLabel(self.frame_caracteristicas, texto=f"Minutos {i+1}:")
+        for i in range(self.num_personas):
+            label=LtkLabel(self.frame_caracteristicas, texto=f"Personas {i+10}:")
             label.grid(row=5 + i, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
-            entry=LtkEntryLine(self.frame_caracteristicas, ".05")
+            entry=LtkEntryLine(self.frame_caracteristicas, "10")
             entry.grid(row=5 + i, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
             self.entries_minutos.append(entry)
         # Probabilidad de atención
@@ -559,21 +559,21 @@ class Gimnasio:
         self.check_descompostura=StringVar()
         self.checkbutton_descompostura=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS PROBABILIDADES", variable=self.check_descompostura, onvalue="Si", offvalue="No")
         self.checkbutton_descompostura.deselect()
-        self.checkbutton_descompostura.grid(row=5 + self.num_minutos + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        self.checkbutton_descompostura.grid(row=5 + self.num_personas + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 
         self.entries_maquinas=[]
         for i in range(self.num_maquinas):
             label=LtkLabel(self.frame_caracteristicas, texto=f"Maquina {i+1}:")
-            label.grid(row=6 + self.num_minutos + i + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+            label.grid(row=6 + self.num_personas + i + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
             entry=LtkEntryLine(self.frame_caracteristicas, ".15")
-            entry.grid(row=6 + self.num_minutos + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            entry.grid(row=6 + self.num_personas + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
             self.entries_maquinas.append(entry)
 
-        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(self.num_minutos, self.num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
-        boton_guardar_y_ver.grid(row=7 + self.num_minutos + self.num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
+        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(self.num_personas, self.num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver.grid(row=7 + self.num_personas + self.num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
 
-    def guardar_ajustes9(self, num_minutos, num_maquinas):
-        self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos] if self.check_atencion.get() == "Si" else [0.05] * num_minutos
+    def guardar_ajustes9(self, num_personas, num_maquinas):
+        self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos] if self.check_atencion.get() == "Si" else [0.05] * num_personas
         self.lista_descompostura = [float(entry.get()) for entry in self.entries_maquinas] if self.check_descompostura.get() == "Si" else [0.15] * num_maquinas
         probabilidad_acumulada_atencion = [sum(self.lista_atencion[:i + 1]) for i in range(len(self.lista_atencion))]
         self.rangos_atencion = []
@@ -592,20 +592,20 @@ class Gimnasio:
                 rango = (probabilidad_acumulada_descompostura[i - 1], probabilidad_acumulada_descompostura[i])
             self.rangos_descompostura.append(rango)
 
-        self.imprimir_tabla_atencion(num_minutos)
+        self.imprimir_tabla_atencion(num_personas)
         self.imprimir_tabla_descompostura(num_maquinas)
 
-    def imprimir_tabla_atencion(self, num_minutos):
+    def imprimir_tabla_atencion(self, num_personas):
         ventana1 = tk.Toplevel()
-        ventana1.title("Tabla de Atención")
+        ventana1.title("Tabla de Personas en Gimnasio")
         ventana1.geometry("610x300+1100+100")
         ventana1.configure(bg="#FFFFFF")
         area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
         area_texto.pack()
 
-        minutos = range(1, num_minutos + 1)
+        minutos = range(1, num_personas + 1)
         datos_tabla = []
-        for i in range(num_minutos):
+        for i in range(num_personas):
             prob = self.lista_atencion[i]
             rango = self.rangos_atencion[i]
             datos_tabla.append([minutos[i], prob, rango[1], f"{rango[0]+0.0001:.4f}-{rango[1]:.4f}"])
