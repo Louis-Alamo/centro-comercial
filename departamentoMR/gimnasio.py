@@ -291,15 +291,15 @@ class Gimnasio:
         self.etiqueta_tiempo_sesion_usuarios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_sesion_usuarios=LtkEntryLine(self.frame_caracteristicas, "1")
         self.tiempo_sesion_usuarios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_maquina=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Maquina (Minutos):")
+        self.etiqueta_tiempo_uso_maquina=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Maquina (personas):")
         self.etiqueta_tiempo_uso_maquina.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_maquina=LtkEntryLine(self.frame_caracteristicas, "15")
         self.tiempo_uso_maquina.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_baño=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Baño (Minutos):")
+        self.etiqueta_tiempo_uso_baño=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Baño (personas):")
         self.etiqueta_tiempo_uso_baño.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_bano=LtkEntryLine(self.frame_caracteristicas, "10")
         self.tiempo_uso_bano.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_vestidor=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Vestidor (Minutos):")
+        self.etiqueta_tiempo_uso_vestidor=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Vestidor (personas):")
         self.etiqueta_tiempo_uso_vestidor.grid(row=8, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.tiempo_uso_vestidor=LtkEntryLine(self.frame_caracteristicas, "10")
         self.tiempo_uso_vestidor.grid(row=8, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
@@ -542,13 +542,13 @@ class Gimnasio:
         self.num_personas=simpledialog.askinteger("Entrada", "MAXIMO DE PERSONAS POR DIA", minvalue=1)
         self.num_maquinas=simpledialog.askinteger("Entrada", "MAXIMO DE MAQUINAS A DESCOMPONER", minvalue=1, parent=self.frame_caracteristicas)
 
-        self.entries_minutos=[]
+        self.entries_personas=[]
         for i in range(self.num_personas):
-            label=LtkLabel(self.frame_caracteristicas, texto=f"Personas {i+10}:")
-            label.grid(row=5 + i, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+            label=LtkLabel(self.frame_caracteristicas, texto=f"Personas {i}:")
+            label.grid(row=5 + 10, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
             entry=LtkEntryLine(self.frame_caracteristicas, "10")
-            entry.grid(row=5 + i, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
-            self.entries_minutos.append(entry)
+            entry.grid(row=5 + 10, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            self.entries_personas.append(entry)
         # Probabilidad de atención
         self.check_atencion=StringVar()
         self.checkbutton_atencion=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS PROBABILIDADES", variable=self.check_atencion, onvalue="Si", offvalue="No")
@@ -573,7 +573,7 @@ class Gimnasio:
         boton_guardar_y_ver.grid(row=7 + self.num_personas + self.num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes9(self, num_personas, num_maquinas):
-        self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos] if self.check_atencion.get() == "Si" else [0.05] * num_personas
+        self.lista_atencion = [float(entry.get()) for entry in self.entries_personas] if self.check_atencion.get() == "Si" else [0.05] * num_personas
         self.lista_descompostura = [float(entry.get()) for entry in self.entries_maquinas] if self.check_descompostura.get() == "Si" else [0.15] * num_maquinas
         probabilidad_acumulada_atencion = [sum(self.lista_atencion[:i + 1]) for i in range(len(self.lista_atencion))]
         self.rangos_atencion = []
@@ -603,14 +603,14 @@ class Gimnasio:
         area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
         area_texto.pack()
 
-        minutos = range(1, num_personas + 1)
+        personas = range(1, num_personas + 1)
         datos_tabla = []
         for i in range(num_personas):
             prob = self.lista_atencion[i]
             rango = self.rangos_atencion[i]
-            datos_tabla.append([minutos[i], prob, rango[1], f"{rango[0]+0.0001:.4f}-{rango[1]:.4f}"])
+            datos_tabla.append([personas[i], prob, rango[1], f"{rango[0]+0.0001:.4f}-{rango[1]:.4f}"])
 
-        titulos_tabla = ["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        titulos_tabla = ["personas", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
         tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
         area_texto.insert(tk.INSERT, tabla)
 
