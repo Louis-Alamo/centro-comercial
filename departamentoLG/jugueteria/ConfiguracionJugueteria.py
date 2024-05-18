@@ -332,9 +332,3 @@ class ConfiguracionJugeteria:
 
 
 
-
-
-
-
-
-ConfiguracionJugeteria()
