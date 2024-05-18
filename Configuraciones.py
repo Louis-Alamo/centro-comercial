@@ -6,7 +6,7 @@ from componentes_graficos.LtkLabel import LtkLabel
 
 from centro_comercial_configuraciones import Centro_comercial_configuraciones
 from departamentoLG.cine.ConfiguracionCine import ConfiguracionCine
-from departamentoLG.jugueteria.ConfiguracionJugueteria import Configuracion_jugueteria
+from departamentoLG.jugueteria.ConfiguracionJugueteria import ConfiguracionJugeteria
 from departamentoLG.libreria.ConfiguracionLibreria import ConfiguracionLibreria
 from departamentoLG.electronica.ConfiguracionElectronica import ConfiguracionElectronica
 from departamentoLG.restaurante.ConfiguracionRestaurante import ConfiguracionRestaurante
@@ -135,7 +135,7 @@ class Configuraciones:
         ConfiguracionElectronica()
 
     def configuracion_jugeteria(self):
-        Configuracion_jugueteria()
+        ConfiguracionJugeteria()
 
     def configuracion_libreria(self):
         ConfiguracionLibreria()
