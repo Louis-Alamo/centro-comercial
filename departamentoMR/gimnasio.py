@@ -17,7 +17,7 @@ class Gimnasio:
 
         self.lista_personal=[[3, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 2000, 2000, 2000]]
-        self.lista_horarios=[["6:00", "22:00", 1, 15, 10, 10]]
+        self.lista_horarios=[["6:00", "22:00", 30, 15, 10, 10]]
         self.lista_usuarios=[[100, 50, 50, 750]]
         self.lista_maquinas=[[50, 20, 30]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
@@ -286,9 +286,9 @@ class Gimnasio:
         self.etiqueta_horario_cierre.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.horario_cierre=LtkEntryLine(self.frame_caracteristicas, "22:00")
         self.horario_cierre.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_sesion_usuarios=LtkLabel(self.frame_caracteristicas, texto="Tiempo Sesion De Usuarios (Horas):")
+        self.etiqueta_tiempo_sesion_usuarios=LtkLabel(self.frame_caracteristicas, texto="Tiempo Sesion De Usuarios (Minutos):")
         self.etiqueta_tiempo_sesion_usuarios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_sesion_usuarios=LtkEntryLine(self.frame_caracteristicas, "1")
+        self.tiempo_sesion_usuarios=LtkEntryLine(self.frame_caracteristicas, "30")
         self.tiempo_sesion_usuarios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_tiempo_uso_maquina=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Maquina (Minutos):")
         self.etiqueta_tiempo_uso_maquina.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")

@@ -61,6 +61,7 @@ class SimulacionGimnasio:
     def ejecutar_simulacion(self):
         self.aplicar_descuento_temporada()
 
+        # Cálculo de costos mensuales de personal
         costo_personal = (
             self.datos["cantidad_recepcionistas"] * self.datos["sueldo_mensual_recepcionista"] +
             self.datos["cantidad_personal_limpieza"] * self.datos["sueldo_mensual_personal_limpieza"] +
@@ -68,6 +69,8 @@ class SimulacionGimnasio:
             self.datos["cantidad_entrenadores"] * self.datos["sueldo_mensual_entrenador"] +
             self.datos["cantidad_personal_tecnico"] * self.datos["sueldo_mensual_personal_tecnico"]
         )
+
+        # Cálculo de costos operacionales mensuales
         costo_operacional = (
             self.datos["pago_mensual_luz"] +
             self.datos["pago_mensual_agua"] +
@@ -75,15 +78,28 @@ class SimulacionGimnasio:
             self.datos["pago_mensual_spotify"] +
             self.datos["pago_mensual_renta_local"]
         )
+
+        # Cálculo del costo total mensual
         costo_total_mensual = costo_personal + costo_operacional
 
+        # Cálculo de ingresos mensuales
         ingresos_mensuales = self.datos["capacidad_gym"] * self.datos["cobro_mensual_usuario"]
 
+        # Cálculo del número de usuarios que pueden ser atendidos durante el horario de apertura y cierre
+        tiempo_sesion_minutos = self.datos["tiempo_sesion_usuarios"]
+        horario_apertura = int(self.datos["horario_apertura"].split(":")[0])
+        horario_cierre = int(self.datos["horario_cierre"].split(":")[0])
+        horas_operacion = horario_cierre - horario_apertura
+        usuarios_atendidos = horas_operacion * (60 // tiempo_sesion_minutos) * self.datos["capacidad_gym"]
+
         resultados = {
+            "Cobro Mensual Por Usuario": self.datos["cobro_mensual_usuario"],
+            "Usuarios Atendidos Durante El Horario": usuarios_atendidos,
             "Costo Total Mensual": costo_total_mensual,
             "Ingresos Mensuales": ingresos_mensuales,
             "Ganancia/Perdida": ingresos_mensuales - costo_total_mensual
         }
+
         resultados_label = CTkLabel(self.frame, text=f"Resultados de la simulación:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20))
         resultados_label.pack(padx=20, pady=20)
 

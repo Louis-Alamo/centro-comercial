@@ -277,8 +277,6 @@ class Banco:
         self.cantidad_usuarios = LtkEntryLine(self.frame_caracteristicas, "100")
         self.cantidad_usuarios.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.etiqueta
-
 
     def servicios_generales(self):
         pass
