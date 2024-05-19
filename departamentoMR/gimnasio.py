@@ -1,18 +1,16 @@
 from customtkinter import *
 import tkinter
 import tabulate
-from tkinter import Checkbutton, Entry, StringVar
+from tkinter import Checkbutton, StringVar
 from tkinter import messagebox, simpledialog
-from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
-from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
-from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
-from componentes_graficos.LtkComboBox import LtkComboBoxLine
-from componentes_graficos.LtkTreeView import LtkFileInputTreeView
 import json
 import tkinter as tk
 from tkinter import scrolledtext
 import os
+
 
 class Gimnasio:
     def __init__(self):
@@ -26,8 +24,10 @@ class Gimnasio:
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
         self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
-        self.lista_atencion=[["0.05","0.05","0.10","0.15","0.25","0.25","0.15"]]
-        self.lista_descompostura=[["0.15","0.20","0.30","0.20","0.15"]]
+        self.rangos_atencion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
+        self.rangos_descompostura=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
+
+
 
         self.ventana=CTk()
         self.ventana.title("Gimnasio")
@@ -88,7 +88,7 @@ class Gimnasio:
         self.frame_caracteristicas.columnconfigure(0, weight=1)
 
 
-        self.personal()
+        
         self.sueldos()
         self.horarios()
         self.usuarios()
@@ -98,6 +98,7 @@ class Gimnasio:
         self.vestidores()
         self.temporadas()
         self.datos_historicos()
+        self.personal()
         
 
 
@@ -155,8 +156,8 @@ class Gimnasio:
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
-            "atencion":[self.lista_atencion[0][0],self.lista_atencion[0][1],self.lista_atencion[0][2],self.lista_atencion[0][3],self.lista_atencion[0][4],self.lista_atencion[0][5],self.lista_atencion[0][6]],
-            "descompostura":[self.lista_descompostura[0][0],self.lista_descompostura[0][1],self.lista_descompostura[0][2],self.lista_descompostura[0][3],self.lista_descompostura[0][4]]
+            "atencion": self.rangos_atencion,
+            "descompostura": self.rangos_descompostura
             
         }
         
@@ -526,9 +527,8 @@ class Gimnasio:
 
 
     def datos_historicos(self):
-        
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
@@ -538,99 +538,105 @@ class Gimnasio:
         boton.grid(row=1, column=0, columnspan=3, pady=(5, 10))
 
     def pedir_datos(self):
-        num_minutos = simpledialog.askinteger("Entrada", "¿Cuántos minutos desea ingresar?", minvalue=1)
-        num_maquinas = simpledialog.askinteger("Entrada", "¿Cuántas máquinas desea ingresar?", minvalue=1, parent=self.frame_caracteristicas)
+        num_minutos=simpledialog.askinteger("Entrada", "¿Cuántos minutos desea ingresar?", minvalue=1,parent=self.frame_caracteristicas)
+        num_maquinas=simpledialog.askinteger("Entrada", "¿Cuántas máquinas desea ingresar?", minvalue=1, parent=self.frame_caracteristicas)
 
         # Probabilidad de atención
-        self.check_atencion = StringVar()
-        self.checkbutton_atencion = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_atencion, onvalue="Si", offvalue="No")
+        self.check_atencion=StringVar()
+        self.checkbutton_atencion=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_atencion, onvalue="Si", offvalue="No")
         self.checkbutton_atencion.deselect()
         self.checkbutton_atencion.grid(row=4, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 
-        self.entries_minutos = []
+        self.entries_minutos=[]
         for i in range(num_minutos):
-            label = LtkLabel(self.frame_caracteristicas, texto=f"Minutos {i+1}:")
+            label=LtkLabel(self.frame_caracteristicas, texto=f"Minutos {i+1}:")
             label.grid(row=5 + i, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".05")
+            entry=LtkEntryLine(self.frame_caracteristicas, ".05")
             entry.grid(row=5 + i, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
             self.entries_minutos.append(entry)
 
         # Probabilidad de descompostura de máquinas
-        self.check_descompostura = StringVar()
-        self.checkbutton_descompostura = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_descompostura, onvalue="Si", offvalue="No")
+        self.check_descompostura=StringVar()
+        self.checkbutton_descompostura=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_descompostura, onvalue="Si", offvalue="No")
         self.checkbutton_descompostura.deselect()
         self.checkbutton_descompostura.grid(row=5 + num_minutos + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 
-        self.entries_maquinas = []
+        self.entries_maquinas=[]
         for i in range(num_maquinas):
-            label = LtkLabel(self.frame_caracteristicas, texto=f"Maquina {i+1}:")
+            label=LtkLabel(self.frame_caracteristicas, texto=f"Maquina {i+1}:")
             label.grid(row=6 + num_minutos + i + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry=LtkEntryLine(self.frame_caracteristicas, ".15")
             entry.grid(row=6 + num_minutos + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
             self.entries_maquinas.append(entry)
 
-        boton_guardar_y_ver = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(num_minutos, num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(num_minutos, num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
         boton_guardar_y_ver.grid(row=7 + num_minutos + num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes9(self, num_minutos, num_maquinas):
         if self.check_atencion.get() == "Si":
-            self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos]
+            self.lista_atencion=[float(entry.get()) for entry in self.entries_minutos]
         else:
-            self.lista_atencion = [0.05] * num_minutos
+            self.lista_atencion=[0.05] * num_minutos
 
         if self.check_descompostura.get() == "Si":
-            self.lista_descompostura = [float(entry.get()) for entry in self.entries_maquinas]
+            self.lista_descompostura=[float(entry.get()) for entry in self.entries_maquinas]
         else:
-            self.lista_descompostura = [0.15] * num_maquinas
+            self.lista_descompostura=[0.15] * num_maquinas
+
+        self.rangos_atencion=self.calcular_rangos(self.lista_atencion)
+        self.rangos_descompostura=self.calcular_rangos(self.lista_descompostura)
 
         self.imprimir_tabla_atencion(num_minutos)
         self.imprimir_tabla_descompostura(num_maquinas)
 
+
+    def calcular_rangos(self, probabilidades):
+        probabilidad_acumulada=[sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        rangos=[]
+        for i in range(len(probabilidades)):
+            rango_inicio=probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin=probabilidad_acumulada[i]
+            rangos.append(f"{rango_inicio:.4f}-{rango_fin:.4f}")
+        return rangos
+
     def imprimir_tabla_atencion(self, num_minutos):
-        ventana1 = CTkToplevel()
-        ventana1.title("Tabla de Atención")
+        ventana1=CTkToplevel()
+        ventana1.title("Tabla de Atencion")
         ventana1.geometry("610x300+1100+100")
         ventana1.configure(bg="#FFFFFF")
-        area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
+        area_texto=scrolledtext.ScrolledText(ventana1, width=600, height=300)
         area_texto.pack()
 
-        minutos = range(1, num_minutos + 1)
-        probabilidades = self.lista_atencion
-        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
-        datos_tabla = []
+        minutos=range(1, num_minutos + 1)
+        datos_tabla=[]
         for i in range(num_minutos):
-            prob = probabilidades[i]
-            acum = probabilidad_acumulada[i]
-            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
-            rango_fin = acum
-            datos_tabla.append([minutos[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
+            prob=self.lista_atencion[i]
+            acum=sum(self.lista_atencion[:i + 1])
+            datos_tabla.append([minutos[i], prob, acum, self.rangos_atencion[i]])
 
-        titulos_tabla = ["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        titulos_tabla=["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla=tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
         area_texto.insert(tk.INSERT, tabla)
 
     def imprimir_tabla_descompostura(self, num_maquinas):
-        ventana2 = CTkToplevel()
+        ventana2=CTkToplevel()
         ventana2.title("Tabla de Descompostura")
         ventana2.geometry("620x240+1100+450")
         ventana2.configure(bg="#FFFFFF")
-        area_texto = scrolledtext.ScrolledText(ventana2, width=600, height=300)
+        area_texto=scrolledtext.ScrolledText(ventana2, width=600, height=300)
         area_texto.pack()
 
-        maquinas = range(1, num_maquinas + 1)
-        probabilidades = self.lista_descompostura
-        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
-        datos_tabla = []
+        maquinas=range(1, num_maquinas + 1)
+        datos_tabla=[]
         for i in range(num_maquinas):
-            prob = probabilidades[i]
-            acum = probabilidad_acumulada[i]
-            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
-            rango_fin = acum
-            datos_tabla.append([maquinas[i], prob, acum, f"{rango_inicio:.4f}-{rango_fin:.4f}"])
+            prob=self.lista_descompostura[i]
+            acum=sum(self.lista_descompostura[:i + 1])
+            datos_tabla.append([maquinas[i], prob, acum, self.rangos_descompostura[i]])
 
-        titulos_tabla = ["MAQUINAS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        titulos_tabla=["MAQUINAS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla=tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
         area_texto.insert(tk.INSERT, tabla)
+
 
 
 
