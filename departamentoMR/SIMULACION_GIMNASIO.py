@@ -2,8 +2,9 @@ from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 import json
 import os
 
-ruta_archivo=os.path.dirname(os.path.abspath(__file__))
-ruta_completa=os.path.join(ruta_archivo, 'gimnasio.json')
+ruta_archivo = os.path.dirname(os.path.abspath(__file__))
+ruta_completa = os.path.join(ruta_archivo, 'gimnasio.json')
+
 def cargar_datos():
     with open(ruta_completa, 'r') as file:
         return json.load(file)
@@ -13,44 +14,93 @@ class SimulacionGimnasio:
         self.ventana = CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("950x800+350+100")
-        self.ventana.configure(bg="#FFFFFF")
+        self.ventana.grid_rowconfigure(0, weight=1)
+        self.ventana.grid_columnconfigure(0, weight=1)
 
-        # Crear un marco principal para el Canvas y el Scrollbar
-        marco_principal = CTkFrame(self.ventana)
-        marco_principal.pack(fill="both", expand=True)
-
-        # Crear un Canvas
-        canvas = CTkCanvas(marco_principal)
-        canvas.pack(side="left", fill="both", expand=True)
-
-        # Crear un Scrollbar y configurarlo con el Canvas
-        scrollbar = CTkScrollbar(marco_principal, command=canvas.yview)
-        scrollbar.pack(side="right", fill="y")
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        # Crear un marco interior dentro del Canvas
-        marco_interior = CTkFrame(canvas)
-        canvas.create_window((0, 0), window=marco_interior, anchor="nw")
-
-        # Configurar el redimensionamiento del marco interior
-        marco_interior.bind("<Configure>", lambda event: canvas.configure(scrollregion=canvas.bbox("all")))
-
-        datos = cargar_datos()
-
-        rangos_atencion = datos.get("rangos_atencion", [])
-        rangos_descompostura = datos.get("rangos_descompostura", [])
-
-        # Crear una etiqueta para mostrar todos los datos de la simulación
-        datos_1 = CTkLabel(marco_interior, text=f"Datos de la simulación:\n{json.dumps(datos, indent=2)}", font=("Arial", 20))
-        datos_1.pack(padx=20, pady=20)
-
-        # Crear etiquetas para mostrar los rangos de atención y descompostura
-        etiqueta_atencion = CTkLabel(marco_interior, text=f"Rangos de Atención: {rangos_atencion}", font=("Arial", 14))
-        etiqueta_atencion.pack(padx=20, pady=20)
-        
-        etiqueta_descompostura = CTkLabel(marco_interior, text=f"Rangos de Descompostura: {rangos_descompostura}", font=("Arial", 14))
-        etiqueta_descompostura.pack(padx=20, pady=20)
+        self.canvas = CTkCanvas(self.ventana)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.scrollbar = CTkScrollbar(self.ventana, command=self.canvas.yview)
+        self.scrollbar.grid(row=0, column=1, sticky="ns")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.frame = CTkFrame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.frame, anchor="nw")
+        self.frame.bind("<Configure>", self.on_frame_configure)
+        self.canvas.bind("<Configure>", self.on_canvas_configure)
+        self.datos = cargar_datos()
+        self.ejecutar_simulacion()
 
         self.ventana.mainloop()
+
+    def on_frame_configure(self, event=None):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+    def on_canvas_configure(self, event=None):
+        self.canvas.itemconfig(self.canvas.create_window((0, 0), window=self.frame, anchor="nw"), width=event.width)
+
+    def aplicar_descuento_temporada(self):
+        descuento = 0
+        temporada_actual = None
+        for temporada, info in self.datos.items():
+            if isinstance(info, list) and len(info) == 2 and info[1]:
+                temporada_actual = temporada
+                if temporada_actual == "temporada_alta":
+                    descuento = 0.15
+                elif temporada_actual == "temporada_baja":
+                    descuento = 0.05
+                elif temporada_actual == "temporada_regular":
+                    descuento = 0.10
+                break
+
+        if temporada_actual is not None:
+            self.datos["cobro_mensual_usuario"] *= (1 - descuento)
+            temporada_label = CTkLabel(self.frame, text=f"Descuento del {descuento * 100}% aplicado en la mensualidad durante la temporada {temporada_actual}", font=("Arial", 12))
+            temporada_label.pack(padx=20, pady=5)
+        else:
+            print("No hay temporada activa para aplicar descuento en la mensualidad.")
+
+    def ejecutar_simulacion(self):
+        self.aplicar_descuento_temporada()
+
+        # Cálculo de costos mensuales de personal
+        costo_personal = (
+            self.datos["cantidad_recepcionistas"] * self.datos["sueldo_mensual_recepcionista"] +
+            self.datos["cantidad_personal_limpieza"] * self.datos["sueldo_mensual_personal_limpieza"] +
+            self.datos["cantidad_gerentes"] * self.datos["sueldo_mensual_gerente"] +
+            self.datos["cantidad_entrenadores"] * self.datos["sueldo_mensual_entrenador"] +
+            self.datos["cantidad_personal_tecnico"] * self.datos["sueldo_mensual_personal_tecnico"]
+        )
+
+        # Cálculo de costos operacionales mensuales
+        costo_operacional = (
+            self.datos["pago_mensual_luz"] +
+            self.datos["pago_mensual_agua"] +
+            self.datos["pago_mensual_internet"] +
+            self.datos["pago_mensual_spotify"] +
+            self.datos["pago_mensual_renta_local"]
+        )
+
+        # Cálculo del costo total mensual
+        costo_total_mensual = costo_personal + costo_operacional
+
+        # Cálculo de ingresos mensuales
+        ingresos_mensuales = self.datos["capacidad_gym"] * self.datos["cobro_mensual_usuario"]
+
+        # Cálculo del número de usuarios que pueden ser atendidos durante el horario de apertura y cierre
+        tiempo_sesion_minutos = self.datos["tiempo_sesion_usuarios"]
+        horario_apertura = int(self.datos["horario_apertura"].split(":")[0])
+        horario_cierre = int(self.datos["horario_cierre"].split(":")[0])
+        horas_operacion = horario_cierre - horario_apertura
+        usuarios_atendidos = horas_operacion * (60 // tiempo_sesion_minutos) * self.datos["capacidad_gym"]
+
+        resultados = {
+            "Cobro Mensual Por Usuario": self.datos["cobro_mensual_usuario"],
+            "Usuarios Atendidos Durante El Horario": usuarios_atendidos,
+            "Costo Total Mensual": costo_total_mensual,
+            "Ingresos Mensuales": ingresos_mensuales,
+            "Ganancia/Perdida": ingresos_mensuales - costo_total_mensual
+        }
+
+        resultados_label = CTkLabel(self.frame, text=f"Resultados de la simulación:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20))
+        resultados_label.pack(padx=20, pady=20)
 
 SimulacionGimnasio()
