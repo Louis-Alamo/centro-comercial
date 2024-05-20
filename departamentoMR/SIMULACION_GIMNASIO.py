@@ -53,4 +53,3 @@ class SimulacionGimnasio:
 
         self.ventana.mainloop()
 
-SimulacionGimnasio()

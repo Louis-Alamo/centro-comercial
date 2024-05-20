@@ -437,6 +437,3 @@ class Veterinaria:
         pass
 
 
-
-
-Veterinaria()
