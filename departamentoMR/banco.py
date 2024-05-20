@@ -290,3 +290,4 @@ class Banco:
         pass
 
 
+Banco()
