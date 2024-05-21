@@ -1,34 +1,30 @@
+from customtkinter import *
+import tkinter
+import tabulate
+from tkinter import Checkbutton, StringVar
+from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
-from tkinter import messagebox, simpledialog
-from tkinter import Checkbutton, StringVar
-from tkinter import scrolledtext
-from customtkinter import *
-import tkinter as tk
-import tkinter
-import tabulate
 import json
+import tkinter as tk
+from tkinter import scrolledtext
 import os
-
-
 
 
 class Gimnasio:
     def __init__(self):
 
-        self.lista_personal=[[3, 3, 1, 3, 3]]
+        self.lista_personal=[[3, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios=[["6:00", "22:00", 30, 15, 10, 10]]
-        self.lista_usuarios=[[200, 100, 100, 750]]
+        self.lista_usuarios=[[100, 50, 50, 750]]
         self.lista_maquinas=[[50, 20, 30]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
         self.lista_temporadas=[[True],[False],[False]]
         self.lista_descuento=[[.10,.20,.05]]
-        self.rangos_atencion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
-        self.rangos_duracion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
 
 
 
@@ -118,8 +114,6 @@ class Gimnasio:
 
 
         self.ventana.mainloop()
-
-    
 
 
     def guardar_informacion(self):
@@ -599,11 +593,8 @@ class Gimnasio:
             self.lista_duracion = [0.15] * duracion_gym
             self.valores_duracion_ingresados = list(range(1, duracion_gym + 1))
 
-        self.rangos_atencion = self.calcular_rangos(self.lista_atencion)
-        self.rangos_duracion = self.calcular_rangos(self.lista_duracion)
-
-        self.imprimir_tabla_atencion(num_minutos)
-        self.imprimir_tabla_duracion(duracion_gym)
+        self.lista_atencion.append(self.imprimir_tabla_atencion(num_minutos))
+        self.lista_duracion.append(self.imprimir_tabla_duracion(duracion_gym))
 
     def calcular_rangos(self, probabilidades):
         probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
@@ -713,8 +704,6 @@ class Gimnasio:
             self.lista_descuento.append([0, 0, float(descuento_baja)])
 
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
-
-
 
 Gimnasio()
 
