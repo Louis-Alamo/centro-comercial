@@ -23,8 +23,10 @@ class Gimnasio:
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
-        self.lista_temporadas=[[True],[False],[False]]
+        self.lista_temporadas=[[True,100],[False,0],[False,0]]
         self.lista_descuento=[[.10,.20,.05]]
+        self.rangos_atencion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
+        self.rangos_duracion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
 
 
 
@@ -38,7 +40,6 @@ class Gimnasio:
 
         self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
         
-        # Frame para el título
         frame_titulo=CTkFrame(self.ventana)
         frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
@@ -593,8 +594,11 @@ class Gimnasio:
             self.lista_duracion = [0.15] * duracion_gym
             self.valores_duracion_ingresados = list(range(1, duracion_gym + 1))
 
-        self.lista_atencion.append(self.imprimir_tabla_atencion(num_minutos))
-        self.lista_duracion.append(self.imprimir_tabla_duracion(duracion_gym))
+        self.rangos_atencion = self.calcular_rangos(self.lista_atencion)
+        self.rangos_duracion = self.calcular_rangos(self.lista_duracion)
+
+        self.imprimir_tabla_atencion(num_minutos)
+        self.imprimir_tabla_duracion(duracion_gym)
 
     def calcular_rangos(self, probabilidades):
         probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
@@ -679,19 +683,19 @@ class Gimnasio:
 
         if seleccion == 1:
             descuento_regular = self.descuento_regular.get() or ".10"
-            temporada_regular = [True]
-            temporada_alta = [False]
-            temporada_baja = [False]
+            temporada_regular = [True,80]
+            temporada_alta = [False,0]
+            temporada_baja = [False,0]
         elif seleccion == 2:
             descuento_alta = self.descuento_alta.get() or ".20"
-            temporada_regular = [False]
-            temporada_alta = [True]
-            temporada_baja = [False]
+            temporada_regular = [False,0]
+            temporada_alta = [True,100]
+            temporada_baja = [False,0]
         elif seleccion == 3:
             descuento_baja = self.descuento_baja.get() or ".05"
-            temporada_regular = [False]
-            temporada_alta = [False]
-            temporada_baja = [True]
+            temporada_regular = [False,0]
+            temporada_alta = [False,0]
+            temporada_baja = [True,60]
 
         self.lista_temporadas.clear()
         self.lista_descuento.clear()
