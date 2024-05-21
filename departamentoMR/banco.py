@@ -1,11 +1,9 @@
 from customtkinter import *
 from tkinter import messagebox, simpledialog
-from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
-from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
+from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
+from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
-from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
-from componentes_graficos.LtkComboBox import LtkComboBoxLine
-from componentes_graficos.LtkTreeView import LtkFileInputTreeView
+import tkinter
 import json
 import os
 
@@ -14,6 +12,11 @@ class Banco:
         self.lista_personal=[[1, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 3000, 3000, 3000]]
         self.lista_horarios=[["8:00", "17:00", "12:00", "13:00"]]
+        self.lista_usuarios=[[100]]
+        self.lista_servicios_generales=[[300, 200, 420, 2000]]
+        self.lista_cajeros_automaticos=[[3]]
+        self.lista_temporadas=[[True,100],[False,0],[False,0]]
+        self.lista_descuento=[[.10,.20,.05]]
 
 
 
@@ -59,6 +62,9 @@ class Banco:
         boton_cajeros_automaticos.grid(row=5, column=0, padx=(5,5), pady=(5, 5))
         boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
         boton_temporadas.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
+        boton_datos_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Históricos")
+        boton_datos_historicos.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
+
 
 
         # Frame de características
@@ -69,9 +75,15 @@ class Banco:
         self.frame_caracteristicas.columnconfigure(0, weight=1)
 
 
-        self.personal()
+        
         self.sueldos()
         self.horarios()
+        self.usuarios()
+        self.servicios_generales()
+        self.cajeros_automaticos()
+        self.temporadas()
+        self.datos_historicos()
+        self.personal()
 
 
         # Frame para el botón de guardar
@@ -103,7 +115,19 @@ class Banco:
             "horario_entrada": self.lista_horarios[0][0],
             "horario_salida": self.lista_horarios[0][1],
             "horario_entrada_almuerzo": self.lista_horarios[0][2],
-            "horario_salida_almuerzo": self.lista_horarios[0][3]
+            "horario_salida_almuerzo": self.lista_horarios[0][3],
+            "cantidad_usuarios": self.lista_usuarios[0][0],
+            "pago_mensual_luz": self.lista_servicios_generales[0][0],	
+            "pago_mensual_agua": self.lista_servicios_generales[0][1],
+            "pago_mensual_internet": self.lista_servicios_generales[0][2],
+            "pago_mensual_renta_local": self.lista_servicios_generales[0][3],
+            "cantidad_cajeros_automaticos": self.lista_cajeros_automaticos[0][0],
+            "temporada_regular": self.lista_temporadas[0][0],
+            "temporada_alta": self.lista_temporadas[0][1],
+            "temporada_baja": self.lista_temporadas[0][2],
+            "descuento_regular": self.lista_descuento[0][0],
+            "descuento_alta": self.lista_descuento[0][1],
+            "descuento_baja": self.lista_descuento[0][2],
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -277,15 +301,141 @@ class Banco:
         self.cantidad_usuarios = LtkEntryLine(self.frame_caracteristicas, "100")
         self.cantidad_usuarios.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
+    def guardar_ajustes3(self):
+        cantidad_usuarios=self.cantidad_usuarios.get()
+
+        self.lista_usuarios.clear()
+        self.lista_usuarios.append([int(cantidad_usuarios)])
+
+
 
     def servicios_generales(self):
-        pass
+        self.resetear_frame_caracteristicas()
+
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Servicios Generales")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+        self.etiqueta_pago_mensual_luz=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Luz:")
+        self.etiqueta_pago_mensual_luz.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.pago_mensual_luz=LtkEntryLine(self.frame_caracteristicas, "300")
+        self.pago_mensual_luz.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_pago_mensual_agua=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Agua:")
+        self.etiqueta_pago_mensual_agua.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.pago_mensual_agua=LtkEntryLine(self.frame_caracteristicas, "200")
+        self.pago_mensual_agua.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_pago_mensual_internet=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Internet Y Telefono:")
+        self.etiqueta_pago_mensual_internet.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.pago_mensual_internet=LtkEntryLine(self.frame_caracteristicas, "420")
+        self.pago_mensual_internet.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.pago_mensual_renta_local=LtkLabel(self.frame_caracteristicas, texto="Pago Mensual De Renta Del Local:")
+        self.pago_mensual_renta_local.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.pago_mensual_renta_local=LtkEntryLine(self.frame_caracteristicas, "2000")
+        self.pago_mensual_renta_local.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes5(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+    
+    def guardar_ajustes5(self):
+        pago_mensual_luz=self.pago_mensual_luz.get()
+        pago_mensual_agua=self.pago_mensual_agua.get()
+        pago_mensual_internet=self.pago_mensual_internet.get()
+        pago_mensual_renta_local=self.pago_mensual_renta_local.get()
+
+        self.lista_servicios_generales.clear()
+        self.lista_servicios_generales.append([int(pago_mensual_luz), 
+                                    int(pago_mensual_agua), 
+                                    int(pago_mensual_internet),
+                                    int(pago_mensual_renta_local)])
 
     def cajeros_automaticos(self):
-        pass
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Cajeros Automaticos")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+
+        self.etiqueta_cantidad_cajeros_automaticos=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Cajeros Automaticos:")
+        self.etiqueta_cantidad_cajeros_automaticos.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_cajeros_automaticos=LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_cajeros_automaticos.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+    def guardar_ajustes4(self):
+        cantidad_cajeros_automaticos=self.cantidad_cajeros_automaticos.get()
+
+        self.lista_cajeros_automaticos.clear()
+        self.lista_cajeros_automaticos.append([int(cantidad_cajeros_automaticos)])
 
     def temporadas(self):
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        self.temporada_var = tkinter.IntVar()
+
+        self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
+        self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.descuento_regular = LtkEntryLine(self.frame_caracteristicas, ".10")
+        self.descuento_regular.grid(row=3, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
+        self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.descuento_alta = LtkEntryLine(self.frame_caracteristicas, ".20")
+        self.descuento_alta.grid(row=4, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
+        self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.descuento_baja = LtkEntryLine(self.frame_caracteristicas, ".05")
+        self.descuento_baja.grid(row=5, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+
+    def guardar_ajustes8(self):
+        seleccion = self.temporada_var.get()
+
+        if seleccion == 1:
+            descuento_regular = self.descuento_regular.get() or ".10"
+            temporada_regular = [True,80]
+            temporada_alta = [False,0]
+            temporada_baja = [False,0]
+        elif seleccion == 2:
+            descuento_alta = self.descuento_alta.get() or ".20"
+            temporada_regular = [False,0]
+            temporada_alta = [True,100]
+            temporada_baja = [False,0]
+        elif seleccion == 3:
+            descuento_baja = self.descuento_baja.get() or ".05"
+            temporada_regular = [False,0]
+            temporada_alta = [False,0]
+            temporada_baja = [True,60]
+
+        self.lista_temporadas.clear()
+        self.lista_descuento.clear()
+
+        if seleccion == 1:
+            self.lista_descuento.append([float(descuento_regular), 0, 0])
+        elif seleccion == 2:
+            self.lista_descuento.append([0, float(descuento_alta), 0])
+        elif seleccion == 3:
+            self.lista_descuento.append([0, 0, float(descuento_baja)])
+
+        self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
+
+
+
+    def datos_historicos(self):
         pass
+
+
+
+
+
 
 
 Banco()

@@ -597,6 +597,8 @@ class Gimnasio:
         self.rangos_atencion = self.calcular_rangos(self.lista_atencion)
         self.rangos_duracion = self.calcular_rangos(self.lista_duracion)
 
+        tabla = ()
+
         self.imprimir_tabla_atencion(num_minutos)
         self.imprimir_tabla_duracion(duracion_gym)
 
@@ -709,9 +711,5 @@ class Gimnasio:
 
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
+
 Gimnasio()
-
-
-
-
-

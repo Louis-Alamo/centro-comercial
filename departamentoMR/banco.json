@@ -12,5 +12,26 @@
     "horario_entrada": "8:00",
     "horario_salida": "17:00",
     "horario_entrada_almuerzo": "12:00",
-    "horario_salida_almuerzo": "13:00"
+    "horario_salida_almuerzo": "13:00",
+    "cantidad_usuarios": 100,
+    "pago_mensual_luz": 300,
+    "pago_mensual_agua": 200,
+    "pago_mensual_internet": 420,
+    "pago_mensual_renta_local": 2000,
+    "cantidad_cajeros_automaticos": 3,
+    "temporada_regular": [
+        false,
+        0
+    ],
+    "temporada_alta": [
+        false,
+        0
+    ],
+    "temporada_baja": [
+        true,
+        60
+    ],
+    "descuento_regular": 0,
+    "descuento_alta": 0,
+    "descuento_baja": 0.05
 }

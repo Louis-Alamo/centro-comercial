@@ -38,24 +38,23 @@
         0
     ],
     "temporada_alta": [
+        true,
+        100
+    ],
+    "temporada_baja": [
         false,
         0
     ],
-    "temporada_baja": [
-        true,
-        60
-    ],
     "descuento_regular": 0,
-    "descuento_alta": 0,
-    "descuento_baja": 0.05,
+    "descuento_alta": 0.5,
+    "descuento_baja": 0,
     "atencion": [
-        "0.0000-0.3000",
-        "0.3001-0.5000",
-        "0.5001-1.0000"
+        "0.0000-0.2000",
+        "0.2001-1.0000"
     ],
     "duracion": [
-        "0.0000-0.3000",
-        "0.3001-0.5000",
+        "0.0000-0.5000",
         "0.5001-1.0000"
     ]
 }
+
