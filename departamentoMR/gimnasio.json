@@ -34,20 +34,17 @@
     "cantidad_vestidores_mujeres": 3,
     "cantidad_vestidores_hombres": 3,
     "temporada_regular": [
-        0.15,
-        false
-    ],
-    "descuento_regular": 0,
-    "temporada_alta": [
-        0.15,
-        false
-    ],
-    "descuento_alta": 0,
-    "temporada_baja": [
-        0.7,
         true
     ],
-    "descuento_baja": 0.05,
+    "temporada_alta": [
+        false
+    ],
+    "temporada_baja": [
+        false
+    ],
+    "descuento_regular": 0.1,
+    "descuento_alta": 0,
+    "descuento_baja": 0,
     "atencion": [
         "0.0000-0.3000",
         "0.3001-0.5000",

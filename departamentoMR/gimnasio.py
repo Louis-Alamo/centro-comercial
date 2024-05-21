@@ -1,15 +1,17 @@
-from customtkinter import *
-import tkinter
-import tabulate
-from tkinter import Checkbutton, StringVar
-from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
-import json
-import tkinter as tk
+from tkinter import messagebox, simpledialog
+from tkinter import Checkbutton, StringVar
 from tkinter import scrolledtext
+from customtkinter import *
+import tkinter as tk
+import tkinter
+import tabulate
+import json
 import os
+
+
 
 
 class Gimnasio:
@@ -23,7 +25,7 @@ class Gimnasio:
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
-        self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
+        self.lista_temporadas=[[True],[False],[False]]
         self.lista_descuento=[[.10,.20,.05]]
         self.rangos_atencion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
         self.rangos_duracion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
@@ -117,6 +119,8 @@ class Gimnasio:
 
         self.ventana.mainloop()
 
+    
+
 
     def guardar_informacion(self):
         informacion={
@@ -155,10 +159,10 @@ class Gimnasio:
             "cantidad_vestidores_mujeres": self.lista_vestidores[0][1],
             "cantidad_vestidores_hombres": self.lista_vestidores[0][2],
             "temporada_regular": self.lista_temporadas[0][0],
-            "descuento_regular": self.lista_descuento[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
-            "descuento_alta": self.lista_descuento[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
+            "descuento_regular": self.lista_descuento[0][0],
+            "descuento_alta": self.lista_descuento[0][1],
             "descuento_baja": self.lista_descuento[0][2],
             "atencion": self.rangos_atencion,
             "duracion": self.rangos_duracion
@@ -684,19 +688,19 @@ class Gimnasio:
 
         if seleccion == 1:
             descuento_regular = self.descuento_regular.get() or ".10"
-            temporada_regular = [0.70, True]
-            temporada_alta = [0.15, False]
-            temporada_baja = [0.15, False]
+            temporada_regular = [True]
+            temporada_alta = [False]
+            temporada_baja = [False]
         elif seleccion == 2:
             descuento_alta = self.descuento_alta.get() or ".20"
-            temporada_regular = [0.15, False]
-            temporada_alta = [0.70, True]
-            temporada_baja = [0.15, False]
+            temporada_regular = [False]
+            temporada_alta = [True]
+            temporada_baja = [False]
         elif seleccion == 3:
             descuento_baja = self.descuento_baja.get() or ".05"
-            temporada_regular = [0.15, False]
-            temporada_alta = [0.15, False]
-            temporada_baja = [0.70, True]
+            temporada_regular = [False]
+            temporada_alta = [False]
+            temporada_baja = [True]
 
         self.lista_temporadas.clear()
         self.lista_descuento.clear()
