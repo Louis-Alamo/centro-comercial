@@ -80,11 +80,11 @@ class TablaDatoshistoricos():
 
 
 
-import random
+#import random
 
-ruta = r'..\\jugueteria\\datos\\lineas de espera\\Tiempo de espera por caja'
-tabla = TablaDatoshistoricos(ruta, titulo="Tiempo de espera por caja")
-tabla.mostrar_tabla()
+#ruta = r'..\\jugueteria\\datos\\lineas de espera\\Tiempo de espera por caja'
+#tabla = TablaDatoshistoricos(ruta, titulo="Tiempo de espera por caja")
+#tabla.mostrar_tabla()
 
 #aleatorio = random.random()
 #print(f"Valor aleatorio: {aleatorio}")
