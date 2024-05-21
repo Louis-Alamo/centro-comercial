@@ -1,7 +1,7 @@
 {
     "cantidad_recepcionistas": 3,
     "cantidad_personal_limpieza": 3,
-    "cantidad_gerentes": 3,
+    "cantidad_gerentes": 1,
     "cantidad_entrenadores": 3,
     "cantidad_personal_tecnico": 3,
     "sueldo_mensual_gerente": 4000,
@@ -9,15 +9,15 @@
     "sueldo_mensual_recepcionista": 2000,
     "sueldo_mensual_personal_limpieza": 2000,
     "sueldo_mensual_personal_tecnico": 2000,
-    "horario_apertura": "13:00",
-    "horario_cierre": "14:00",
+    "horario_apertura": "6:00",
+    "horario_cierre": "22:00",
     "tiempo_sesion_usuarios": 30,
-    "tiempo_uso_maquina": 1,
-    "tiempo_uso_ba\u00f1o": 5,
-    "tiempo_uso_vestidor": 5,
-    "capacidad_gym": 100,
-    "cantidad_mujeres": 50,
-    "cantidad_hombres": 50,
+    "tiempo_uso_maquina": 15,
+    "tiempo_uso_ba\u00f1o": 10,
+    "tiempo_uso_vestidor": 10,
+    "capacidad_gym": 200,
+    "cantidad_mujeres": 100,
+    "cantidad_hombres": 100,
     "cobro_mensual_usuario": 750,
     "cantidad_maquinas": 50,
     "cantidad_maquinas_cardio": 20,
@@ -37,20 +37,23 @@
         0.15,
         false
     ],
+    "descuento_regular": 0,
     "temporada_alta": [
-        0.7,
-        true
-    ],
-    "temporada_baja": [
         0.15,
         false
     ],
+    "descuento_alta": 0,
+    "temporada_baja": [
+        0.7,
+        true
+    ],
+    "descuento_baja": 0.05,
     "atencion": [
         "0.0000-0.3000",
         "0.3001-0.5000",
         "0.5001-1.0000"
     ],
-    "descompostura": [
+    "duracion": [
         "0.0000-0.3000",
         "0.3001-0.5000",
         "0.5001-1.0000"

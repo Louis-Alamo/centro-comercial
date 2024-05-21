@@ -15,17 +15,18 @@ import os
 class Gimnasio:
     def __init__(self):
 
-        self.lista_personal=[[3, 3, 3, 3, 3]]
+        self.lista_personal=[[3, 3, 1, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios=[["6:00", "22:00", 30, 15, 10, 10]]
-        self.lista_usuarios=[[100, 50, 50, 750]]
+        self.lista_usuarios=[[200, 100, 100, 750]]
         self.lista_maquinas=[[50, 20, 30]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_baños=[[6, 3, 3]]
         self.lista_vestidores=[[6, 3, 3]]
         self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
+        self.lista_descuento=[[.10,.20,.05]]
         self.rangos_atencion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
-        self.rangos_descompostura=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
+        self.rangos_duracion=["0.0000-0.3000","0.3001-0.5000","0.5001-1.0000"]
 
 
 
@@ -154,10 +155,13 @@ class Gimnasio:
             "cantidad_vestidores_mujeres": self.lista_vestidores[0][1],
             "cantidad_vestidores_hombres": self.lista_vestidores[0][2],
             "temporada_regular": self.lista_temporadas[0][0],
+            "descuento_regular": self.lista_descuento[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
+            "descuento_alta": self.lista_descuento[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
+            "descuento_baja": self.lista_descuento[0][2],
             "atencion": self.rangos_atencion,
-            "descompostura": self.rangos_descompostura
+            "duracion": self.rangos_duracion
             
         }
         
@@ -192,7 +196,7 @@ class Gimnasio:
         self.cantidad_personal_limpieza.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_gerentes=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Gerentes:")
         self.etiqueta_gerentes.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_gerentes=LtkEntryLine(self.frame_caracteristicas, "3")
+        self.cantidad_gerentes=LtkEntryLine(self.frame_caracteristicas, "1")
         self.cantidad_gerentes.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_entrenadores=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Entrenadores:")
         self.etiqueta_entrenadores.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -333,15 +337,15 @@ class Gimnasio:
         self.frame_caracteristicas.columnconfigure(2, weight=1)
         self.etiqueta_capacidad_gym=LtkLabel(self.frame_caracteristicas, texto="Capacidad De Usuarios En El Gimnasio:")
         self.etiqueta_capacidad_gym.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.capacidad_gym=LtkEntryLine(self.frame_caracteristicas, "100")
+        self.capacidad_gym=LtkEntryLine(self.frame_caracteristicas, "200")
         self.capacidad_gym.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_cantidad_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Mujeres:")
         self.etiqueta_cantidad_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_mujeres=LtkEntryLine(self.frame_caracteristicas, "50")
+        self.cantidad_mujeres=LtkEntryLine(self.frame_caracteristicas, "100")
         self.cantidad_mujeres.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_cantidad_hombres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Hombres:")
         self.etiqueta_cantidad_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_hombres=LtkEntryLine(self.frame_caracteristicas, "50")
+        self.cantidad_hombres=LtkEntryLine(self.frame_caracteristicas, "100")
         self.cantidad_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_cobro_mensual_usuario=LtkLabel(self.frame_caracteristicas, texto="Cobro Mensual Por Usuario:")
         self.etiqueta_cobro_mensual_usuario.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
@@ -525,166 +529,188 @@ class Gimnasio:
                                     int(cantidad_vestidores_hombres)])
         
 
-
     def datos_historicos(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        boton=tk.Button(self.frame_caracteristicas, text="Ingresar datos", command=self.pedir_datos)
+        boton = tk.Button(self.frame_caracteristicas, text="Ingresar datos", command=self.pedir_datos)
         boton.grid(row=1, column=0, columnspan=3, pady=(5, 10))
 
     def pedir_datos(self):
-        num_minutos=simpledialog.askinteger("Entrada", "¿Cuántos minutos desea ingresar?", minvalue=1,parent=self.frame_caracteristicas)
-        num_maquinas=simpledialog.askinteger("Entrada", "¿Cuántas máquinas desea ingresar?", minvalue=1, parent=self.frame_caracteristicas)
+        self.resetear_frame_caracteristicas()
+        num_minutos = simpledialog.askinteger("Entrada", "Renglones Para Ser Atendido", minvalue=1, parent=self.frame_caracteristicas)
+        duracion_gym = simpledialog.askinteger("Entrada", "Renglones Duracion En GYM", minvalue=1, parent=self.frame_caracteristicas)
 
         # Probabilidad de atención
-        self.check_atencion=StringVar()
-        self.checkbutton_atencion=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_atencion, onvalue="Si", offvalue="No")
+        self.check_atencion = StringVar()
+        self.checkbutton_atencion = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_atencion, onvalue="Si", offvalue="No")
         self.checkbutton_atencion.deselect()
         self.checkbutton_atencion.grid(row=4, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 
-        self.entries_minutos=[]
+        self.entries_minutos = []
+        self.valores_minutos = []
         for i in range(num_minutos):
-            label=LtkLabel(self.frame_caracteristicas, texto=f"Minutos {i+1}:")
-            label.grid(row=5 + i, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
-            entry=LtkEntryLine(self.frame_caracteristicas, ".05")
+            entry_min = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_min.grid(row=5 + i, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            entry = LtkEntryLine(self.frame_caracteristicas, ".05")
             entry.grid(row=5 + i, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
             self.entries_minutos.append(entry)
+            self.valores_minutos.append(entry_min)
 
-        # Probabilidad de descompostura de máquinas
-        self.check_descompostura=StringVar()
-        self.checkbutton_descompostura=Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_descompostura, onvalue="Si", offvalue="No")
-        self.checkbutton_descompostura.deselect()
-        self.checkbutton_descompostura.grid(row=5 + num_minutos + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        # Probabilidad de duracion de máquinas
+        self.check_duracion = StringVar()
+        self.checkbutton_duracion = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_duracion, onvalue="Si", offvalue="No")
+        self.checkbutton_duracion.deselect()
+        self.checkbutton_duracion.grid(row=5 + num_minutos + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
 
-        self.entries_maquinas=[]
-        for i in range(num_maquinas):
-            label=LtkLabel(self.frame_caracteristicas, texto=f"Maquina {i+1}:")
-            label.grid(row=6 + num_minutos + i + 2, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
-            entry=LtkEntryLine(self.frame_caracteristicas, ".15")
-            entry.grid(row=6 + num_minutos + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
-            self.entries_maquinas.append(entry)
+        self.entries_duracion = []
+        self.valores_duracion = []
+        for i in range(duracion_gym):
+            entry_duracion = LtkEntryLine(self.frame_caracteristicas, "20")
+            entry_duracion.grid(row=6 + duracion_gym + i + 2, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry.grid(row=6 + duracion_gym + i + 2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew", columnspan=2)
+            self.entries_duracion.append(entry)
+            self.valores_duracion.append(entry_duracion)
 
-        boton_guardar_y_ver=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(num_minutos, num_maquinas), "Guardar Ajustes Y Ver Tablas De Probabilidad")
-        boton_guardar_y_ver.grid(row=7 + num_minutos + num_maquinas + 2, column=0, columnspan=3, pady=(5, 10))
+        boton_guardar_y_ver = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes9(num_minutos, duracion_gym), "Guardar Ajustes Y Ver Tablas De Probabilidad")
+        boton_guardar_y_ver.grid(row=7 + num_minutos + duracion_gym + 2, column=0, columnspan=3, pady=(5, 10))
 
-    def guardar_ajustes9(self, num_minutos, num_maquinas):
+    def guardar_ajustes9(self, num_minutos, duracion_gym):
         if self.check_atencion.get() == "Si":
-            self.lista_atencion=[float(entry.get()) for entry in self.entries_minutos]
+            self.lista_atencion = [float(entry.get()) for entry in self.entries_minutos]
+            self.valores_minutos_ingresados = [int(entry_min.get()) for entry_min in self.valores_minutos]
         else:
-            self.lista_atencion=[0.05] * num_minutos
+            self.lista_atencion = [0.05] * num_minutos
+            self.valores_minutos_ingresados = list(range(1, num_minutos + 1))
 
-        if self.check_descompostura.get() == "Si":
-            self.lista_descompostura=[float(entry.get()) for entry in self.entries_maquinas]
+        if self.check_duracion.get() == "Si":
+            self.lista_duracion = [float(entry.get()) for entry in self.entries_duracion]
+            self.valores_duracion_ingresados = [int(entry_duracion.get()) for entry_duracion in self.valores_duracion]
         else:
-            self.lista_descompostura=[0.15] * num_maquinas
+            self.lista_duracion = [0.15] * duracion_gym
+            self.valores_duracion_ingresados = list(range(1, duracion_gym + 1))
 
-        self.rangos_atencion=self.calcular_rangos(self.lista_atencion)
-        self.rangos_descompostura=self.calcular_rangos(self.lista_descompostura)
+        self.rangos_atencion = self.calcular_rangos(self.lista_atencion)
+        self.rangos_duracion = self.calcular_rangos(self.lista_duracion)
 
         self.imprimir_tabla_atencion(num_minutos)
-        self.imprimir_tabla_descompostura(num_maquinas)
-
+        self.imprimir_tabla_duracion(duracion_gym)
 
     def calcular_rangos(self, probabilidades):
-        probabilidad_acumulada=[sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
-        rangos=[]
+        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        rangos = []
         for i in range(len(probabilidades)):
-            rango_inicio=probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
-            rango_fin=probabilidad_acumulada[i]
+            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin = probabilidad_acumulada[i]
             rangos.append(f"{rango_inicio:.4f}-{rango_fin:.4f}")
         return rangos
 
     def imprimir_tabla_atencion(self, num_minutos):
-        ventana1=CTkToplevel()
+        ventana1 = CTkToplevel()
         ventana1.title("Tabla de Atencion")
         ventana1.geometry("610x300+1100+100")
         ventana1.configure(bg="#FFFFFF")
-        area_texto=scrolledtext.ScrolledText(ventana1, width=600, height=300)
+        area_texto = scrolledtext.ScrolledText(ventana1, width=600, height=300)
         area_texto.pack()
 
-        minutos=range(1, num_minutos + 1)
-        datos_tabla=[]
+        datos_tabla = []
         for i in range(num_minutos):
-            prob=self.lista_atencion[i]
-            acum=sum(self.lista_atencion[:i + 1])
-            datos_tabla.append([minutos[i], prob, acum, self.rangos_atencion[i]])
+            minutos = self.valores_minutos_ingresados[i]
+            prob = self.lista_atencion[i]
+            acum = sum(self.lista_atencion[:i + 1])
+            datos_tabla.append([minutos, prob, acum, self.rangos_atencion[i]])
 
-        titulos_tabla=["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-        tabla=tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        titulos_tabla = ["MINUTOS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
         area_texto.insert(tk.INSERT, tabla)
 
-    def imprimir_tabla_descompostura(self, num_maquinas):
-        ventana2=CTkToplevel()
-        ventana2.title("Tabla de Descompostura")
+    def imprimir_tabla_duracion(self, num_duracion):
+        ventana2 = CTkToplevel()
+        ventana2.title("Tabla de Duracion")
         ventana2.geometry("620x240+1100+450")
         ventana2.configure(bg="#FFFFFF")
-        area_texto=scrolledtext.ScrolledText(ventana2, width=600, height=300)
+        area_texto = scrolledtext.ScrolledText(ventana2, width=600, height=300)
         area_texto.pack()
 
-        maquinas=range(1, num_maquinas + 1)
-        datos_tabla=[]
-        for i in range(num_maquinas):
-            prob=self.lista_descompostura[i]
-            acum=sum(self.lista_descompostura[:i + 1])
-            datos_tabla.append([maquinas[i], prob, acum, self.rangos_descompostura[i]])
+        datos_tabla = []
+        for i in range(num_duracion):
+            duracion = self.valores_duracion_ingresados[i]
+            prob = self.lista_duracion[i]
+            acum = sum(self.lista_duracion[:i + 1])
+            datos_tabla.append([duracion, prob, acum, self.rangos_duracion[i]])
 
-        titulos_tabla=["MAQUINAS", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
-        tabla=tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
+        titulos_tabla = ["DURACION", "PROBABILIDAD", "PROBABILIDAD ACUMULADA", "RANGO"]
+        tabla = tabulate.tabulate(datos_tabla, headers=titulos_tabla, tablefmt="grid")
         area_texto.insert(tk.INSERT, tabla)
-
 
 
 
     def temporadas(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        self.temporada_var=tkinter.IntVar()
+        self.temporada_var = tkinter.IntVar()
 
-        self.temporada_regular=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
+        self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
         self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_alta=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
+        self.descuento_regular = LtkEntryLine(self.frame_caracteristicas, ".10")
+        self.descuento_regular.grid(row=3, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
         self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_baja=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
+        self.descuento_alta = LtkEntryLine(self.frame_caracteristicas, ".20")
+        self.descuento_alta.grid(row=4, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
         self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.descuento_baja = LtkEntryLine(self.frame_caracteristicas, ".05")
+        self.descuento_baja.grid(row=5, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
-
-
-        boton_guardar=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
     def guardar_ajustes8(self):
-        seleccion=self.temporada_var.get()
+        seleccion = self.temporada_var.get()
 
         if seleccion == 1:
-            temporada_regular=[0.70,True]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.15,False]
+            descuento_regular = self.descuento_regular.get() or ".10"
+            temporada_regular = [0.70, True]
+            temporada_alta = [0.15, False]
+            temporada_baja = [0.15, False]
         elif seleccion == 2:
-            temporada_regular=[0.15,False]
-            temporada_alta=[0.70,True]
-            temporada_baja=[0.15,False]
+            descuento_alta = self.descuento_alta.get() or ".20"
+            temporada_regular = [0.15, False]
+            temporada_alta = [0.70, True]
+            temporada_baja = [0.15, False]
         elif seleccion == 3:
-            temporada_regular=[0.15,False]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.70,True]
-        else:
-            temporada_regular=[0.70,True]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.15,False]
+            descuento_baja = self.descuento_baja.get() or ".05"
+            temporada_regular = [0.15, False]
+            temporada_alta = [0.15, False]
+            temporada_baja = [0.70, True]
 
         self.lista_temporadas.clear()
+        self.lista_descuento.clear()
+
+        if seleccion == 1:
+            self.lista_descuento.append([float(descuento_regular), 0, 0])
+        elif seleccion == 2:
+            self.lista_descuento.append([0, float(descuento_alta), 0])
+        elif seleccion == 3:
+            self.lista_descuento.append([0, 0, float(descuento_baja)])
+
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
+
+
 
 Gimnasio()
 
