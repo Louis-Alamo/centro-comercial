@@ -18,7 +18,7 @@
     "capacidad_gym": 200,
     "cantidad_mujeres": 100,
     "cantidad_hombres": 100,
-    "cobro_usuario": 250,
+    "cobro_usuario": 100,
     "cantidad_maquinas": 50,
     "pago_mensual_luz": 300,
     "pago_mensual_agua": 200,
