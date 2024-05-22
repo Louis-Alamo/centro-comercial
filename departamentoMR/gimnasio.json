@@ -15,13 +15,11 @@
     "tiempo_uso_maquina": 15,
     "tiempo_uso_ba\u00f1o": 10,
     "tiempo_uso_vestidor": 10,
-    "capacidad_gym": 100,
-    "cantidad_mujeres": 50,
-    "cantidad_hombres": 50,
-    "cobro_mensual_usuario": 750,
+    "capacidad_gym": 200,
+    "cantidad_mujeres": 100,
+    "cantidad_hombres": 100,
+    "cobro_usuario": 250,
     "cantidad_maquinas": 50,
-    "cantidad_maquinas_cardio": 20,
-    "cantidad_maquinas_musculacion": 30,
     "pago_mensual_luz": 300,
     "pago_mensual_agua": 200,
     "pago_mensual_internet": 420,
@@ -30,31 +28,87 @@
     "cantidad_ba\u00f1os": 6,
     "cantidad_ba\u00f1os_mujeres": 3,
     "cantidad_ba\u00f1os_hombres": 3,
-    "cantidad_vestidores": 6,
-    "cantidad_vestidores_mujeres": 3,
-    "cantidad_vestidores_hombres": 3,
     "temporada_regular": [
-        false,
-        0
+        true,
+        80
     ],
     "temporada_alta": [
-        true,
-        100
+        false,
+        0
     ],
     "temporada_baja": [
         false,
         0
     ],
-    "descuento_regular": 0,
-    "descuento_alta": 0.5,
+    "descuento_regular": 0.1,
+    "descuento_alta": 0,
     "descuento_baja": 0,
-    "atencion": [
-        "0.0000-0.2000",
-        "0.2001-1.0000"
+    "llegada_usuarios": [
+        [
+            1,
+            "0.0000-0.4000"
+        ],
+        [
+            2,
+            "0.4001-0.7000"
+        ],
+        [
+            3,
+            "0.7001-0.9000"
+        ],
+        [
+            5,
+            "0.9001-1.0000"
+        ]
     ],
-    "duracion": [
-        "0.0000-0.5000",
-        "0.5001-1.0000"
+    "lapso_usuarios": [
+        [
+            5,
+            "0.0000-0.4000"
+        ],
+        [
+            10,
+            "0.4001-0.8000"
+        ],
+        [
+            15,
+            "0.8001-1.0000"
+        ]
+    ],
+    "duracion_gym": [
+        [
+            20,
+            "0.0000-0.4000"
+        ],
+        [
+            30,
+            "0.4001-0.6000"
+        ],
+        [
+            40,
+            "0.6001-0.8000"
+        ],
+        [
+            60,
+            "0.8001-1.0000"
+        ]
+    ],
+    "duracion_ba\u00f1o": [
+        [
+            5,
+            "0.0000-0.2000"
+        ],
+        [
+            10,
+            "0.2001-0.6000"
+        ],
+        [
+            15,
+            "0.6001-0.9000"
+        ],
+        [
+            20,
+            "0.9001-1.0000"
+        ]
     ]
 }
-

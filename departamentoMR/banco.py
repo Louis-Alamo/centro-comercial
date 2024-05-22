@@ -435,7 +435,4 @@ class Banco:
 
 
 
-
-
-
 Banco()
