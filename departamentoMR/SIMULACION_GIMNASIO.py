@@ -155,7 +155,7 @@ class SimulacionGimnasio:
             "Ganancia Del Dia": self.total_cobro,
         }
 
-        resultados_label = CTkLabel(self.inner_frame, text=f"Resultados de la simulación:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20), text_color="white")
+        resultados_label = CTkLabel(self.inner_frame, text=f"Resultados de la simulación GIMNASIO:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20), text_color="white")
         resultados_label.pack(padx=20, pady=20, fill="x", expand=True)
         
 

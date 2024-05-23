@@ -12,20 +12,18 @@ import os
 
 class Veterinaria:
     def __init__(self):
-        self.lista_personal=[[1, 2, 2]]
-        self.lista_sueldos=[[4000, 3000, 3000]]
+        self.lista_personal=[[1, 2]]
+        self.lista_sueldos=[[4000, 3000]]
         self.lista_horarios=[["8:00", "18:00", "11:00", "12:00"]]
-        self.lista_usuarios=[[10]]
-        self.lista_mascotas=[[10]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
-        self.lista_inventario=[[100,50,50,50,50]]
+        self.lista_inventario=[[100, 100, 150, 150, 150, 150]]
         self.lista_temporadas=[[True, 100], [False, 0], [False, 0]]
         self.lista_descuento = [[.10, .20, .05]]
-        self.lista_llegada=[(0, "0.0000-0.0000"),...]
-        self.lista_medicamento=[(0, "0.0000-0.0000"),...]
-        self.lista_mascotas=[(0, "0.0000-0.0000"),...]
-        self.lista_accesorios=[(0, "0.0000-0.0000"),...]
-        self.lista_tiempo=[(0, "0.0000-0.0000"),...]
+        self.lista_alimento=[(0, "0.0000-0.0000")]
+        self.lista_medicamento=[(0, "0.0000-0.0000")]
+        self.lista_mascotas=[(0, "0.0000-0.0000")]
+        self.lista_accesorios=[(0, "0.0000-0.0000")]
+        self.lista_tiempo=[(0, "0.0000-0.0000")]
 
 
         self.ventana=CTk()
@@ -61,10 +59,6 @@ class Veterinaria:
         boton_sueldo.grid(row=1, column=0, padx=(5,5), pady=(5, 5))
         boton_horarios=LtkButtonLine(frame_opciones, self.horarios, "Horarios")
         boton_horarios.grid(row=2, column=0, padx=(5,5), pady=(5, 5))
-        boton_usuarios=LtkButtonLine(frame_opciones, self.usuarios, "Usuarios")
-        boton_usuarios.grid(row=3, column=0, padx=(5,5), pady=(5, 5))
-        boton_mascotas=LtkButtonLine(frame_opciones, self.mascotas, "Mascotas")
-        boton_mascotas.grid(row=4, column=0, padx=(5,5), pady=(5, 5))
         boton_servicios_generales=LtkButtonLine(frame_opciones, self.servicios_generales, "Servicios Generales")
         boton_servicios_generales.grid(row=5, column=0, padx=(5,5), pady=(5, 5))
         boton_inventario=LtkButtonLine(frame_opciones, self.inventario, "Inventario")
@@ -84,8 +78,6 @@ class Veterinaria:
         
         self.sueldos()
         self.horarios()
-        self.usuarios()
-        self.mascotas()
         self.servicios_generales()
         self.inventario()
         self.temporadas()
@@ -107,33 +99,33 @@ class Veterinaria:
         informacion={
             "cantidad_gerentes": self.lista_personal[0][0],
             "cantidad_veterinarios": self.lista_personal[0][1],
-            "cantidad_auxiliares": self.lista_personal[0][2],
             "sueldo_mensual_gerente": self.lista_sueldos[0][0],
             "sueldo_mensual_veterinario": self.lista_sueldos[0][1],
-            "sueldo_mensual_auxiliares": self.lista_sueldos[0][2],
             "horario_entrada": self.lista_horarios[0][0],
             "horario_salida": self.lista_horarios[0][1],
             "horario_salida_almuerzo": self.lista_horarios[0][2],
             "horario_entrada_almuerzo": self.lista_horarios[0][3],
-            "cantidad_usuarios": self.lista_usuarios[0][0],
-            "cantidad_mascotas": self.lista_mascotas[0][0],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],
             "pago_mensual_agua": self.lista_servicios_generales[0][1],
             "pago_mensual_internet": self.lista_servicios_generales[0][2],
             "pago_mensual_spotify": self.lista_servicios_generales[0][3],
             "pago_mensual_renta_local": self.lista_servicios_generales[0][4],
-            "paquetes_alimentos": self.lista_inventario[0][0],
-            "juguetes": self.lista_inventario[0][1],
-            "medicamentos": self.lista_inventario[0][2],
-            "vacunas": self.lista_inventario[0][3],
-            "accesorios": self.lista_inventario[0][4],
+
+            "paquetes_alimento": self.lista_inventario[0][0],
+            "precio_por_alimento": self.lista_inventario[0][1],
+            "cantidad_medicamento": self.lista_inventario[0][2],
+            "precio_medicamento": self.lista_inventario[0][3],
+            "cantidad_accesorios": self.lista_inventario[0][4],
+            "precio_accesorios": self.lista_inventario[0][5],
+
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
             "descuento_regular": self.lista_descuento[0][0],
             "descuento_alta": self.lista_descuento[0][1],
             "descuento_baja": self.lista_descuento[0][2],
-            "lista_llegada": self.lista_llegada,
+            
+            "lista_alimento": self.lista_alimento,
             "lista_medicamento": self.lista_medicamento,
             "lista_mascotas": self.lista_mascotas,
             "lista_accesorios": self.lista_accesorios,
@@ -171,10 +163,6 @@ class Veterinaria:
         self.etiqueta_veterinarios.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_veterinarios = LtkEntryLine(self.frame_caracteristicas, "2")
         self.cantidad_veterinarios.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_auxiliares = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Auxiliares:")
-        self.etiqueta_auxiliares.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_auxiliares = LtkEntryLine(self.frame_caracteristicas, "2")
-        self.cantidad_auxiliares.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -182,12 +170,10 @@ class Veterinaria:
     def guardar_ajustes(self):
         cantidad_gerentes=self.cantidad_gerentes.get()
         cantidad_veterinarios=self.cantidad_veterinarios.get()
-        cantidad_auxiliares=self.cantidad_auxiliares.get()
 
         self.lista_personal.clear()
         self.lista_personal.append([int(cantidad_gerentes),
-                                    int(cantidad_veterinarios),
-                                    int(cantidad_auxiliares)
+                                    int(cantidad_veterinarios)
                                    ])
         
 
@@ -208,10 +194,6 @@ class Veterinaria:
         self.etiqueta_sueldo_veterinario.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.sueldo_mensual_veterinario = LtkEntryLine(self.frame_caracteristicas, "3000")
         self.sueldo_mensual_veterinario.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_sueldo_auxiliares = LtkLabel(self.frame_caracteristicas, texto="Sueldo Mensual Por Auxiliar:")
-        self.etiqueta_sueldo_auxiliares.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.sueldo_mensual_auxiliares = LtkEntryLine(self.frame_caracteristicas, "3000")
-        self.sueldo_mensual_auxiliares.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes1(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -220,12 +202,10 @@ class Veterinaria:
     def guardar_ajustes1(self):
         sueldo_mensual_gerente=self.sueldo_mensual_gerente.get()
         sueldo_mensual_veterinario=self.sueldo_mensual_veterinario.get()
-        sueldo_mensual_auxiliares=self.sueldo_mensual_auxiliares.get()
 
         self.lista_sueldos.clear()
         self.lista_sueldos.append([int(sueldo_mensual_gerente),
-                                    int(sueldo_mensual_veterinario),
-                                    int(sueldo_mensual_auxiliares)
+                                    int(sueldo_mensual_veterinario)
                                    ])
 
 
@@ -269,45 +249,6 @@ class Veterinaria:
                                     horario_salida_almuerzo,
                                     horario_entrada_almuerzo
                                    ])
-
-
-    def usuarios(self):
-        self.resetear_frame_caracteristicas()
-
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
-        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
-        self.frame_caracteristicas.columnconfigure(1, weight=1)
-        self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_cantidad_usuarios = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Usuarios:")
-        self.etiqueta_cantidad_usuarios.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_usuarios = LtkEntryLine(self.frame_caracteristicas, "10")
-        self.cantidad_usuarios.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-    
-    def guardar_ajustes3(self):
-        cantidad_usuarios=self.cantidad_usuarios.get()
-        self.lista_usuarios.clear()
-        self.lista_usuarios.append([int(cantidad_usuarios)])
-
-
-
-    def mascotas(self):
-        self.resetear_frame_caracteristicas()
-
-        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Horarios")
-        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
-        self.frame_caracteristicas.columnconfigure(1, weight=1)
-        self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_cantidad_mascotas = LtkLabel(self.frame_caracteristicas, texto="Cantidad De Mascotas:")
-        self.etiqueta_cantidad_mascotas.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_mascotas = LtkEntryLine(self.frame_caracteristicas, "10")
-        self.cantidad_mascotas.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-
-    def guardar_ajustes4(self):
-        cantidad_mascotas=self.cantidad_mascotas.get()
-        self.lista_mascotas.clear()
-        self.lista_mascotas.append([int(cantidad_mascotas)])
 
 
     def servicios_generales(self):
@@ -369,39 +310,48 @@ class Veterinaria:
         self.etiquetas_paquetes_alimento.grid(row=1, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.paquetes_alimento=LtkEntryLine(self.frame_caracteristicas, "100")
         self.paquetes_alimento.grid(row=1, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_jueguetes=LtkLabel(self.frame_caracteristicas, texto="Jueguetes:")
-        self.etiqueta_jueguetes.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.jueguetes=LtkEntryLine(self.frame_caracteristicas, "50")
-        self.jueguetes.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_medicamentos=LtkLabel(self.frame_caracteristicas, texto="Medicamentos:")
-        self.etiqueta_medicamentos.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.medicamentos=LtkEntryLine(self.frame_caracteristicas, "50")
-        self.medicamentos.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_vacunas=LtkLabel(self.frame_caracteristicas, texto="Vacunas:")
-        self.etiqueta_vacunas.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.vacunas=LtkEntryLine(self.frame_caracteristicas, "50")
-        self.vacunas.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_accesorios=LtkLabel(self.frame_caracteristicas, texto="Accesorios:")
-        self.etiqueta_accesorios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.accesorios=LtkEntryLine(self.frame_caracteristicas, "50")
-        self.accesorios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_precio_por_alimento=LtkLabel(self.frame_caracteristicas, texto="Precio Por Alimento:")
+        self.etiqueta_precio_por_alimento.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.precio_por_alimento=LtkEntryLine(self.frame_caracteristicas, "100")
+        self.precio_por_alimento.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_cantidad_medicamento=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Medicamento:")
+        self.etiqueta_cantidad_medicamento.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_medicamento=LtkEntryLine(self.frame_caracteristicas, "150")
+        self.cantidad_medicamento.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_precio_medicamento=LtkLabel(self.frame_caracteristicas, texto="Precio Por Medicamento:")
+        self.etiqueta_precio_medicamento.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.precio_medicamento=LtkEntryLine(self.frame_caracteristicas, "150")
+        self.precio_medicamento.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+        self.etiqueta_cantidad_accesorios=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Accesorios:")
+        self.etiqueta_cantidad_accesorios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.cantidad_accesorios=LtkEntryLine(self.frame_caracteristicas, "150")
+        self.cantidad_accesorios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+        self.etiqueta_precio_accesorios=LtkLabel(self.frame_caracteristicas, texto="Precio Por Accesorio:")
+        self.etiqueta_precio_accesorios.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
+        self.precio_accesorios=LtkEntryLine(self.frame_caracteristicas, "150")
+        self.precio_accesorios.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes6(self):
         paquetes_alimento=self.paquetes_alimento.get()
-        jueguetes=self.jueguetes.get()
-        medicamentos=self.medicamentos.get()
-        vacunas=self.vacunas.get()
-        accesorios=self.accesorios.get()
+        precio_por_alimento=self.precio_por_alimento.get()
+        cantidad_medicamento=self.cantidad_medicamento.get()
+        precio_medicamento=self.precio_medicamento.get()
+        cantidad_accesorios=self.cantidad_accesorios.get()
+        precio_accesorios=self.precio_accesorios.get()
 
         self.lista_inventario.clear()
-        self.lista_inventario.append([int(paquetes_alimento), 
-                                    int(jueguetes), 
-                                    int(medicamentos),
-                                    int(vacunas),
-                                    int(accesorios)])
+        self.lista_inventario.append([int(paquetes_alimento),
+                                    int(precio_por_alimento),
+                                    int(cantidad_medicamento),
+                                    int(precio_medicamento),
+                                    int(cantidad_accesorios),
+                                    int(precio_accesorios)
+                                   ])
 
     def temporadas(self):
         self.resetear_frame_caracteristicas()
@@ -477,28 +427,28 @@ class Veterinaria:
 
     def pedir_datos(self):
         self.resetear_frame_caracteristicas()
-        llegada_personas = simpledialog.askinteger("Entrada", "Renglones De Llegada Personas", minvalue=1, parent=self.frame_caracteristicas)
+        renglones_alimento = simpledialog.askinteger("Entrada", "Renglones Para Alimentos", minvalue=1, parent=self.frame_caracteristicas)
         renglones_medicamento = simpledialog.askinteger("Entrada", "Renglones Para Medicamento", minvalue=1, parent=self.frame_caracteristicas)
         renglones_mascotas = simpledialog.askinteger("Entrada", "Renglones Para Mascotas", minvalue=1, parent=self.frame_caracteristicas)
         renglones_accesorios = simpledialog.askinteger("Entrada", "Renglones Para Accesorios", minvalue=1, parent=self.frame_caracteristicas)
         tiempo_consulta= simpledialog.askinteger("Entrada", "Tiempo De Consulta", minvalue=1, parent=self.frame_caracteristicas)
 
         current_row = 0
-        
-        self.check_llegada = StringVar()
-        self.checkbutton_llegada = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
-        self.checkbutton_llegada.deselect()
-        self.checkbutton_llegada.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+
+        self.check_alimento = StringVar()
+        self.checkbutton_alimento = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS ALIMENTO", variable=self.check_alimento, onvalue="Si", offvalue="No")
+        self.checkbutton_alimento.deselect()
+        self.checkbutton_alimento.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-        self.entrys_llegada = []
-        self.valores_llegada = []
-        for i in range(llegada_personas):
-            entry_llegada = LtkEntryLine(self.frame_caracteristicas, "5")
-            entry_llegada.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+        self.entrys_alimento = []
+        self.valores_alimento = []
+        for i in range(renglones_alimento):
+            entry_alimento = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_alimento.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
             entry = LtkEntryLine(self.frame_caracteristicas, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            self.entrys_llegada.append(entry)
-            self.valores_llegada.append(entry_llegada)
+            self.entrys_alimento.append(entry)
+            self.valores_alimento.append(entry_alimento)
             current_row += 1
         
         self.check_medicamento = StringVar()
@@ -567,32 +517,32 @@ class Veterinaria:
 
 
         def all_checkbuttons_selected():
-            if self.check_llegada.get() == "Si" and self.check_medicamento.get() == "Si" and self.check_mascotas.get() == "Si" and self.check_accesorios.get() == "Si" and self.check_tiempo.get() == "Si":
+            if self.check_alimento.get() == "Si" and self.check_medicamento.get() == "Si" and self.check_mascotas.get() == "Si" and self.check_accesorios.get() == "Si" and self.check_tiempo.get() == "Si":
                 return True
             return False
         def guardar_si_todo_seleccionado():
             if all_checkbuttons_selected():
-                self.guardar_ajustes8(llegada_personas, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta)
+                self.guardar_ajustes8(renglones_alimento, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta)
             else:
                 messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
             
         boton_guardar = LtkButtonFill(self.frame_caracteristicas, guardar_si_todo_seleccionado, "Guardar Ajustes Y Ver Tablas")
         boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
 
-    def guardar_ajustes8(self, llegada_personas, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta):
-        rangos_llegada=self.calcular_rangos([float(entry.get()) for entry in self.valores_llegada])
-        rangos_medicamento=self.calcular_rangos([float(entry.get()) for entry in self.valores_medicamento])
-        rangos_mascotas=self.calcular_rangos([float(entry.get()) for entry in self.valores_mascotas])
-        rangos_accesorios=self.calcular_rangos([float(entry.get()) for entry in self.valores_accesorios])
-        rangos_tiempo=self.calcular_rangos([float(entry.get()) for entry in self.valores_tiempo])
+    def guardar_ajustes8(self, renglones_alimento, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta):
+        rangos_alimento=self.calcular_rangos([float(entry.get()) for entry in self.entrys_alimento])
+        rangos_medicamento=self.calcular_rangos([float(entry.get()) for entry in self.entrys_medicamento])
+        rangos_mascotas=self.calcular_rangos([float(entry.get()) for entry in self.entrys_mascotas])
+        rangos_accesorios=self.calcular_rangos([float(entry.get()) for entry in self.entrys_accesorios])
+        rangos_tiempo=self.calcular_rangos([float(entry.get()) for entry in self.entrys_tiempo])
 
-        self.lista_llegada=[(int(self.valores_llegada[i].get()),rangos_llegada[i][1]) for i in range(llegada_personas)]
+        self.lista_alimento=[(int(self.valores_alimento[i].get()),rangos_alimento[i][1]) for i in range(renglones_alimento)]
         self.lista_medicamento=[(int(self.valores_medicamento[i].get()),rangos_medicamento[i][1]) for i in range(renglones_medicamento)]
         self.lista_mascotas=[(int(self.valores_mascotas[i].get()),rangos_mascotas[i][1]) for i in range(renglones_mascotas)]
         self.lista_accesorios=[(int(self.valores_accesorios[i].get()),rangos_accesorios[i][1]) for i in range(renglones_accesorios)]
         self.lista_tiempo=[(int(self.valores_tiempo[i].get()),rangos_tiempo[i][1]) for i in range(tiempo_consulta)]
 
-        self.tablas_llegada=[(int(self.valores_llegada[i].get()), float(self.entrys_llegada[i].get()), rangos_llegada[i][0], rangos_llegada[i][1]) for i in range(llegada_personas)]
+        self.tablas_alimento=[(int(self.valores_alimento[i].get()), float(self.entrys_alimento[i].get()), rangos_alimento[i][0], rangos_alimento[i][1]) for i in range(renglones_alimento)]
         self.tablas_medicamento=[(int(self.valores_medicamento[i].get()), float(self.entrys_medicamento[i].get()), rangos_medicamento[i][0], rangos_medicamento[i][1]) for i in range(renglones_medicamento)]
         self.tablas_mascotas=[(int(self.valores_mascotas[i].get()), float(self.entrys_mascotas[i].get()), rangos_mascotas[i][0], rangos_mascotas[i][1]) for i in range(renglones_mascotas)]
         self.tablas_accesorios=[(int(self.valores_accesorios[i].get()), float(self.entrys_accesorios[i].get()), rangos_accesorios[i][0], rangos_accesorios[i][1]) for i in range(renglones_accesorios)]
@@ -624,7 +574,7 @@ class Veterinaria:
         treeview.heading("Rango", text="Rango")
         treeview.pack(expand=True, fill="both")
 
-        self.insertar_tabla(treeview, "Llegada Personas", self.tablas_llegada)
+        self.insertar_tabla(treeview, "Alimento", self.tablas_alimento)
         self.insertar_tabla(treeview, "Medicamento", self.tablas_medicamento)
         self.insertar_tabla(treeview, "Mascotas", self.tablas_mascotas)
         self.insertar_tabla(treeview, "Accesorios", self.tablas_accesorios)

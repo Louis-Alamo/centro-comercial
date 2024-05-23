@@ -24,10 +24,10 @@ class Gimnasio:
         self.lista_baños = [[6, 3, 3]]
         self.lista_temporadas = [[True, 100], [False, 0], [False, 0]]
         self.lista_descuento = [[.10, .20, .05]]
-        self.lista_llegada = [(0, "0.0000-0.0000"),...]
-        self.lista_lapso = [(0, "0.0000-0.0000"),...]
-        self.lista_duracion_gym = [(0, "0.0000-0.0000"),...]
-        self.lista_baño = [(0, "0.0000-0.0000"),...]
+        self.lista_llegada = [(0, "0.0000-0.0000")]
+        self.lista_lapso = [(0, "0.0000-0.0000")]
+        self.lista_duracion_gym = [(0, "0.0000-0.0000")]
+        self.lista_baño = [(0, "0.0000-0.0000")]
 
 
         self.ventana=CTk()

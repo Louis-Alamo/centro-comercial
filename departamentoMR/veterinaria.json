@@ -1,36 +1,106 @@
 {
     "cantidad_gerentes": 1,
     "cantidad_veterinarios": 2,
-    "cantidad_auxiliares": 2,
     "sueldo_mensual_gerente": 4000,
     "sueldo_mensual_veterinario": 3000,
-    "sueldo_mensual_auxiliares": 3000,
     "horario_entrada": "8:00",
     "horario_salida": "18:00",
     "horario_salida_almuerzo": "11:00",
     "horario_entrada_almuerzo": "12:00",
-    "cantidad_usuarios": 10,
-    "cantidad_mascotas": 10,
     "pago_mensual_luz": 300,
     "pago_mensual_agua": 200,
     "pago_mensual_internet": 420,
     "pago_mensual_spotify": 200,
     "pago_mensual_renta_local": 2000,
-    "paquetes_alimentos": 100,
-    "juguetes": 50,
-    "medicamentos": 50,
-    "vacunas": 50,
-    "accesorios": 50,
+    "paquetes_alimento": 100,
+    "precio_por_alimento": 100,
+    "cantidad_medicamento": 150,
+    "precio_medicamento": 150,
+    "cantidad_accesorios": 150,
+    "precio_accesorios": 150,
     "temporada_regular": [
-        0.15,
-        false
+        false,
+        0
     ],
     "temporada_alta": [
-        0.7,
-        true
+        false,
+        0
     ],
     "temporada_baja": [
-        0.15,
-        false
+        true,
+        60
+    ],
+    "descuento_regular": 0,
+    "descuento_alta": 0,
+    "descuento_baja": 0.05,
+    "lista_alimento": [
+        [
+            2,
+            "0.0000-0.5000"
+        ],
+        [
+            3,
+            "0.5001-0.8000"
+        ],
+        [
+            4,
+            "0.8001-1.0000"
+        ]
+    ],
+    "lista_medicamento": [
+        [
+            1,
+            "0.0000-0.5000"
+        ],
+        [
+            2,
+            "0.5001-0.6000"
+        ],
+        [
+            3,
+            "0.6001-1.0000"
+        ]
+    ],
+    "lista_mascotas": [
+        [
+            2,
+            "0.0000-0.8000"
+        ],
+        [
+            1,
+            "0.8001-0.9000"
+        ],
+        [
+            3,
+            "0.9001-1.0000"
+        ]
+    ],
+    "lista_accesorios": [
+        [
+            2,
+            "0.0000-0.3000"
+        ],
+        [
+            5,
+            "0.3001-0.7000"
+        ],
+        [
+            8,
+            "0.7001-1.0000"
+        ]
+    ],
+    "lista_tiempo": [
+        [
+            10,
+            "0.0000-0.5000"
+        ],
+        [
+            15,
+            "0.5001-0.8000"
+        ],
+        [
+            20,
+            "0.8001-1.0000"
+        ]
     ]
 }
