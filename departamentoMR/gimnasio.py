@@ -490,7 +490,7 @@ class Gimnasio:
         current_row = 0
 
         self.check_llegada = StringVar()
-        self.checkbutton_llegada = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_llegada, onvalue="Si", offvalue="No")
+        self.checkbutton_llegada = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
         self.checkbutton_llegada.deselect()
         self.checkbutton_llegada.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -507,7 +507,7 @@ class Gimnasio:
             current_row += 1
 
         self.check_lapso = StringVar()
-        self.checkbutton_lapso = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_lapso, onvalue="Si", offvalue="No")
+        self.checkbutton_lapso = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LAPSO LLEGADA", variable=self.check_lapso, onvalue="Si", offvalue="No")
         self.checkbutton_lapso.deselect()
         self.checkbutton_lapso.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -524,7 +524,7 @@ class Gimnasio:
             current_row += 1
 
         self.check_duracion_gym = StringVar()
-        self.checkbutton_duracion_gym = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_duracion_gym, onvalue="Si", offvalue="No")
+        self.checkbutton_duracion_gym = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS DURACION EN GYM", variable=self.check_duracion_gym, onvalue="Si", offvalue="No")
         self.checkbutton_duracion_gym.deselect()
         self.checkbutton_duracion_gym.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -541,7 +541,7 @@ class Gimnasio:
             current_row += 1
 
         self.check_baño = StringVar()
-        self.checkbutton_baño = Checkbutton(self.frame_caracteristicas, text="MARCA LA CASILLA PARA USAR TUS DATOS HISTORICOS", variable=self.check_baño, onvalue="Si", offvalue="No")
+        self.checkbutton_baño = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO EN BAÑO", variable=self.check_baño, onvalue="Si", offvalue="No")
         self.checkbutton_baño.deselect()
         self.checkbutton_baño.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1

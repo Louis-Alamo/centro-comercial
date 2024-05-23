@@ -3,9 +3,9 @@ from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
-from componentes_graficos.LtkCheckBox import LtkCheckBoxFill
-from componentes_graficos.LtkComboBox import LtkComboBoxLine
-from componentes_graficos.LtkTreeView import LtkFileInputTreeView
+from tkinter import Checkbutton, StringVar
+import tkinter as tk
+from tkinter import ttk
 import tkinter
 import json
 import os
@@ -19,7 +19,13 @@ class Veterinaria:
         self.lista_mascotas=[[10]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_inventario=[[100,50,50,50,50]]
-        self.lista_temporadas=[[0.70,True],[0.15,False],[0.15,False]]
+        self.lista_temporadas=[[True, 100], [False, 0], [False, 0]]
+        self.lista_descuento = [[.10, .20, .05]]
+        self.lista_llegada=[(0, "0.0000-0.0000"),...]
+        self.lista_medicamento=[(0, "0.0000-0.0000"),...]
+        self.lista_mascotas=[(0, "0.0000-0.0000"),...]
+        self.lista_accesorios=[(0, "0.0000-0.0000"),...]
+        self.lista_tiempo=[(0, "0.0000-0.0000"),...]
 
 
         self.ventana=CTk()
@@ -75,7 +81,7 @@ class Veterinaria:
         self.ventana.rowconfigure(1, weight=2)
         self.frame_caracteristicas.columnconfigure(0, weight=1)
 
-        self.personal()
+        
         self.sueldos()
         self.horarios()
         self.usuarios()
@@ -83,6 +89,7 @@ class Veterinaria:
         self.servicios_generales()
         self.inventario()
         self.temporadas()
+        self.personal()
 
         # Frame para el botón de guardar
         frame_guardar = CTkFrame(self.ventana)
@@ -122,7 +129,16 @@ class Veterinaria:
             "accesorios": self.lista_inventario[0][4],
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
-            "temporada_baja": self.lista_temporadas[0][2]
+            "temporada_baja": self.lista_temporadas[0][2],
+            "descuento_regular": self.lista_descuento[0][0],
+            "descuento_alta": self.lista_descuento[0][1],
+            "descuento_baja": self.lista_descuento[0][2],
+            "lista_llegada": self.lista_llegada,
+            "lista_medicamento": self.lista_medicamento,
+            "lista_mascotas": self.lista_mascotas,
+            "lista_accesorios": self.lista_accesorios,
+            "lista_tiempo": self.lista_tiempo
+
             
         }
         
@@ -389,52 +405,235 @@ class Veterinaria:
 
     def temporadas(self):
         self.resetear_frame_caracteristicas()
-        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Temporadas")
         self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
         self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        self.temporada_var=tkinter.IntVar()
+        self.temporada_var = tkinter.IntVar()
 
-        self.temporada_regular=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
+        self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
         self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_alta=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
+        self.descuento_regular = LtkEntryLine(self.frame_caracteristicas, ".10")
+        self.descuento_regular.grid(row=3, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
         self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.temporada_baja=tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
+        self.descuento_alta = LtkEntryLine(self.frame_caracteristicas, ".20")
+        self.descuento_alta.grid(row=4, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
+
+        self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
         self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
+        self.descuento_baja = LtkEntryLine(self.frame_caracteristicas, ".05")
+        self.descuento_baja.grid(row=5, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
-
-
-        boton_guardar=LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes7(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
-    def guardar_ajustes8(self):
-        seleccion=self.temporada_var.get()
+    def guardar_ajustes7(self):
+        seleccion = self.temporada_var.get()
 
         if seleccion == 1:
-            temporada_regular=[0.70,True]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.15,False]
+            descuento_regular = self.descuento_regular.get() or ".10"
+            temporada_regular = [True,80]
+            temporada_alta = [False,0]
+            temporada_baja = [False,0]
         elif seleccion == 2:
-            temporada_regular=[0.15,False]
-            temporada_alta=[0.70,True]
-            temporada_baja=[0.15,False]
+            descuento_alta = self.descuento_alta.get() or ".20"
+            temporada_regular = [False,0]
+            temporada_alta = [True,100]
+            temporada_baja = [False,0]
         elif seleccion == 3:
-            temporada_regular=[0.15,False]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.70,True]
-        else:
-            temporada_regular=[0.70,True]
-            temporada_alta=[0.15,False]
-            temporada_baja=[0.15,False]
+            descuento_baja = self.descuento_baja.get() or ".05"
+            temporada_regular = [False,0]
+            temporada_alta = [False,0]
+            temporada_baja = [True,60]
 
         self.lista_temporadas.clear()
+        self.lista_descuento.clear()
+
+        if seleccion == 1:
+            self.lista_descuento.append([float(descuento_regular), 0, 0])
+        elif seleccion == 2:
+            self.lista_descuento.append([0, float(descuento_alta), 0])
+        elif seleccion == 3:
+            self.lista_descuento.append([0, 0, float(descuento_baja)])
+
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
-    def datos_historicos():
-        pass
+
+    def datos_historicos(self):
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
+
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+    def pedir_datos(self):
+        self.resetear_frame_caracteristicas()
+        llegada_personas = simpledialog.askinteger("Entrada", "Renglones De Llegada Personas", minvalue=1, parent=self.frame_caracteristicas)
+        renglones_medicamento = simpledialog.askinteger("Entrada", "Renglones Para Medicamento", minvalue=1, parent=self.frame_caracteristicas)
+        renglones_mascotas = simpledialog.askinteger("Entrada", "Renglones Para Mascotas", minvalue=1, parent=self.frame_caracteristicas)
+        renglones_accesorios = simpledialog.askinteger("Entrada", "Renglones Para Accesorios", minvalue=1, parent=self.frame_caracteristicas)
+        tiempo_consulta= simpledialog.askinteger("Entrada", "Tiempo De Consulta", minvalue=1, parent=self.frame_caracteristicas)
+
+        current_row = 0
+        
+        self.check_llegada = StringVar()
+        self.checkbutton_llegada = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
+        self.checkbutton_llegada.deselect()
+        self.checkbutton_llegada.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_llegada = []
+        self.valores_llegada = []
+        for i in range(llegada_personas):
+            entry_llegada = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_llegada.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_llegada.append(entry)
+            self.valores_llegada.append(entry_llegada)
+            current_row += 1
+        
+        self.check_medicamento = StringVar()
+        self.checkbutton_medicamento = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS MEDICAMENTO", variable=self.check_medicamento, onvalue="Si", offvalue="No")
+        self.checkbutton_medicamento.deselect()
+        self.checkbutton_medicamento.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_medicamento = []
+        self.valores_medicamento = []
+        for i in range(renglones_medicamento):
+            entry_medicamento = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_medicamento.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_medicamento.append(entry)
+            self.valores_medicamento.append(entry_medicamento)
+            current_row += 1
+        
+        self.check_mascotas = StringVar()
+        self.checkbutton_mascotas = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS MASCOTAS", variable=self.check_mascotas, onvalue="Si", offvalue="No")
+        self.checkbutton_mascotas.deselect()
+        self.checkbutton_mascotas.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_mascotas = []
+        self.valores_mascotas = []
+        for i in range(renglones_mascotas):
+            entry_mascotas = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_mascotas.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_mascotas.append(entry)
+            self.valores_mascotas.append(entry_mascotas)
+            current_row += 1
+
+        self.check_accesorios = StringVar()
+        self.checkbutton_accesorios = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS ACCESORIOS", variable=self.check_accesorios, onvalue="Si", offvalue="No")
+        self.checkbutton_accesorios.deselect()
+        self.checkbutton_accesorios.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_accesorios = []
+        self.valores_accesorios = []
+        for i in range(renglones_accesorios):
+            entry_accesorios = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_accesorios.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_accesorios.append(entry)
+            self.valores_accesorios.append(entry_accesorios)
+            current_row += 1
+
+        self.check_tiempo = StringVar()
+        self.checkbutton_tiempo = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO", variable=self.check_tiempo, onvalue="Si", offvalue="No")
+        self.checkbutton_tiempo.deselect()
+        self.checkbutton_tiempo.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_tiempo = []
+        self.valores_tiempo = []
+        for i in range(tiempo_consulta):
+            entry_tiempo = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_tiempo.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_tiempo.append(entry)
+            self.valores_tiempo.append(entry_tiempo)
+            current_row += 1
+
+
+        def all_checkbuttons_selected():
+            if self.check_llegada.get() == "Si" and self.check_medicamento.get() == "Si" and self.check_mascotas.get() == "Si" and self.check_accesorios.get() == "Si" and self.check_tiempo.get() == "Si":
+                return True
+            return False
+        def guardar_si_todo_seleccionado():
+            if all_checkbuttons_selected():
+                self.guardar_ajustes8(llegada_personas, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta)
+            else:
+                messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
+            
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, guardar_si_todo_seleccionado, "Guardar Ajustes Y Ver Tablas")
+        boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
+
+    def guardar_ajustes8(self, llegada_personas, renglones_medicamento, renglones_mascotas, renglones_accesorios, tiempo_consulta):
+        rangos_llegada=self.calcular_rangos([float(entry.get()) for entry in self.valores_llegada])
+        rangos_medicamento=self.calcular_rangos([float(entry.get()) for entry in self.valores_medicamento])
+        rangos_mascotas=self.calcular_rangos([float(entry.get()) for entry in self.valores_mascotas])
+        rangos_accesorios=self.calcular_rangos([float(entry.get()) for entry in self.valores_accesorios])
+        rangos_tiempo=self.calcular_rangos([float(entry.get()) for entry in self.valores_tiempo])
+
+        self.lista_llegada=[(int(self.valores_llegada[i].get()),rangos_llegada[i][1]) for i in range(llegada_personas)]
+        self.lista_medicamento=[(int(self.valores_medicamento[i].get()),rangos_medicamento[i][1]) for i in range(renglones_medicamento)]
+        self.lista_mascotas=[(int(self.valores_mascotas[i].get()),rangos_mascotas[i][1]) for i in range(renglones_mascotas)]
+        self.lista_accesorios=[(int(self.valores_accesorios[i].get()),rangos_accesorios[i][1]) for i in range(renglones_accesorios)]
+        self.lista_tiempo=[(int(self.valores_tiempo[i].get()),rangos_tiempo[i][1]) for i in range(tiempo_consulta)]
+
+        self.tablas_llegada=[(int(self.valores_llegada[i].get()), float(self.entrys_llegada[i].get()), rangos_llegada[i][0], rangos_llegada[i][1]) for i in range(llegada_personas)]
+        self.tablas_medicamento=[(int(self.valores_medicamento[i].get()), float(self.entrys_medicamento[i].get()), rangos_medicamento[i][0], rangos_medicamento[i][1]) for i in range(renglones_medicamento)]
+        self.tablas_mascotas=[(int(self.valores_mascotas[i].get()), float(self.entrys_mascotas[i].get()), rangos_mascotas[i][0], rangos_mascotas[i][1]) for i in range(renglones_mascotas)]
+        self.tablas_accesorios=[(int(self.valores_accesorios[i].get()), float(self.entrys_accesorios[i].get()), rangos_accesorios[i][0], rangos_accesorios[i][1]) for i in range(renglones_accesorios)]
+        self.tablas_tiempo=[(int(self.valores_tiempo[i].get()), float(self.entrys_tiempo[i].get()), rangos_tiempo[i][0], rangos_tiempo[i][1]) for i in range(tiempo_consulta)]
+
+        self.imprimir_tablas()
+
+    def calcular_rangos(self, probabilidades):
+        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        
+        rangos = []
+        for i in range(len(probabilidades)):
+            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin = probabilidad_acumulada[i]
+            rangos.append((probabilidad_acumulada[i], f"{rango_inicio:.4f}-{rango_fin:.4f}"))
+        
+        return rangos
+        
+    def imprimir_tablas(self):
+        ventana = tk.Toplevel()
+        ventana.title("Tablas")
+        ventana.geometry("700x500")
+        
+        treeview = ttk.Treeview(ventana)
+        treeview["columns"] = ("Probabilidad", "Probabilidad Acumulada", "Rango")
+        treeview.heading("#0", text="Tabla")
+        treeview.heading("Probabilidad", text="Probabilidad")
+        treeview.heading("Probabilidad Acumulada", text="Probabilidad Acumulada")
+        treeview.heading("Rango", text="Rango")
+        treeview.pack(expand=True, fill="both")
+
+        self.insertar_tabla(treeview, "Llegada Personas", self.tablas_llegada)
+        self.insertar_tabla(treeview, "Medicamento", self.tablas_medicamento)
+        self.insertar_tabla(treeview, "Mascotas", self.tablas_mascotas)
+        self.insertar_tabla(treeview, "Accesorios", self.tablas_accesorios)
+        self.insertar_tabla(treeview, "Tiempo", self.tablas_tiempo)
+    
+    def insertar_tabla(self, treeview, nombre_tabla, datos_tabla):
+        treeview.insert("", tk.END, text=nombre_tabla, values=("", "", ""))
+        for valor, probabilidad, prob_acum, rango in datos_tabla:
+            treeview.insert("", tk.END, text=str(valor), values=(probabilidad, prob_acum, rango))
 
 
 
