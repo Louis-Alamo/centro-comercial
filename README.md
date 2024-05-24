@@ -7,7 +7,9 @@ Programa en interfaz grafica que simulara un centro comercial y simulara como se
 - customtkinter
 - tkinter
 - Pillow
-
+- tabulate
+- numpy
+- scipy
 
 
 ## Consideraciones del codigo o de los programas

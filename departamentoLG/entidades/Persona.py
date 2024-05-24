@@ -1,21 +1,22 @@
-from Hora import Hora
-
+from departamentoLG.entidades.Hora import Hora
 class Persona:
 
-    def __init__(self, numero: int, tiempo_llegada: str, hora_llegada: str):
+    def __init__(self, numero: int, hora_llegada: str):
         self.numero_persona = numero
-        self.tiempo_llegada = Hora(tiempo_llegada)
         self.hora_llegada = Hora(hora_llegada)
 
-        self.tipo_visita = None
         self.hora_atencion = None
         self.hora_salida = None
         self.tiempo_espera_servidor = None
+        self.servidor_asignado = None
+
 
 
     def __str__(self):
         return f"Persona {self.numero_persona} - {self.hora_llegada} - {self.hora_atencion} - {self.hora_salida}"
-    
+
+    def mostrar_informacion(self):
+        print(f"Persona {self.numero_persona} - Hora de llegada: {self.hora_llegada} - Hora de atención: {self.hora_atencion} - Hora de salida: {self.hora_salida} - Tiempo de espera en el servidor: {self.tiempo_espera_servidor} minutos")
 
     def set_tipo_visita(self, tipo_visita : str):
         self.tipo_visita = tipo_visita

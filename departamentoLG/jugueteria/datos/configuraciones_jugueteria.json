@@ -1,8 +1,8 @@
 {
     "General": {
         "capacidad_maxima_personas": 50,
-        "horario_inicio": "08:00",
-        "horario_cierre": "20:00"
+        "horario_inicio": "08:00 AM",
+        "horario_cierre": "06:00 PM"
     },
     "Caja": {
         "Cantidad de cajas": 2,
