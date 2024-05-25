@@ -180,7 +180,7 @@ class SimulacionGimnasio:
         
 
     def crear_tabla_simulacion(self, numeros):
-        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS EN USO", "SIN USO" , "MUJERES O HOMBRES"]
+        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS EN USO", "SIN USO" , "HOMBRE/MUJER/OTRO"]
         llegada_usuarios = self.datos.get("llegada_usuarios", [])
         horario_apertura = self.datos.get("horario_apertura", [])
         horario_cierre = self.datos.get("horario_cierre", [])
@@ -189,6 +189,9 @@ class SimulacionGimnasio:
         duracion_baño = self.datos.get("duracion_baño", [])
         cantidad_maquinas = self.datos.get("cantidad_maquinas", 0)
         
+
+        maquinas_disponibles = cantidad_maquinas
+        eventos = []
 
         header_frame = CTkFrame(self.inner_frame)
         header_frame.pack(padx=20, pady=10, fill="x")
@@ -210,13 +213,12 @@ class SimulacionGimnasio:
 
             personas = obtener_personas_segun_rango(numero, llegada_usuarios)
             personas_label = CTkLabel(tabla_frame, text=str(personas), font=("Arial", 12), text_color="white")
-            personas_label.grid(row=i, column=1, padx=(70, 20), pady=10, sticky="nsew")
+            personas_label.grid(row=i, column=1, padx=(50, 20), pady=10, sticky="nsew")
 
             cobro_desc = self.cobro_final * personas
             cobro_label = CTkLabel(tabla_frame, text=f"${cobro_desc}", font=("Arial", 12), text_color="white")
-            cobro_label.grid(row=i, column=2, padx=(60, 20), pady=10, sticky="nsew")
+            cobro_label.grid(row=i, column=2, padx=(40, 20), pady=10, sticky="nsew")
             self.total_cobro += cobro_desc
-
 
             incremento_minutos = 0
             for incremento, rango in lapso_usuarios:
@@ -229,32 +231,40 @@ class SimulacionGimnasio:
             hora_actual = hora_llegada 
 
             hora_llegada_label = CTkLabel(tabla_frame, text=hora_llegada, font=("Arial", 12), text_color="white")
-            hora_llegada_label.grid(row=i, column=3, padx=(40, 20), pady=10, sticky="nsew")
+            hora_llegada_label.grid(row=i, column=3, padx=(30, 20), pady=10, sticky="nsew")
 
             duracion_gym_val = obtener_duracion_segun_rango(numero, duracion_gym)
             duracion_gym_label = CTkLabel(tabla_frame, text=str(duracion_gym_val), font=("Arial", 12), text_color="white")
-            duracion_gym_label.grid(row=i, column=4, padx=(50, 20), pady=10, sticky="nsew")
+            duracion_gym_label.grid(row=i, column=4, padx=(30, 20), pady=10, sticky="nsew")
 
             duracion_baño_val = obtener_tiempo_baño_segun_rango(numero, duracion_baño)
             duracion_baño_label = CTkLabel(tabla_frame, text=str(duracion_baño_val), font=("Arial", 12), text_color="white")
-            duracion_baño_label.grid(row=i, column=5, padx=(50, 20), pady=10, sticky="nsew")
-
+            duracion_baño_label.grid(row=i, column=5, padx=(40, 20), pady=10, sticky="nsew")
 
             hora_salida = incrementar_hora(hora_llegada, duracion_gym_val + duracion_baño_val)
             hora_salida_label = CTkLabel(tabla_frame, text=hora_salida, font=("Arial", 12), text_color="white")
-            hora_salida_label.grid(row=i, column=6, padx=(60, 20), pady=10, sticky="nsew")
+            hora_salida_label.grid(row=i, column=6, padx=(40, 20), pady=10, sticky="nsew")
+
+            maquinas_usadas = min(personas, maquinas_disponibles)
+            maquinas_disponibles -= maquinas_usadas
+
+            eventos.append((hora_salida, maquinas_usadas))
+            maquinas_en_uso_label = CTkLabel(tabla_frame, text=str(maquinas_usadas), font=("Arial", 12), text_color="white")
+            maquinas_en_uso_label.grid(row=i, column=7, padx=(60, 20), pady=10, sticky="nsew")
+
+            maquinas_sin_uso_label = CTkLabel(tabla_frame, text=str(maquinas_disponibles), font=("Arial", 12), text_color="white")
+            maquinas_sin_uso_label.grid(row=i, column=8, padx=(60, 20), pady=10, sticky="nsew")
 
             genero = obtener_genero_segun_rango(numero, lista_sexo)
             genero_label = CTkLabel(tabla_frame, text=genero, font=("Arial", 12), text_color="white")
-            genero_label.grid(row=i, column=9, padx=(90, 20), pady=10, sticky="nsew")
+            genero_label.grid(row=i, column=9, padx=(60, 20), pady=10, sticky="nsew")
+
+            eventos = sorted(eventos)
+            while eventos and eventos[0][0] <= hora_actual:
+                _, maquinas_liberadas = eventos.pop(0)
+                maquinas_disponibles += maquinas_liberadas
 
         for i in range(len(numeros)):
             tabla_frame.grid_rowconfigure(i, weight=1)
 
-
-
-
-
 SimulacionGimnasio()
-
-

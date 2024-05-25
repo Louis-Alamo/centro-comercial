@@ -688,4 +688,3 @@ class Gimnasio:
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
 
-Gimnasio()
