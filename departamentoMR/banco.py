@@ -16,8 +16,6 @@ class Banco:
         self.lista_servicios_generales=[[300, 200, 420, 2000]]
         self.lista_cajeros_automaticos=[[3]]
         self.lista_temporadas=[[True,100],[False,0],[False,0]]
-        self.lista_descuento=[[.10,.20,.05]]
-
 
 
         self.ventana=CTk()
@@ -45,7 +43,6 @@ class Banco:
         self.ventana.columnconfigure(0, weight=2)
         self.ventana.rowconfigure(1, weight=1)
 
-
         boton_personal_banco=LtkButtonLine(frame_opciones, self.personal, "Personal De Banco")
         boton_personal_banco.grid(row=0, column=0, padx=(5,5), pady=(5, 5))
         boton_sueldo=LtkButtonLine(frame_opciones, self.sueldos, "Sueldos")
@@ -70,7 +67,6 @@ class Banco:
         self.frame_caracteristicas.columnconfigure(0, weight=1)
 
 
-        
         self.sueldos()
         self.horarios()
         self.usuarios()
@@ -116,9 +112,6 @@ class Banco:
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
-            "descuento_regular": self.lista_descuento[0][0],
-            "descuento_alta": self.lista_descuento[0][1],
-            "descuento_baja": self.lista_descuento[0][2],
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -184,7 +177,6 @@ class Banco:
                                    int(cantidad_personal_tecnico)
                                    ])
         
-
 
     def sueldos(self):
         self.resetear_frame_caracteristicas()
@@ -360,18 +352,12 @@ class Banco:
 
         self.temporada_regular = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Regular", variable=self.temporada_var, value=1)
         self.temporada_regular.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.descuento_regular = LtkEntryLine(self.frame_caracteristicas, ".10")
-        self.descuento_regular.grid(row=3, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
         self.temporada_alta = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Alta", variable=self.temporada_var, value=2)
         self.temporada_alta.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.descuento_alta = LtkEntryLine(self.frame_caracteristicas, ".20")
-        self.descuento_alta.grid(row=4, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
         self.temporada_baja = tkinter.Radiobutton(self.frame_caracteristicas, text="Temporada Baja", variable=self.temporada_var, value=3)
         self.temporada_baja.grid(row=5, column=1, padx=(5, 10), pady=(5, 5), sticky="w")
-        self.descuento_baja = LtkEntryLine(self.frame_caracteristicas, ".05")
-        self.descuento_baja.grid(row=5, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -381,31 +367,19 @@ class Banco:
         seleccion = self.temporada_var.get()
 
         if seleccion == 1:
-            descuento_regular = self.descuento_regular.get() or ".10"
             temporada_regular = [True,80]
             temporada_alta = [False,0]
             temporada_baja = [False,0]
         elif seleccion == 2:
-            descuento_alta = self.descuento_alta.get() or ".20"
             temporada_regular = [False,0]
             temporada_alta = [True,100]
             temporada_baja = [False,0]
         elif seleccion == 3:
-            descuento_baja = self.descuento_baja.get() or ".05"
             temporada_regular = [False,0]
             temporada_alta = [False,0]
             temporada_baja = [True,60]
 
         self.lista_temporadas.clear()
-        self.lista_descuento.clear()
-
-        if seleccion == 1:
-            self.lista_descuento.append([float(descuento_regular), 0, 0])
-        elif seleccion == 2:
-            self.lista_descuento.append([0, float(descuento_alta), 0])
-        elif seleccion == 3:
-            self.lista_descuento.append([0, 0, float(descuento_baja)])
-
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
 
 
@@ -415,3 +389,4 @@ class Banco:
 
 
 
+Banco()

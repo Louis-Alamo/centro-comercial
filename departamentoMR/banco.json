@@ -18,18 +18,15 @@
     "pago_mensual_renta_local": 2000,
     "cantidad_cajeros_automaticos": 3,
     "temporada_regular": [
-        false,
-        0
+        true,
+        80
     ],
     "temporada_alta": [
         false,
         0
     ],
     "temporada_baja": [
-        true,
-        60
-    ],
-    "descuento_regular": 0,
-    "descuento_alta": 0,
-    "descuento_baja": 0.05
+        false,
+        0
+    ]
 }
