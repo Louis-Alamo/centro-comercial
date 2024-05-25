@@ -30,7 +30,7 @@ class Gimnasio:
         self.lista_lapso = [(0, "0.0000-0.0000")]
         self.lista_duracion_gym = [(0, "0.0000-0.0000")]
         self.lista_baño = [(0, "0.0000-0.0000")]
-        self.lista_sexo=[("Mujer", 0), ("Hombre", 0), ("Otro", 0)]
+        self.lista_sexo=[("Mujer", "0.0000-0.0000")]
 
 
         self.ventana=CTk()
@@ -432,8 +432,8 @@ class Gimnasio:
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
-        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+        boton = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
+        boton.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def pedir_datos(self):
         self.resetear_frame_caracteristicas()
@@ -540,7 +540,6 @@ class Gimnasio:
         self.checkbutton_sexo.deselect()
         self.checkbutton_sexo.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-
         self.entrys_sexo = []
         self.valores_sexo = []
         for i in range(cantidad_genero):

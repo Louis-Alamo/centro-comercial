@@ -3,7 +3,10 @@ from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
+from tkinter import simpledialog, Toplevel, Checkbutton, StringVar, Canvas, Frame, Scrollbar
 import tkinter
+import tkinter as tk
+from tkinter import ttk
 import json
 import os
 
@@ -16,6 +19,13 @@ class Banco:
         self.lista_servicios_generales=[[300, 200, 420, 2000]]
         self.lista_cajeros_automaticos=[[3]]
         self.lista_temporadas=[[True,100],[False,0],[False,0]]
+        self.lista_tipo=[["Oro", "0.0000-0.0000"]]
+        self.lista_acude=[["Secretaria", "0.0000-0.0000"]]
+        self.lista_llegada=[[3, "0.0000-0.0000"]]
+        self.lista_caja=[[3, "0.0000-0.0000"]]
+        self.lista_secre=[[3, "0.0000-0.0000"]]
+        self.lista_cajero_a=[[3, "0.0000-0.0000"]]
+        self.lista_olvido=[[1, "0.0000-0.0000"]]
 
 
         self.ventana=CTk()
@@ -112,6 +122,13 @@ class Banco:
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
+            "tipo": self.lista_tipo,
+            "acude": self.lista_acude,
+            "llegada": self.lista_llegada,
+            "caja": self.lista_caja,
+            "secre": self.lista_secre,
+            "cajero_a": self.lista_cajero_a,
+            "olvido": self.lista_olvido
         }
         
         informacion_json=json.dumps(informacion, indent=4)
@@ -385,8 +402,247 @@ class Banco:
 
 
     def datos_historicos(self):
-        pass
+        self.resetear_frame_caracteristicas()
+        self.etiqueta_titulo_caracteristicas = LtkLabel(self.frame_caracteristicas, texto="Ajustes De Datos Historicos")
+        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
+        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
+        self.frame_caracteristicas.columnconfigure(1, weight=1)
+        self.frame_caracteristicas.columnconfigure(2, weight=1)
 
+        boton = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
+        boton.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
+    def pedir_datos(self):
+        self.resetear_frame_caracteristicas()
+        tipo_cliente = simpledialog.askinteger("Entrada", "Renglones Para Tipo De Clientes", minvalue=1, parent=self.frame_caracteristicas)
+        acude_a = simpledialog.askinteger("Entrada", "Renglones De Acude A", minvalue=1, parent=self.frame_caracteristicas)
+        tiempo_llegada = simpledialog.askinteger("Entrada", "Renglones Para Tiempo De Llegada", minvalue=1, parent=self.frame_caracteristicas)
+        duracion_caja = simpledialog.askinteger("Entrada", "Renglones Tiempo En Caja", minvalue=1, parent=self.frame_caracteristicas)
+        duracion_secre = simpledialog.askinteger("Entrada", "Renglones Tiempo En Secretarias", minvalue=1, parent=self.frame_caracteristicas)
+        duracion_cajero_a= simpledialog.askinteger("Entrada", "Renglones Tiempo En Cajero Automatico", minvalue=1, parent=self.frame_caracteristicas)
+        olvido_tarjeta=simpledialog.askinteger("Entrada", "Renglones Para Olvido De Tarjeta", minvalue=1, parent=self.frame_caracteristicas)
+
+        canvas = Canvas(self.frame_caracteristicas)
+        canvas.configure(bg="gray")
+        scrollbar = Scrollbar(self.frame_caracteristicas, orient="vertical", command=canvas.yview)
+        scrollable_frame = Frame(canvas)
+        scrollable_frame.configure(bg="gray")
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set, width=500)
+
+        canvas.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+        self.frame_caracteristicas.rowconfigure(0, weight=1)
+
+        current_row = 0
+        self.check_tipo = StringVar()
+        self.checkbutton_tipo = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS tipo", variable=self.check_tipo, onvalue="Si", offvalue="No")
+        self.checkbutton_tipo.deselect()
+        self.checkbutton_tipo.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_tipo = []
+        self.valores_tipo = []
+        for i in range(tipo_cliente):
+            entry_tipo = LtkEntryLine(scrollable_frame, "Oro")
+            entry_tipo.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_tipo.append(entry)
+            self.valores_tipo.append(entry_tipo)
+            current_row += 1
+
+
+        self.check_acude=StringVar()
+        self.checkbutton_acude=Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS acude", variable=self.check_acude, onvalue="Si", offvalue="No")
+        self.checkbutton_acude.deselect()
+        self.checkbutton_acude.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_acude = []
+        self.valores_acude = []
+        for i in range(acude_a):
+            entry_acude = LtkEntryLine(scrollable_frame, "Secretaria")
+            entry_acude.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_acude.append(entry)
+            self.valores_acude.append(entry_acude)
+            current_row += 1
+
+
+  
+        self.check_llegada = StringVar()
+        self.checkbutton_llegada = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
+        self.checkbutton_llegada.deselect()
+        self.checkbutton_llegada.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_llegada = []
+        self.valores_llegada = []
+        for i in range(tiempo_llegada):
+            entry_llegada = LtkEntryLine(scrollable_frame, "3")
+            entry_llegada.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_llegada.append(entry)
+            self.valores_llegada.append(entry_llegada)
+            current_row += 1
+
+        self.check_caja = StringVar()
+        self.checkbutton_caja = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS CAJA", variable=self.check_caja, onvalue="Si", offvalue="No")
+        self.checkbutton_caja.deselect()
+        self.checkbutton_caja.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_caja = []
+        self.valores_caja = []
+        for i in range(duracion_caja):
+            entry_caja = LtkEntryLine(scrollable_frame, "3")
+            entry_caja.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_caja.append(entry)
+            self.valores_caja.append(entry_caja)
+            current_row += 1
+        
+
+        self.check_secre = StringVar()
+        self.checkbutton_secre = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS SECRE", variable=self.check_secre, onvalue="Si", offvalue="No")
+        self.checkbutton_secre.deselect()
+        self.checkbutton_secre.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_secre = []
+        self.valores_secre = []
+        for i in range(duracion_secre):
+            entry_secre = LtkEntryLine(scrollable_frame, "3")
+            entry_secre.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_secre.append(entry)
+            self.valores_secre.append(entry_secre)
+            current_row += 1
+
+        self.check_cajero_a = StringVar()
+        self.checkbutton_cajero_a = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS CAJERO A", variable=self.check_cajero_a, onvalue="Si", offvalue="No")
+        self.checkbutton_cajero_a.deselect()
+        self.checkbutton_cajero_a.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_cajero_a = []
+        self.valores_cajero_a = []
+        for i in range(duracion_cajero_a):
+            entry_cajero_a = LtkEntryLine(scrollable_frame, "3")
+            entry_cajero_a.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_cajero_a.append(entry)
+            self.valores_cajero_a.append(entry_cajero_a)
+            current_row += 1
+
+        self.check_olvido = StringVar()
+        self.checkbutton_olvido = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS OLVIDO", variable=self.check_olvido, onvalue="Si", offvalue="No")
+        self.checkbutton_olvido.deselect()
+        self.checkbutton_olvido.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+        self.entrys_olvido = []
+        self.valores_olvido = []
+        for i in range(olvido_tarjeta):
+            entry_olvido = LtkEntryLine(scrollable_frame, "3")
+            entry_olvido.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_olvido.append(entry)
+            self.valores_olvido.append(entry_olvido)
+            current_row += 1
+
+
+        def all_checkbuttons_selected():
+            return (self.check_tipo.get() == "Si" and
+                    self.check_acude.get() == "Si" and
+                    self.check_llegada.get() == "Si" and
+                    self.check_caja.get() == "Si" and
+                    self.check_secre.get() == "Si" and
+                    self.check_cajero_a.get() == "Si" and
+                    self.check_olvido.get() == "Si")
+        
+        def guardar_si_todo_seleccionado():
+            if all_checkbuttons_selected():
+                self.guardar_ajustes9(tipo_cliente, acude_a, tiempo_llegada, duracion_caja, duracion_secre, duracion_cajero_a, olvido_tarjeta)
+            else:
+                messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
+
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, guardar_si_todo_seleccionado, "Guardar Ajustes Y Ver Tablas")
+        boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
+
+
+    def guardar_ajustes9(self, tipo_cliente, acude_a, tiempo_llegada, duracion_caja, duracion_secre, duracion_cajero_a, olvido_tarjeta):
+        rangos_tipo=self.calcular_rangos([float(entry.get()) for entry in self.entrys_tipo])
+        rangos_acude=self.calcular_rangos([float(entry.get()) for entry in self.entrys_acude])
+        rangos_llegada=self.calcular_rangos([float(entry.get()) for entry in self.entrys_llegada])
+        rangos_caja=self.calcular_rangos([float(entry.get()) for entry in self.entrys_caja])
+        rangos_secre=self.calcular_rangos([float(entry.get()) for entry in self.entrys_secre])
+        rangos_cajero_a=self.calcular_rangos([float(entry.get()) for entry in self.entrys_cajero_a])
+        rangos_olvido=self.calcular_rangos([float(entry.get()) for entry in self.entrys_olvido])
+
+        self.lista_tipo = [(str(self.valores_tipo[i].get()), rangos_tipo[i][1]) for i in range(tipo_cliente)]
+        self.lista_acude = [(str(self.valores_acude[i].get()), rangos_acude[i][1]) for i in range(acude_a)]
+        self.lista_llegada = [(int(self.valores_llegada[i].get()), rangos_llegada[i][1]) for i in range(tiempo_llegada)]
+        self.lista_caja = [(int(self.valores_caja[i].get()), rangos_caja[i][1]) for i in range(duracion_caja)]
+        self.lista_secre = [(int(self.valores_secre[i].get()), rangos_secre[i][1]) for i in range(duracion_secre)]
+        self.lista_cajero_a = [(int(self.valores_cajero_a[i].get()), rangos_cajero_a[i][1]) for i in range(duracion_cajero_a)]
+        self.lista_olvido = [(int(self.valores_olvido[i].get()), rangos_olvido[i][1]) for i in range(olvido_tarjeta)]
+
+        self.tablas_tipo = [(str(self.valores_tipo[i].get()), float(self.entrys_tipo[i].get()), rangos_tipo[i][0], rangos_tipo[i][1]) for i in range(tipo_cliente)]
+        self.tablas_acude = [(str(self.valores_acude[i].get()), float(self.entrys_acude[i].get()), rangos_acude[i][0], rangos_acude[i][1]) for i in range(acude_a)]
+        self.tablas_llegada = [(int(self.valores_llegada[i].get()), float(self.entrys_llegada[i].get()), rangos_llegada[i][0], rangos_llegada[i][1]) for i in range(tiempo_llegada)]
+        self.tablas_caja = [(int(self.valores_caja[i].get()), float(self.entrys_caja[i].get()), rangos_caja[i][0], rangos_caja[i][1]) for i in range(duracion_caja)]
+        self.tablas_secre = [(int(self.valores_secre[i].get()), float(self.entrys_secre[i].get()), rangos_secre[i][0], rangos_secre[i][1]) for i in range(duracion_secre)]
+        self.tablas_cajero_a = [(int(self.valores_cajero_a[i].get()), float(self.entrys_cajero_a[i].get()), rangos_cajero_a[i][0], rangos_cajero_a[i][1]) for i in range(duracion_cajero_a)]
+        self.tablas_olvido = [(int(self.valores_olvido[i].get()), float(self.entrys_olvido[i].get()), rangos_olvido[i][0], rangos_olvido[i][1]) for i in range(olvido_tarjeta)]
+
+        self.imprimir_tablas()
+
+    def calcular_rangos(self, probabilidades):
+        probabilidad_acumulada = [sum(probabilidades[:i + 1]) for i in range(len(probabilidades))]
+        
+        rangos = []
+        for i in range(len(probabilidades)):
+            rango_inicio = probabilidad_acumulada[i - 1] + 0.0001 if i > 0 else 0.0
+            rango_fin = probabilidad_acumulada[i]
+            rangos.append((probabilidad_acumulada[i], f"{rango_inicio:.4f}-{rango_fin:.4f}"))
+        
+        return rangos
+    
+    def imprimir_tablas(self):
+        ventana = tk.Toplevel()
+        ventana.title("Tablas")
+        ventana.geometry("700x500")
+        
+        treeview = ttk.Treeview(ventana)
+        treeview["columns"] = ("Probabilidad", "Probabilidad Acumulada", "Rango")
+        treeview.heading("#0", text="Tabla")
+        treeview.heading("Probabilidad", text="Probabilidad")
+        treeview.heading("Probabilidad Acumulada", text="Probabilidad Acumulada")
+        treeview.heading("Rango", text="Rango")
+        treeview.pack(expand=True, fill="both")
+
+        self.insertar_tabla(treeview, "Tipo de Cliente", self.tablas_tipo)
+        self.insertar_tabla(treeview, "Acude A", self.tablas_acude)
+        self.insertar_tabla(treeview, "Tiempo de Llegada", self.tablas_llegada)
+        self.insertar_tabla(treeview, "Duración en Caja", self.tablas_caja)
+        self.insertar_tabla(treeview, "Duración en Secretarias", self.tablas_secre)
+        self.insertar_tabla(treeview, "Duración en Cajero Automático", self.tablas_cajero_a)
+        self.insertar_tabla(treeview, "Olvido de Tarjeta", self.tablas_olvido)
+
+    def insertar_tabla(self, treeview, nombre_tabla, datos_tabla):
+        treeview.insert("", tk.END, text=nombre_tabla, values=("", "", ""))
+        for valor, probabilidad, prob_acum, rango in datos_tabla:
+            treeview.insert("", tk.END, text=str(valor), values=(probabilidad, prob_acum, rango))
 
 
 Banco()

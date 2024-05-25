@@ -403,8 +403,8 @@ class Veterinaria:
         self.frame_caracteristicas.columnconfigure(1, weight=1)
         self.frame_caracteristicas.columnconfigure(2, weight=1)
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
-        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+        boton = LtkButtonFill(self.frame_caracteristicas, lambda: self.pedir_datos(), "Ingresar datos")
+        boton.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def pedir_datos(self):
         self.resetear_frame_caracteristicas()
