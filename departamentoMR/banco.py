@@ -11,7 +11,7 @@ class Banco:
     def __init__(self):
         self.lista_personal=[[1, 3, 3, 3, 3]]
         self.lista_sueldos=[[4000, 3000, 3000, 3000, 3000]]
-        self.lista_horarios=[["8:00", "17:00", "12:00", "13:00"]]
+        self.lista_horarios=[["8:00", "17:00"]]
         self.lista_usuarios=[[100]]
         self.lista_servicios_generales=[[300, 200, 420, 2000]]
         self.lista_cajeros_automaticos=[[3]]
@@ -107,8 +107,6 @@ class Banco:
             "sueldo_personal_tecnico": self.lista_sueldos[0][4],
             "horario_entrada": self.lista_horarios[0][0],
             "horario_salida": self.lista_horarios[0][1],
-            "horario_entrada_almuerzo": self.lista_horarios[0][2],
-            "horario_salida_almuerzo": self.lista_horarios[0][3],
             "cantidad_usuarios": self.lista_usuarios[0][0],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],	
             "pago_mensual_agua": self.lista_servicios_generales[0][1],
@@ -254,14 +252,7 @@ class Banco:
         self.etiqueta_horario_salida.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.horario_salida = LtkEntryLine(self.frame_caracteristicas, "17:00")
         self.horario_salida.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario_entrada_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Entrada Al Almuerzo:")
-        self.etiqueta_horario_entrada_almuerzo.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_entrada_almuerzo = LtkEntryLine(self.frame_caracteristicas, "12:00")
-        self.horario_entrada_almuerzo.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario_salida_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Salida Al Almuerzo:")
-        self.etiqueta_horario_salida_almuerzo.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_salida_almuerzo = LtkEntryLine(self.frame_caracteristicas, "13:00")
-        self.horario_salida_almuerzo.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+  
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -269,14 +260,11 @@ class Banco:
     def guardar_ajustes2(self):
         horario_entrada=self.horario_entrada.get()
         horario_salida=self.horario_salida.get()
-        horario_entrada_almuerzo=self.horario_entrada_almuerzo.get()
-        horario_salida_almuerzo=self.horario_salida_almuerzo.get()
+
 
         self.lista_horarios.clear()
         self.lista_horarios.append([horario_entrada,
-                                   horario_salida,
-                                   horario_entrada_almuerzo,
-                                   horario_salida_almuerzo
+                                   horario_salida
                                    ])
 
 

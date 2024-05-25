@@ -6,6 +6,8 @@ from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine
 from componentes_graficos.LtkEntry import LtkEntryLine
 from componentes_graficos.LtkLabel import LtkLabel
+import tkinter as tk
+from tkinter import simpledialog, Toplevel, Checkbutton, StringVar, Canvas, Frame, Scrollbar
 import json
 from tkinter import *
 import tkinter as tk
@@ -17,11 +19,11 @@ class Gimnasio:
     def __init__(self):
         self.lista_personal = [[3, 3, 3, 3, 3]]
         self.lista_sueldos = [[4000, 3000, 2000, 2000, 2000]]
-        self.lista_horarios = [["6:00", "22:00", 30, 15, 10, 10]]
+        self.lista_horarios = [["6:00", "22:00"]]
         self.lista_usuarios = [[200, 100, 100, 250]]
         self.lista_maquinas = [[50]]
         self.lista_servicios_generales = [[300, 200, 420, 200, 2000]]
-        self.lista_baños = [[6, 3, 3]]
+        self.lista_baños = [[6]]
         self.lista_temporadas = [[True, 100], [False, 0], [False, 0]]
         self.lista_descuento = [[.10, .20, .05]]
         self.lista_llegada = [(0, "0.0000-0.0000")]
@@ -123,10 +125,6 @@ class Gimnasio:
             "sueldo_mensual_personal_tecnico": self.lista_sueldos[0][4],
             "horario_apertura": self.lista_horarios[0][0],
             "horario_cierre": self.lista_horarios[0][1],
-            "tiempo_sesion_usuarios": self.lista_horarios[0][2],
-            "tiempo_uso_maquina": self.lista_horarios[0][3],
-            "tiempo_uso_baño": self.lista_horarios[0][4],
-            "tiempo_uso_vestidor": self.lista_horarios[0][5],
             "capacidad_gym": self.lista_usuarios[0][0],
             "cantidad_mujeres": self.lista_usuarios[0][1],
             "cantidad_hombres": self.lista_usuarios[0][2],
@@ -138,8 +136,6 @@ class Gimnasio:
             "pago_mensual_spotify": self.lista_servicios_generales[0][3],
             "pago_mensual_renta_local": self.lista_servicios_generales[0][4],
             "cantidad_baños": self.lista_baños[0][0],
-            "cantidad_baños_mujeres": self.lista_baños[0][1],
-            "cantidad_baños_hombres": self.lista_baños[0][2],
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
@@ -278,22 +274,6 @@ class Gimnasio:
         self.etiqueta_horario_cierre.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.horario_cierre=LtkEntryLine(self.frame_caracteristicas, "22:00")
         self.horario_cierre.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_sesion_usuarios=LtkLabel(self.frame_caracteristicas, texto="Tiempo Sesion De Usuarios (Minutos):")
-        self.etiqueta_tiempo_sesion_usuarios.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_sesion_usuarios=LtkEntryLine(self.frame_caracteristicas, "30")
-        self.tiempo_sesion_usuarios.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_maquina=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Maquina (Minutos):")
-        self.etiqueta_tiempo_uso_maquina.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_uso_maquina=LtkEntryLine(self.frame_caracteristicas, "15")
-        self.tiempo_uso_maquina.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_baño=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Baño (Minutos):")
-        self.etiqueta_tiempo_uso_baño.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_uso_bano=LtkEntryLine(self.frame_caracteristicas, "10")
-        self.tiempo_uso_bano.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_tiempo_uso_vestidor=LtkLabel(self.frame_caracteristicas, texto="Tiempo Uso De Vestidor (Minutos):")
-        self.etiqueta_tiempo_uso_vestidor.grid(row=7, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.tiempo_uso_vestidor=LtkEntryLine(self.frame_caracteristicas, "10")
-        self.tiempo_uso_vestidor.grid(row=7, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -301,18 +281,10 @@ class Gimnasio:
     def guardar_ajustes2(self):
         horario_apertura=self.horario_apertura.get()
         horario_cierre=self.horario_cierre.get()
-        tiempo_sesion_usuarios=self.tiempo_sesion_usuarios.get()
-        tiempo_uso_maquina=self.tiempo_uso_maquina.get()
-        tiempo_uso_bano=self.tiempo_uso_bano.get()
-        tiempo_uso_vestidor=self.tiempo_uso_vestidor.get()
 
         self.lista_horarios.clear()
         self.lista_horarios.append([horario_apertura, 
-                                    horario_cierre, 
-                                    int(tiempo_sesion_usuarios),
-                                    int(tiempo_uso_maquina),
-                                    int(tiempo_uso_bano),
-                                    int(tiempo_uso_vestidor)])
+                                    horario_cierre])
 
 
     def usuarios(self):
@@ -446,26 +418,16 @@ class Gimnasio:
         self.etiqueta_baños.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_baños=LtkEntryLine(self.frame_caracteristicas, "6")
         self.cantidad_baños.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_baños_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños Para Mujeres:")
-        self.etiqueta_baños_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_baños_mujeres=LtkEntryLine(self.frame_caracteristicas, "3")
-        self.cantidad_baños_mujeres.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_baños_hombres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños Para Hombres:")
-        self.etiqueta_baños_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_baños_hombres=LtkEntryLine(self.frame_caracteristicas, "3")
-        self.cantidad_baños_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+ 
 
         boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
     
     def guardar_ajustes6(self):
         cantidad_baños=self.cantidad_baños.get()
-        cantidad_baños_mujeres=self.cantidad_baños_mujeres.get()
-        cantidad_baños_hombres=self.cantidad_baños_hombres.get()
+
         self.lista_baños.clear()
-        self.lista_baños.append([int(cantidad_baños), 
-                                int(cantidad_baños_mujeres), 
-                                int(cantidad_baños_hombres)])
+        self.lista_baños.append([int(cantidad_baños)])
 
 
 
@@ -487,10 +449,31 @@ class Gimnasio:
         duracion_gym = simpledialog.askinteger("Entrada", "Renglones Duracion En GYM", minvalue=1, parent=self.frame_caracteristicas)
         tiempo_baño = simpledialog.askinteger("Entrada", "Renglones Tiempo En Baño", minvalue=1, parent=self.frame_caracteristicas)
 
-        current_row = 0
+        canvas = Canvas(self.frame_caracteristicas)
+        canvas.configure(bg="gray")
+        scrollbar = Scrollbar(self.frame_caracteristicas, orient="vertical", command=canvas.yview)
+        scrollable_frame = Frame(canvas)
+        scrollable_frame.configure(bg="gray")
 
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set, width=500)
+
+        canvas.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+        self.frame_caracteristicas.rowconfigure(0, weight=1)
+
+
+        current_row = 0
         self.check_llegada = StringVar()
-        self.checkbutton_llegada = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
+        self.checkbutton_llegada = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS LLEGADA", variable=self.check_llegada, onvalue="Si", offvalue="No")
         self.checkbutton_llegada.deselect()
         self.checkbutton_llegada.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -498,16 +481,16 @@ class Gimnasio:
         self.entrys_llegada = []
         self.valores_llegada = []
         for i in range(llegada_personas):
-            entry_llegada = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_llegada = LtkEntryLine(scrollable_frame, "5")
             entry_llegada.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_llegada.append(entry)
             self.valores_llegada.append(entry_llegada)
             current_row += 1
 
         self.check_lapso = StringVar()
-        self.checkbutton_lapso = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS LAPSO LLEGADA", variable=self.check_lapso, onvalue="Si", offvalue="No")
+        self.checkbutton_lapso = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS LAPSO LLEGADA", variable=self.check_lapso, onvalue="Si", offvalue="No")
         self.checkbutton_lapso.deselect()
         self.checkbutton_lapso.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -515,16 +498,16 @@ class Gimnasio:
         self.entrys_lapso = []
         self.valores_lapso = []
         for i in range(lapso_llegada):
-            entry_lapso = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_lapso = LtkEntryLine(scrollable_frame, "5")
             entry_lapso.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_lapso.append(entry)
             self.valores_lapso.append(entry_lapso)
             current_row += 1
 
         self.check_duracion_gym = StringVar()
-        self.checkbutton_duracion_gym = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS DURACION EN GYM", variable=self.check_duracion_gym, onvalue="Si", offvalue="No")
+        self.checkbutton_duracion_gym = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS DURACION EN GYM", variable=self.check_duracion_gym, onvalue="Si", offvalue="No")
         self.checkbutton_duracion_gym.deselect()
         self.checkbutton_duracion_gym.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -532,16 +515,16 @@ class Gimnasio:
         self.entrys_duracion_gym = []
         self.valores_duracion_gym = []
         for i in range(duracion_gym):
-            entry_duracion_gym = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_duracion_gym = LtkEntryLine(scrollable_frame, "5")
             entry_duracion_gym.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_duracion_gym.append(entry)
             self.valores_duracion_gym.append(entry_duracion_gym)
             current_row += 1
 
         self.check_baño = StringVar()
-        self.checkbutton_baño = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO EN BAÑO", variable=self.check_baño, onvalue="Si", offvalue="No")
+        self.checkbutton_baño = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO EN BAÑO", variable=self.check_baño, onvalue="Si", offvalue="No")
         self.checkbutton_baño.deselect()
         self.checkbutton_baño.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
@@ -549,9 +532,9 @@ class Gimnasio:
         self.entrys_baño = []
         self.valores_baño = []
         for i in range(tiempo_baño):
-            entry_baño = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_baño = LtkEntryLine(scrollable_frame, "5")
             entry_baño.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_baño.append(entry)
             self.valores_baño.append(entry_baño)

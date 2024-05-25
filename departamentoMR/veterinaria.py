@@ -3,6 +3,8 @@ from tkinter import messagebox, simpledialog
 from componentes_graficos.LtkButton import LtkButtonFill, LtkButtonLine, LtkButtonTransparentBackground
 from componentes_graficos.LtkEntry import LtkEntryLine, LtkEntryFill
 from componentes_graficos.LtkLabel import LtkLabel
+import tkinter as tk
+from tkinter import simpledialog, Toplevel, Checkbutton, StringVar, Canvas, Frame, Scrollbar
 from tkinter import Checkbutton, StringVar
 import tkinter as tk
 from tkinter import ttk
@@ -14,7 +16,7 @@ class Veterinaria:
     def __init__(self):
         self.lista_personal=[[1, 2]]
         self.lista_sueldos=[[4000, 3000]]
-        self.lista_horarios=[["8:00", "18:00", "11:00", "12:00"]]
+        self.lista_horarios=[["8:00", "18:00"]]
         self.lista_servicios_generales=[[300, 200, 420, 200, 2000]]
         self.lista_inventario=[[100, 100, 150, 150, 150, 150]]
         self.lista_temporadas=[[True, 100], [False, 0], [False, 0]]
@@ -99,8 +101,6 @@ class Veterinaria:
             "sueldo_mensual_veterinario": self.lista_sueldos[0][1],
             "horario_entrada": self.lista_horarios[0][0],
             "horario_salida": self.lista_horarios[0][1],
-            "horario_salida_almuerzo": self.lista_horarios[0][2],
-            "horario_entrada_almuerzo": self.lista_horarios[0][3],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],
             "pago_mensual_agua": self.lista_servicios_generales[0][1],
             "pago_mensual_internet": self.lista_servicios_generales[0][2],
@@ -218,14 +218,6 @@ class Veterinaria:
         self.etiqueta_horario_salida.grid(row=2, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.horario_salida = LtkEntryLine(self.frame_caracteristicas, "18:00")
         self.horario_salida.grid(row=2, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario_salida_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Salida Al Almuerzo:")
-        self.etiqueta_horario_salida_almuerzo.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_salida_almuerzo = LtkEntryLine(self.frame_caracteristicas, "11:00")
-        self.horario_salida_almuerzo.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_horario_entrada_almuerzo = LtkLabel(self.frame_caracteristicas, texto="Horario De Entrada De Almuerzo:")
-        self.etiqueta_horario_entrada_almuerzo.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.horario_entrada_almuerzo = LtkEntryLine(self.frame_caracteristicas, "12:00")
-        self.horario_entrada_almuerzo.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes2(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
@@ -233,14 +225,11 @@ class Veterinaria:
     def guardar_ajustes2(self):
         horario_entrada=self.horario_entrada.get()
         horario_salida=self.horario_salida.get()
-        horario_salida_almuerzo=self.horario_salida_almuerzo.get()
-        horario_entrada_almuerzo=self.horario_entrada_almuerzo.get()
+
 
         self.lista_horarios.clear()
         self.lista_horarios.append([horario_entrada,
-                                    horario_salida,
-                                    horario_salida_almuerzo,
-                                    horario_entrada_almuerzo
+                                    horario_salida
                                    ])
 
     def servicios_generales(self):
@@ -419,89 +408,117 @@ class Veterinaria:
 
     def pedir_datos(self):
         self.resetear_frame_caracteristicas()
+
         renglones_alimento = simpledialog.askinteger("Entrada", "Renglones Para Alimentos", minvalue=1, parent=self.frame_caracteristicas)
         renglones_medicamento = simpledialog.askinteger("Entrada", "Renglones Para Medicamento", minvalue=1, parent=self.frame_caracteristicas)
         renglones_mascotas = simpledialog.askinteger("Entrada", "Renglones Para Mascotas", minvalue=1, parent=self.frame_caracteristicas)
         renglones_accesorios = simpledialog.askinteger("Entrada", "Renglones Para Accesorios", minvalue=1, parent=self.frame_caracteristicas)
-        tiempo_consulta= simpledialog.askinteger("Entrada", "Tiempo De Consulta", minvalue=1, parent=self.frame_caracteristicas)
+        tiempo_consulta = simpledialog.askinteger("Entrada", "Tiempo De Consulta", minvalue=1, parent=self.frame_caracteristicas)
+
+        canvas = Canvas(self.frame_caracteristicas)
+        canvas.configure(bg="gray")
+        scrollbar = Scrollbar(self.frame_caracteristicas, orient="vertical", command=canvas.yview)
+        scrollable_frame = Frame(canvas)
+        scrollable_frame.configure(bg="gray")
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set, width=500)
+
+        canvas.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+        self.frame_caracteristicas.columnconfigure(0, weight=1)
+        self.frame_caracteristicas.rowconfigure(0, weight=1)
+
 
         current_row = 0
 
         self.check_alimento = StringVar()
-        self.checkbutton_alimento = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS ALIMENTO", variable=self.check_alimento, onvalue="Si", offvalue="No")
+        self.checkbutton_alimento = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS ALIMENTO", variable=self.check_alimento, onvalue="Si", offvalue="No")
         self.checkbutton_alimento.deselect()
         self.checkbutton_alimento.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
+
         self.entrys_alimento = []
         self.valores_alimento = []
         for i in range(renglones_alimento):
-            entry_alimento = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_alimento = LtkEntryLine(scrollable_frame, "5")
             entry_alimento.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, ".15")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_alimento.append(entry)
             self.valores_alimento.append(entry_alimento)
             current_row += 1
-        
+
         self.check_medicamento = StringVar()
-        self.checkbutton_medicamento = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS MEDICAMENTO", variable=self.check_medicamento, onvalue="Si", offvalue="No")
+        self.checkbutton_medicamento = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS MEDICAMENTO", variable=self.check_medicamento, onvalue="Si", offvalue="No")
         self.checkbutton_medicamento.deselect()
         self.checkbutton_medicamento.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
+
         self.entrys_medicamento = []
         self.valores_medicamento = []
         for i in range(renglones_medicamento):
-            entry_medicamento = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_medicamento = LtkEntryLine(scrollable_frame, "5")
             entry_medicamento.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_medicamento.append(entry)
             self.valores_medicamento.append(entry_medicamento)
             current_row += 1
-        
+
         self.check_mascotas = StringVar()
-        self.checkbutton_mascotas = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS MASCOTAS", variable=self.check_mascotas, onvalue="Si", offvalue="No")
+        self.checkbutton_mascotas = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS MASCOTAS", variable=self.check_mascotas, onvalue="Si", offvalue="No")
         self.checkbutton_mascotas.deselect()
         self.checkbutton_mascotas.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
+
         self.entrys_mascotas = []
         self.valores_mascotas = []
         for i in range(renglones_mascotas):
-            entry_mascotas = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_mascotas = LtkEntryLine(scrollable_frame, "5")
             entry_mascotas.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_mascotas.append(entry)
             self.valores_mascotas.append(entry_mascotas)
             current_row += 1
 
         self.check_accesorios = StringVar()
-        self.checkbutton_accesorios = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS ACCESORIOS", variable=self.check_accesorios, onvalue="Si", offvalue="No")
+        self.checkbutton_accesorios = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS ACCESORIOS", variable=self.check_accesorios, onvalue="Si", offvalue="No")
         self.checkbutton_accesorios.deselect()
         self.checkbutton_accesorios.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
+
         self.entrys_accesorios = []
         self.valores_accesorios = []
         for i in range(renglones_accesorios):
-            entry_accesorios = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_accesorios = LtkEntryLine(scrollable_frame, "5")
             entry_accesorios.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_accesorios.append(entry)
             self.valores_accesorios.append(entry_accesorios)
             current_row += 1
 
         self.check_tiempo = StringVar()
-        self.checkbutton_tiempo = Checkbutton(self.frame_caracteristicas, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO", variable=self.check_tiempo, onvalue="Si", offvalue="No")
+        self.checkbutton_tiempo = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO", variable=self.check_tiempo, onvalue="Si", offvalue="No")
         self.checkbutton_tiempo.deselect()
         self.checkbutton_tiempo.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
+
         self.entrys_tiempo = []
         self.valores_tiempo = []
         for i in range(tiempo_consulta):
-            entry_tiempo = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry_tiempo = LtkEntryLine(scrollable_frame, "5")
             entry_tiempo.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            entry = LtkEntryLine(self.frame_caracteristicas, "5")
+            entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
             self.entrys_tiempo.append(entry)
             self.valores_tiempo.append(entry_tiempo)
