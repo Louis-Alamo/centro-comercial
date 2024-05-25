@@ -1,10 +1,10 @@
-from Persona import Persona
-from Hora import Hora
-import os
-from DatosHistoricos import TablaDatoshistoricos
-import random
-from departamentoLG.entidades.DatosHistoricos import TablaDatoshistoricos
 
+
+import os
+import random
+from departamentoLG.entidades.DatosHistoricos import TablaDatosHistoricos
+from departamentoLG.entidades.Persona import Persona
+from departamentoLG.entidades.Hora import Hora
 class Servidor:
     numero_servidor = 1
 
@@ -25,9 +25,8 @@ class Servidor:
         self.numero_total_personas_atendidas = 0
         self.tiempo_ocio_servidor = 0
 
-
-        #Mostrar datos inciales
-        print(f"Servidor {self.numero_servidor} - Hora inicio: {self.horario_inicio} - Hora fin: {self.horario_fin}")
+    def mostrar_estado_servidor(self):
+        print(f"Servidor {self.numero_servidor} - Estado: {'Libre' if self.estado_servidor else 'Ocupado'} - Hora finalización: {self.hora_finalizacion} - Personas en espera: {self.personas_en_espera}")
 
     def agregar_persona(self, persona: Persona, tiempo_servicio: int):
         if self.puede_atender(tiempo_servicio, persona.get_hora_llegada()) or self.puede_atender(tiempo_servicio):
@@ -107,7 +106,7 @@ class Servidor:
         self.estado_servidor = estado
 
 class AdministrarServidores:
-    def __init__(self, servidores: list, tabla_datos: TablaDatoshistoricos):
+    def __init__(self, servidores: list, tabla_datos: TablaDatosHistoricos):
         self.servidores = servidores
         self.tabla_datos = tabla_datos
 
@@ -117,7 +116,8 @@ class AdministrarServidores:
         self.servidores.sort(key=lambda servidor: servidor.hora_finalizacion)
     def mostrar_servidores(self):
         for servidor in self.servidores:
-            print(f"Servidor {servidor.get_numero_servidor()} - Estado: {'Libre' if servidor.get_estado_servidor() else 'Ocupado'} - Hora finalización: {servidor.get_hora_finalizacion()} - Personas en espera: {servidor.get_personas_en_espera()}")
+            servidor.mostrar_estado_servidor()
+
     def agregar_servidor(self, servidor: Servidor):
         self.servidores.append(servidor)
         self.ordenar_servidores_prioridad()
@@ -158,6 +158,7 @@ class AdministrarServidores:
 
 
 
+
     def eliminar_servidor(self):
         if self.servidores:
             self.servidores.pop(0)
@@ -168,7 +169,7 @@ class AdministrarServidores:
 # #Pruebas de la clase servidor
 #
 # dir_path = os.path.dirname(os.path.realpath(__file__))
-# path = os.path.join(dir_path,  r'..\jugueteria\datos\lineas de espera\Tiempo de espera por caja')
+# path = os.path.join(dir_path,  r'..\jugueteria\datos\lineas de espera\Tiempo de realizacion servicio')
 # tabla_datos = TablaDatoshistoricos(path)
 #
 #

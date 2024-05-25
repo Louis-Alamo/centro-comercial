@@ -100,8 +100,8 @@ class ConfiguracionJugeteria:
 
     def caracteristicas_jugueteria(self):
 
-        self.lista_opciones_probabilidad_general = ["Atraccion de clientes", "Compra de juguetes", "Dias de promocion", "Tipo de visita", "Eventos especiales",  "Temporadas de alfuencia"]
-        self.lista_opciones_precio_general = ["Costo de mantenimiento de jugueteria", "Descuentos por promocion"]
+        self.lista_opciones_probabilidad_general = ["Cantidad juguetes a comprar", "Temporadas de afluencia", "Tiempo de llegada cliente"]
+        self.lista_opciones_precio_general = ["Costo de mantenimiento de jugueteria", "Descuentos por promocion", "Dias de promocion"]
 
 
         self.resetear_frame_caracteristicas()
@@ -135,7 +135,7 @@ class ConfiguracionJugeteria:
         self.opcion_probabilidades_general = LtkComboBoxLine(self.frame_caracteristicas, self.lista_opciones_probabilidad_general)
         self.opcion_probabilidades_general.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_probabilidades_general = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_probabilidad_general(), nombre_boton="Cargar datos")
+        self.boton_cargar_probabilidades_general = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_general(), nombre_boton="Cargar datos")
         self.boton_cargar_probabilidades_general.grid(row=5, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
         #Precio
@@ -145,7 +145,7 @@ class ConfiguracionJugeteria:
         self.opcion_precio_general = LtkComboBoxLine(self.frame_caracteristicas, self.lista_opciones_precio_general)
         self.opcion_precio_general.grid(row=6, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
-        self.boton_cargar_precio_general = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_precios_general(), nombre_boton="Cargar datos")
+        self.boton_cargar_precio_general = LtkButtonFill(self.frame_caracteristicas,funcion=lambda: self.cargar_datos_general(), nombre_boton="Cargar datos")
         self.boton_cargar_precio_general.grid(row=6, column=3, padx=(5,10), pady=(5, 5), sticky="nsew")
 
 
@@ -155,9 +155,9 @@ class ConfiguracionJugeteria:
 
     def crear_componentes_edificio_caja(self):
 
-        self.lista_opciones_espera_caja = ["Tiempo de espera por caja"]
+        self.lista_opciones_espera_caja = ["Tiempo de realizacion servicio", "Tiempo de entrega proveedor"]
         self.lista_opciones_productos = ["Productos"]
-        self.lista_opciones_costos = ["Descuentos por promocion"]
+
 
         self.resetear_frame_caracteristicas()
 
@@ -228,7 +228,6 @@ class ConfiguracionJugeteria:
         messagebox.showinfo("Información", "Datos guardados localmente")
 
 
-
     def guardar_informacion(self):
 
         datos = {
@@ -241,24 +240,6 @@ class ConfiguracionJugeteria:
         with open(os.path.join(self.ruta_ventana, "datos\\configuraciones_jugueteria.json"), "w") as file:
             file.write(informacion)
 
-
-    def cargar_datos_historicos_probabilidades(self):
-
-        if self.opcion_datos_historicos_probabilidades.get() == "Atraccion de clientes":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Atraccion de clientes")
-            self.crear_ventana_emergente("Atraccion de clientes", path)
-
-        elif self.opcion_datos_historicos_probabilidades.get() == "Compra de juguetes":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Compra de juguetes")
-            self.crear_ventana_emergente("Compra de juguetes", path)
-
-        elif self.opcion_datos_historicos_probabilidades.get() == "Dias de promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion")
-            self.crear_ventana_emergente("Dias de promocion", path)
-
-        elif self.opcion_datos_historicos_probabilidades.get() == "Tipo de visita":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
-            self.crear_ventana_emergente("Tipo de visita", path)
 
     def crear_ventana_emergente(self,titulo, ruta_archivo):
 
@@ -280,54 +261,46 @@ class ConfiguracionJugeteria:
         self.ventana_emergente.mainloop()
 
 
-    def cargar_datos_probabilidad_general(self):
+    def cargar_datos_general(self):
 
-        if self.opcion_probabilidades_general.get() == "Atraccion de clientes":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Atraccion de clientes")
-            self.crear_ventana_emergente("Atraccion de clientes", path)
+        if self.opcion_probabilidades_general.get() == "Cantidad juguetes a comprar":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Cantidad juguetes a comprar")
+            self.crear_ventana_emergente("Cantidad juguetes a comprar", path)
 
-        elif self.opcion_probabilidades_general.get() == "Compra de juguetes":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Compra de juguetes")
-            self.crear_ventana_emergente("Compra de juguetes", path)
-
-        elif self.opcion_probabilidades_general.get() == "Dias de promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion")
-            self.crear_ventana_emergente("Dias de promocion", path)
-
-        elif self.opcion_probabilidades_general.get() == "Tipo de visita":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
-            self.crear_ventana_emergente("Tipo de visita", path)
-
-        elif self.opcion_probabilidades_general.get() == "Eventos especiales":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Eventos especiales")
-            self.crear_ventana_emergente("Eventos especiales", path)
-
-        elif self.opcion_probabilidades_general.get() == "Temporadas de alfuencia":
+        elif self.opcion_probabilidades_general.get() == "Temporadas de afluencia":
             path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Temporadas de afluencia")
-            self.crear_ventana_emergente("Temporadas de alfuencia", path)
+            self.crear_ventana_emergente("Temporadas de afluencia", path)
 
+        elif self.opcion_probabilidades_general.get() == "Tiempo de llegada cliente":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de llegada cliente")
+            self.crear_ventana_emergente("Tiempo de llegada cliente", path)
 
-
-    def cargar_datos_precios_general(self):
-
-        if self.opcion_precio_general.get() == "Costo de mantenimiento de jugueteria":
+        elif self.opcion_precio_general.get() == "Costo de mantenimiento de jugueteria":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de jugueteria")
             self.crear_ventana_emergente("Costo de mantenimiento de jugueteria", path)
 
         elif self.opcion_precio_general.get() == "Descuentos por promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuento por promocion")
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Dias de promocion")
             self.crear_ventana_emergente("Descuentos por promocion", path)
+
+        elif self.opcion_precio_general.get() == "Dias de promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Dias de promocion")
+            self.crear_ventana_emergente("Dias de promocion", path)
+
 
     def cargar_datos_espera_caja(self):
 
-        if self.opcion_espera_caja.get() == "Tiempo de espera por caja":
-            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera por caja")
-            self.crear_ventana_emergente("Tiempo de espera por caja", path)
+        if self.opcion_espera_caja.get() == "Tiempo de realizacion servicio":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de realizacion servicio")
+            self.crear_ventana_emergente("Tiempo de realizacion servicio", path)
 
+        elif self.opcion_espera_caja.get() == "Tiempo de entrega proveedor":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de entrega proveedor")
+            self.crear_ventana_emergente("Tiempo de entrega proveedor", path)
     def cargar_datos_productos(self):
 
         if self.opcion_productos.get() == "Productos":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Productos")
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Productos")
             self.crear_ventana_emergente("Productos", path)
 
 
