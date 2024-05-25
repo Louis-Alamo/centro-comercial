@@ -55,25 +55,19 @@ class SimulacionVeterinaria:
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.grid_rowconfigure(0, weight=1)
         self.frame.grid_columnconfigure(0, weight=1)
-        
         self.canvas = CTkCanvas(self.frame, bg="black")
         self.canvas.grid(row=0, column=0, sticky="nsew")
-        
         self.scrollbar = CTkScrollbar(self.frame, command=self.canvas.yview)
         self.scrollbar.grid(row=0, column=1, sticky="ns")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
-        
         self.inner_frame = CTkFrame(self.canvas)
         self.canvas.create_window((0, 0), window=self.inner_frame, anchor="nw")
-        
         self.inner_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
-        
         self.datos = cargar_datos()
-        self.inventario_inicial = self.datos.get("paquetes_alimento", 0)  # Cargar inventario inicial
+        self.inventario_inicial = self.datos.get("paquetes_alimento", 0) 
         self.ejecutar_simulacion()
-
-        self.numeros_aleatorios = generar_numeros_aleatorios(30)
+        self.numeros_aleatorios = generar_numeros_aleatorios(10)
         self.crear_tabla_simulacion(self.numeros_aleatorios)
         self.ventana.mainloop()
 
@@ -103,12 +97,10 @@ class SimulacionVeterinaria:
     def ejecutar_simulacion(self):
         descuento = self.aplicar_descuento_temporada()
         
-        # Obtener precios normales desde el JSON
         self.costo_alimento_normal = self.datos.get("precio_por_alimento", 0)
         self.costo_medicamento_normal = self.datos.get("precio_medicamento", 0)
         self.costo_accesorio_normal = self.datos.get("precio_accesorios", 0)
         
-        # Calcular precios con descuento
         self.alimento_descuento = self.costo_alimento_normal * (1 - descuento)
         self.medicamento_descuento = self.costo_medicamento_normal * (1 - descuento)
         self.accesorio_descuento = self.costo_accesorio_normal * (1 - descuento)
@@ -126,11 +118,9 @@ class SimulacionVeterinaria:
         else:
             temporada = "Sin Temporada Específica"
 
-        # Mostrar información de la temporada y el descuento
         temporada_label = CTkLabel(self.inner_frame, text=f"Descuento del {descuento * 100}% aplicado en la mensualidad durante la {temporada}", font=("Arial", 12), text_color="white")
         temporada_label.pack(padx=20, pady=5)
 
-        # Preparar y mostrar los resultados
         resultados = {
             "Precio Normal Alimento": self.costo_alimento_normal,
             "Precio Alimento Con Descuento": self.alimento_descuento,
@@ -204,7 +194,6 @@ class SimulacionVeterinaria:
         inventario_restante_medicamento = self.datos.get("cantidad_medicamento", 0)
         inventario_restante_accesorios = self.datos.get("cantidad_accesorios", 0)
 
-
         for i, numero in enumerate(numeros):
             tiempo_consulta = self.obtener_tiempo_consulta(numero, lista_tiempo)
             cantidad_alimento = self.obtener_cantidad_alimento(numero, lista_alimento)
@@ -243,7 +232,6 @@ class SimulacionVeterinaria:
                 cantidad_medicamentos = 0
                 total_medicamentos_descuento = 0 
             else:
-
                 total_medicamentos_descuento = cantidad_medicamentos * self.medicamento_descuento
 
             if inventario_restante_accesorios > 0:
@@ -257,47 +245,34 @@ class SimulacionVeterinaria:
                 cantidad_accesorios = 0
                 total_accesorios_descuento = 0
             else:
-
                 total_accesorios_descuento = cantidad_accesorios * self.accesorio_descuento
 
             cantidad_mascotas_atendidas = self.obtener_cantidad_mascotas(numero, lista_mascotas)
 
             aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
             aleatorio_label.grid(row=i, column=0, padx=(10, 20), pady=10, sticky="nsew")
-
             horario_inicio_label = CTkLabel(tabla_frame, text=horario_entrada.strftime("%H:%M"), font=("Arial", 12), text_color="white")
             horario_inicio_label.grid(row=i, column=1, padx=(60, 20), pady=10, sticky="nsew")
-
             horario_salida_label = CTkLabel(tabla_frame, text=horario_salida.strftime("%H:%M"), font=("Arial", 12), text_color="white")
             horario_salida_label.grid(row=i, column=2, padx=(60, 20), pady=10, sticky="nsew")
-
             alimento_label = CTkLabel(tabla_frame, text=str(cantidad_alimento), font=("Arial", 12), text_color="white")
             alimento_label.grid(row=i, column=3, padx=(60, 20), pady=10, sticky="nsew")
-
             total_alimento_label = CTkLabel(tabla_frame, text=f"{total_alimento_descuento:.2f}", font=("Arial", 12), text_color="white")
             total_alimento_label.grid(row=i, column=4, padx=(50, 20), pady=10, sticky="nsew")
-
             restante_alimento_label = CTkLabel(tabla_frame, text=str(inventario_restante_alimento), font=("Arial", 12), text_color="white")
             restante_alimento_label.grid(row=i, column=5, padx=(50, 20), pady=10, sticky="nsew")
-
             medicamento_label = CTkLabel(tabla_frame, text=str(cantidad_medicamentos), font=("Arial", 12), text_color="white")
             medicamento_label.grid(row=i, column=6, padx=(60, 20), pady=10, sticky="nsew")
-
             total_medicamentos_label = CTkLabel(tabla_frame, text=f"{total_medicamentos_descuento:.2f}", font=("Arial", 12), text_color="white")
             total_medicamentos_label.grid(row=i, column=7, padx=(50, 20), pady=10, sticky="nsew")
-  
             restante_medicamento_label = CTkLabel(tabla_frame, text=str(inventario_restante_medicamento), font=("Arial", 12), text_color="white")
             restante_medicamento_label.grid(row=i, column=8, padx=(50, 20), pady=10, sticky="nsew")
-
             accesorio_label = CTkLabel(tabla_frame, text=str(cantidad_accesorios), font=("Arial", 12), text_color="white")
             accesorio_label.grid(row=i, column=9, padx=(60, 20), pady=10, sticky="nsew")
-
             total_accesorios_label = CTkLabel(tabla_frame, text=f"{total_accesorios_descuento:.2f}", font=("Arial", 12), text_color="white")
             total_accesorios_label.grid(row=i, column=10, padx=(50, 20), pady=10, sticky="nsew")
-
             restante_accesorios_label = CTkLabel(tabla_frame, text=str(inventario_restante_accesorios), font=("Arial", 12), text_color="white")
             restante_accesorios_label.grid(row=i, column=11, padx=(50, 20), pady=10, sticky="nsew")
-            
             mascotas_atendidas_label = CTkLabel(tabla_frame, text=str(cantidad_mascotas_atendidas), font=("Arial", 12), text_color="white")
             mascotas_atendidas_label.grid(row=i, column=12, padx=(60, 20), pady=10, sticky="nsew")
 

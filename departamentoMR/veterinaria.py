@@ -25,7 +25,6 @@ class Veterinaria:
         self.lista_accesorios=[(0, "0.0000-0.0000")]
         self.lista_tiempo=[(0, "0.0000-0.0000")]
 
-
         self.ventana=CTk()
         self.ventana.title("Veterinaria")
         self.ventana.geometry("750x800+350+100")
@@ -36,7 +35,6 @@ class Veterinaria:
 
         self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
         
-        # Frame para el título
         frame_titulo = CTkFrame(self.ventana)
         frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
@@ -47,7 +45,6 @@ class Veterinaria:
         frame_titulo.columnconfigure(0, weight=1)
         frame_titulo.rowconfigure(0, weight=1)
 
-        # Frame para las opciones
         frame_opciones=CTkFrame(self.ventana)
         frame_opciones.grid(row=1, column=0, pady=(10, 10))
         self.ventana.columnconfigure(0, weight=2)
@@ -68,7 +65,6 @@ class Veterinaria:
         boton_datos_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Históricos")
         boton_datos_historicos.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
 
-        # Frame de características
         self.frame_caracteristicas = CTkFrame(self.ventana)
         self.frame_caracteristicas.grid(row=1, column=1, sticky="nsew")
         self.ventana.columnconfigure(1, weight=25)
@@ -83,7 +79,7 @@ class Veterinaria:
         self.temporadas()
         self.personal()
 
-        # Frame para el botón de guardar
+
         frame_guardar = CTkFrame(self.ventana)
         frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
@@ -175,8 +171,6 @@ class Veterinaria:
         self.lista_personal.append([int(cantidad_gerentes),
                                     int(cantidad_veterinarios)
                                    ])
-        
-
 
     def sueldos(self):
         self.resetear_frame_caracteristicas()
@@ -207,7 +201,6 @@ class Veterinaria:
         self.lista_sueldos.append([int(sueldo_mensual_gerente),
                                     int(sueldo_mensual_veterinario)
                                    ])
-
 
     def horarios(self):
         self.resetear_frame_caracteristicas()
@@ -249,7 +242,6 @@ class Veterinaria:
                                     horario_salida_almuerzo,
                                     horario_entrada_almuerzo
                                    ])
-
 
     def servicios_generales(self):
         self.resetear_frame_caracteristicas()
@@ -515,7 +507,6 @@ class Veterinaria:
             self.valores_tiempo.append(entry_tiempo)
             current_row += 1
 
-
         def all_checkbuttons_selected():
             if self.check_alimento.get() == "Si" and self.check_medicamento.get() == "Si" and self.check_mascotas.get() == "Si" and self.check_accesorios.get() == "Si" and self.check_tiempo.get() == "Si":
                 return True
@@ -584,12 +575,5 @@ class Veterinaria:
         treeview.insert("", tk.END, text=nombre_tabla, values=("", "", ""))
         for valor, probabilidad, prob_acum, rango in datos_tabla:
             treeview.insert("", tk.END, text=str(valor), values=(probabilidad, prob_acum, rango))
-
-
-
-
-
-
-
 
 Veterinaria()

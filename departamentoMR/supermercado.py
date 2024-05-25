@@ -26,8 +26,7 @@ class Supermercado:
         self.ventana.rowconfigure(1, weight=1)
 
         self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
-        
-        # Frame para el título
+
         frame_titulo = CTkFrame(self.ventana)
         frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
@@ -38,7 +37,6 @@ class Supermercado:
         frame_titulo.columnconfigure(0, weight=1)
         frame_titulo.rowconfigure(0, weight=1)
 
-        # Frame para las opciones
         frame_opciones=CTkFrame(self.ventana)
         frame_opciones.grid(row=1, column=0, pady=(10, 10))
         self.ventana.columnconfigure(0, weight=2)
@@ -67,8 +65,6 @@ class Supermercado:
         boton_temporadas.grid(row=9, column=0, padx=(5,5), pady=(5, 5))
 
 
-
-        # Frame de características
         self.frame_caracteristicas = CTkFrame(self.ventana)
         self.frame_caracteristicas.grid(row=1, column=1, sticky="nsew")
         self.ventana.columnconfigure(1, weight=25)
@@ -80,8 +76,6 @@ class Supermercado:
         self.sueldo()
         self.horarios()
 
-
-        # Frame para el botón de guardar
         frame_guardar = CTkFrame(self.ventana)
         frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)

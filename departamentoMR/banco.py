@@ -30,7 +30,6 @@ class Banco:
 
         self.ruta_ventana=os.path.dirname(os.path.abspath(__file__))
         
-        # Frame para el título
         frame_titulo = CTkFrame(self.ventana)
         frame_titulo.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)
@@ -41,7 +40,6 @@ class Banco:
         frame_titulo.columnconfigure(0, weight=1)
         frame_titulo.rowconfigure(0, weight=1)
 
-        # Frame para las opciones
         frame_opciones=CTkFrame(self.ventana)
         frame_opciones.grid(row=1, column=0, pady=(10, 10))
         self.ventana.columnconfigure(0, weight=2)
@@ -65,9 +63,6 @@ class Banco:
         boton_datos_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Históricos")
         boton_datos_historicos.grid(row=7, column=0, padx=(5,5), pady=(5, 5))
 
-
-
-        # Frame de características
         self.frame_caracteristicas = CTkFrame(self.ventana)
         self.frame_caracteristicas.grid(row=1, column=1, sticky="nsew")
         self.ventana.columnconfigure(1, weight=25)
@@ -85,8 +80,6 @@ class Banco:
         self.datos_historicos()
         self.personal()
 
-
-        # Frame para el botón de guardar
         frame_guardar = CTkFrame(self.ventana)
         frame_guardar.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self.ventana.columnconfigure(0, weight=1)

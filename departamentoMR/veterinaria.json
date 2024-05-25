@@ -3,7 +3,7 @@
     "cantidad_veterinarios": 2,
     "sueldo_mensual_gerente": 4000,
     "sueldo_mensual_veterinario": 3000,
-    "horario_entrada": "8:00",
+    "horario_entrada": "13:00",
     "horario_salida": "18:00",
     "horario_salida_almuerzo": "11:00",
     "horario_entrada_almuerzo": "12:00",
