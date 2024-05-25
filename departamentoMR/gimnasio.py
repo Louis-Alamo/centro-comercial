@@ -30,6 +30,7 @@ class Gimnasio:
         self.lista_lapso = [(0, "0.0000-0.0000")]
         self.lista_duracion_gym = [(0, "0.0000-0.0000")]
         self.lista_baño = [(0, "0.0000-0.0000")]
+        self.lista_sexo=[("Mujer", 0), ("Hombre", 0), ("Otro", 0)]
 
 
         self.ventana=CTk()
@@ -126,8 +127,6 @@ class Gimnasio:
             "horario_apertura": self.lista_horarios[0][0],
             "horario_cierre": self.lista_horarios[0][1],
             "capacidad_gym": self.lista_usuarios[0][0],
-            "cantidad_mujeres": self.lista_usuarios[0][1],
-            "cantidad_hombres": self.lista_usuarios[0][2],
             "cobro_usuario": self.lista_usuarios[0][3],
             "cantidad_maquinas": self.lista_maquinas[0][0],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],
@@ -146,6 +145,8 @@ class Gimnasio:
             "lapso_usuarios": self.lista_lapso,
             "duracion_gym": self.lista_duracion_gym,
             "duracion_baño": self.lista_baño,
+            "lista_sexo": self.lista_sexo
+
         }
 
         
@@ -299,14 +300,6 @@ class Gimnasio:
         self.etiqueta_capacidad_gym.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.capacidad_gym=LtkEntryLine(self.frame_caracteristicas, "200")
         self.capacidad_gym.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_cantidad_mujeres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Mujeres:")
-        self.etiqueta_cantidad_mujeres.grid(row=4, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_mujeres=LtkEntryLine(self.frame_caracteristicas, "100")
-        self.cantidad_mujeres.grid(row=4, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
-        self.etiqueta_cantidad_hombres=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Hombres:")
-        self.etiqueta_cantidad_hombres.grid(row=5, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_hombres=LtkEntryLine(self.frame_caracteristicas, "100")
-        self.cantidad_hombres.grid(row=5, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
         self.etiqueta_cobro_usuario=LtkLabel(self.frame_caracteristicas, texto="Cobro Por Usuario:")
         self.etiqueta_cobro_usuario.grid(row=6, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cobro_usuario=LtkEntryLine(self.frame_caracteristicas, "250")
@@ -448,6 +441,8 @@ class Gimnasio:
         lapso_llegada = simpledialog.askinteger("Entrada", "Renglones Lapso De Llegada", minvalue=1, parent=self.frame_caracteristicas)
         duracion_gym = simpledialog.askinteger("Entrada", "Renglones Duracion En GYM", minvalue=1, parent=self.frame_caracteristicas)
         tiempo_baño = simpledialog.askinteger("Entrada", "Renglones Tiempo En Baño", minvalue=1, parent=self.frame_caracteristicas)
+        cantidad_genero = simpledialog.askinteger("Entrada", "Cantidad de géneros a ingresar", minvalue=1, parent=self.frame_caracteristicas)
+
 
         canvas = Canvas(self.frame_caracteristicas)
         canvas.configure(bg="gray")
@@ -540,15 +535,33 @@ class Gimnasio:
             self.valores_baño.append(entry_baño)
             current_row += 1
 
+        self.check_sexo = StringVar()
+        self.checkbutton_sexo = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS SEXO", variable=self.check_sexo, onvalue="Si", offvalue="No")
+        self.checkbutton_sexo.deselect()
+        self.checkbutton_sexo.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        current_row += 1
+
+        self.entrys_sexo = []
+        self.valores_sexo = []
+        for i in range(cantidad_genero):
+            entry_sexo = LtkEntryLine(scrollable_frame, "Mujer")
+            entry_sexo.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            entry = LtkEntryLine(scrollable_frame, ".15")
+            entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+            self.entrys_sexo.append(entry)
+            self.valores_sexo.append(entry_sexo)
+            current_row += 1
+
         def all_checkbuttons_selected():
             return (self.check_llegada.get() == "Si" and
                     self.check_lapso.get() == "Si" and
                     self.check_duracion_gym.get() == "Si" and
-                    self.check_baño.get() == "Si")
+                    self.check_baño.get() == "Si" and
+                    self.check_sexo.get() == "Si")
 
         def guardar_si_todo_seleccionado():
             if all_checkbuttons_selected():
-                self.guardar_ajustes9(llegada_personas, lapso_llegada, duracion_gym, tiempo_baño)
+                self.guardar_ajustes9(llegada_personas, lapso_llegada, duracion_gym, tiempo_baño, cantidad_genero)
             else:
                 messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
 
@@ -556,21 +569,24 @@ class Gimnasio:
         boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
 
 
-    def guardar_ajustes9(self, llegada_personas, lapso_llegada, duracion_gym, tiempo_baño):
+    def guardar_ajustes9(self, llegada_personas, lapso_llegada, duracion_gym, tiempo_baño, cantidad_genero):
         rangos_llegada = self.calcular_rangos([float(entry.get()) for entry in self.entrys_llegada])
         rangos_lapso = self.calcular_rangos([float(entry.get()) for entry in self.entrys_lapso])
         rangos_duracion_gym = self.calcular_rangos([float(entry.get()) for entry in self.entrys_duracion_gym])
         rangos_baño = self.calcular_rangos([float(entry.get()) for entry in self.entrys_baño])
+        rangos_sexo = self.calcular_rangos([float(entry.get()) for entry in self.entrys_sexo])
         
         self.lista_llegada = [(int(self.valores_llegada[i].get()), rangos_llegada[i][1]) for i in range(llegada_personas)]
         self.lista_lapso = [(int(self.valores_lapso[i].get()), rangos_lapso[i][1]) for i in range(lapso_llegada)]
         self.lista_duracion_gym = [(int(self.valores_duracion_gym[i].get()), rangos_duracion_gym[i][1]) for i in range(duracion_gym)]
         self.lista_baño = [(int(self.valores_baño[i].get()), rangos_baño[i][1]) for i in range(tiempo_baño)]
+        self.lista_sexo = [(str(self.valores_sexo[i].get()), rangos_sexo[i][1]) for i in range(cantidad_genero)]
 
         self.tablas_llegada = [(int(self.valores_llegada[i].get()), float(self.entrys_llegada[i].get()), rangos_llegada[i][0], rangos_llegada[i][1]) for i in range(llegada_personas)]
         self.tablas_lapso = [(int(self.valores_lapso[i].get()), float(self.entrys_lapso[i].get()), rangos_lapso[i][0], rangos_lapso[i][1]) for i in range(lapso_llegada)]
         self.tablas_duracion_gym = [(int(self.valores_duracion_gym[i].get()), float(self.entrys_duracion_gym[i].get()), rangos_duracion_gym[i][0], rangos_duracion_gym[i][1]) for i in range(duracion_gym)]
         self.tablas_baño = [(int(self.valores_baño[i].get()), float(self.entrys_baño[i].get()), rangos_baño[i][0], rangos_baño[i][1]) for i in range(tiempo_baño)]
+        self.tablas_sexo = [(str(self.valores_sexo[i].get()), float(self.entrys_sexo[i].get()), rangos_sexo[i][0], rangos_sexo[i][1]) for i in range(cantidad_genero)]
 
         self.imprimir_tablas()
 
@@ -602,6 +618,7 @@ class Gimnasio:
         self.insertar_tabla(treeview, "Tabla Lapso Llegada", self.tablas_lapso)
         self.insertar_tabla(treeview, "Tabla Duración GYM", self.tablas_duracion_gym)
         self.insertar_tabla(treeview, "Tabla Tiempo Baño", self.tablas_baño)
+        self.insertar_tabla(treeview, "Tabla Sexo", self.tablas_sexo)
 
     def insertar_tabla(self, treeview, nombre_tabla, datos_tabla):
         treeview.insert("", tk.END, text=nombre_tabla, values=("", "", ""))

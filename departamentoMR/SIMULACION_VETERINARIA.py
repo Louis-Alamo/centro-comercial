@@ -18,18 +18,6 @@ def cargar_datos():
         print("Error al decodificar el archivo JSON.")
         return {}
 
-def generar_numeros_aleatorios(cantidad):
-    temporada = determinar_temporada()
-    if temporada == "alta":
-        cantidad = int(cantidad * 1.2)
-    elif temporada == "baja":
-        cantidad = int(cantidad * 0.8)
-    numeros = [round(random.uniform(0, 1), 4) for _ in range(cantidad)]
-    ruta_numeros = os.path.join(ruta_archivo, 'A_veterinaria.txt')
-    with open(ruta_numeros, 'w') as file:
-        for numero in numeros:
-            file.write(f"{numero}\n")
-    return numeros
 
 def determinar_temporada():
     datos = cargar_datos()
@@ -40,6 +28,7 @@ def determinar_temporada():
     elif datos.get("temporada_baja", [False])[0]:
         return "baja"
     return "sin temporada"
+
 
 class SimulacionVeterinaria:
     def __init__(self):
@@ -65,9 +54,9 @@ class SimulacionVeterinaria:
         self.inner_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         self.datos = cargar_datos()
-        self.inventario_inicial = self.datos.get("paquetes_alimento", 0) 
+        self.inventario_inicial = self.datos.get("paquetes_alimento", 0)
         self.ejecutar_simulacion()
-        self.numeros_aleatorios = generar_numeros_aleatorios(10)
+        self.numeros_aleatorios = self.generar_hasta_horario_salida()
         self.crear_tabla_simulacion(self.numeros_aleatorios)
         self.ventana.mainloop()
 
@@ -105,9 +94,9 @@ class SimulacionVeterinaria:
         self.medicamento_descuento = self.costo_medicamento_normal * (1 - descuento)
         self.accesorio_descuento = self.costo_accesorio_normal * (1 - descuento)
 
-        temporada_regular = self.datos.get("temporada_regular", False)
-        temporada_alta = self.datos.get("temporada_alta", False)
-        temporada_baja = self.datos.get("temporada_baja", False)
+        temporada_regular = self.datos.get("temporada_regular", [False])[0]
+        temporada_alta = self.datos.get("temporada_alta", [False])[0]
+        temporada_baja = self.datos.get("temporada_baja", [False])[0]
 
         if temporada_regular:
             temporada = "Temporada Regular"
@@ -118,7 +107,7 @@ class SimulacionVeterinaria:
         else:
             temporada = "Sin Temporada Específica"
 
-        temporada_label = CTkLabel(self.inner_frame, text=f"Descuento del {descuento * 100}% aplicado en la mensualidad durante la {temporada}", font=("Arial", 12), text_color="white")
+        temporada_label = CTkLabel(self.inner_frame, text=f"Descuento del {descuento * 100}% aplicado durante la {temporada}", font=("Arial", 12), text_color="white")
         temporada_label.pack(padx=20, pady=5)
 
         resultados = {
@@ -160,6 +149,7 @@ class SimulacionVeterinaria:
             if rango_inicio <= aleatorio <= rango_fin:
                 return cantidad
         return 0
+
     def obtener_cantidad_mascotas(self, aleatorio, lista_mascotas):
         for cantidad, rango in lista_mascotas:
             rango_inicio, rango_fin = map(float, rango.split('-'))
@@ -167,8 +157,22 @@ class SimulacionVeterinaria:
                 return cantidad
         return 0
 
+    def generar_hasta_horario_salida(self):
+        horario_salida = datetime.strptime(self.datos.get("horario_salida", "17:00"), "%H:%M")
+        horario_entrada = datetime.strptime(self.datos.get("horario_entrada", "08:00"), "%H:%M")
+        hora_actual = horario_entrada
+        numeros = []
+
+        while hora_actual < horario_salida:
+            numero = round(random.uniform(0, 1), 4)
+            numeros.append(numero)
+            tiempo_consulta = self.obtener_tiempo_consulta(numero, self.datos.get("lista_tiempo", []))
+            hora_actual += timedelta(minutes=tiempo_consulta)
+
+        return numeros
+
     def crear_tabla_simulacion(self, numeros):
-        columnas = ["ALEATORIOS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL", "RESTANTE", "MEDICAMENTO", "TOTAL", "RESTANTE", "ACCESORIOS", "TOTAL", "RESTANTE","MASCOTAS ATENDIDAS"]
+        columnas = ["ALEATORIOS", "MASCOTAS ATENDIDAS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL", "RESTANTE", "MEDICAMENTO", "TOTAL", "RESTANTE", "ACCESORIOS", "TOTAL", "RESTANTE"]
 
         header_frame = CTkFrame(self.inner_frame)
         header_frame.pack(padx=20, pady=10, fill="x")
@@ -186,101 +190,88 @@ class SimulacionVeterinaria:
         lista_medicamento = self.datos.get("lista_medicamento", [])
         lista_accesorios = self.datos.get("lista_accesorios", [])
         lista_mascotas = self.datos.get("lista_mascotas", [])
-        horario_entrada = datetime.strptime(self.datos["horario_entrada"], "%H:%M")
-        hora_salida_almuerzo = datetime.strptime(self.datos["horario_salida_almuerzo"], "%H:%M")
-        hora_regreso_almuerzo = datetime.strptime(self.datos["horario_entrada_almuerzo"], "%H:%M")
         
         inventario_restante_alimento = self.inventario_inicial
         inventario_restante_medicamento = self.datos.get("cantidad_medicamento", 0)
         inventario_restante_accesorios = self.datos.get("cantidad_accesorios", 0)
+
+        horario_entrada = self.datos.get("horario_entrada", "08:00")
+        hora_actual = datetime.strptime(horario_entrada, "%H:%M")
 
         for i, numero in enumerate(numeros):
             tiempo_consulta = self.obtener_tiempo_consulta(numero, lista_tiempo)
             cantidad_alimento = self.obtener_cantidad_alimento(numero, lista_alimento)
             cantidad_medicamentos = self.obtener_cantidad_medicamentos(numero, lista_medicamento)
             cantidad_accesorios = self.obtener_cantidad_accesorios(numero, lista_accesorios)
-            horario_salida = horario_entrada + timedelta(minutes=tiempo_consulta)
+            cantidad_mascotas = self.obtener_cantidad_mascotas(numero, lista_mascotas)
 
-            if horario_salida > hora_salida_almuerzo and horario_entrada < hora_salida_almuerzo:
-                tiempo_antes_almuerzo = (hora_salida_almuerzo - horario_entrada).seconds // 60
-                tiempo_despues_almuerzo = tiempo_consulta - tiempo_antes_almuerzo
-                horario_salida = hora_regreso_almuerzo + timedelta(minutes=tiempo_despues_almuerzo)
-
-            total_alimento_descuento = cantidad_alimento * self.alimento_descuento
-
-            if inventario_restante_alimento > 0:
-                if inventario_restante_alimento >= cantidad_alimento:
-                    inventario_restante_alimento -= cantidad_alimento
-                else:
-                    cantidad_alimento = inventario_restante_alimento
-                    inventario_restante_alimento = 0
-
-            if inventario_restante_alimento == 0:
-                cantidad_alimento = 0
-                total_alimento_descuento = 0
-            else:
-                total_alimento_descuento = cantidad_alimento * self.alimento_descuento
-
-            if inventario_restante_medicamento > 0:
-                if inventario_restante_medicamento >= cantidad_medicamentos:
-                    inventario_restante_medicamento -= cantidad_medicamentos
-                else:
-                    cantidad_medicamentos = inventario_restante_medicamento
-                    inventario_restante_medicamento = 0
-
-            if inventario_restante_medicamento == 0:
-                cantidad_medicamentos = 0
-                total_medicamentos_descuento = 0 
-            else:
-                total_medicamentos_descuento = cantidad_medicamentos * self.medicamento_descuento
-
-            if inventario_restante_accesorios > 0:
-                if inventario_restante_accesorios >= cantidad_accesorios:
-                    inventario_restante_accesorios -= cantidad_accesorios
-                else:
-                    cantidad_accesorios = inventario_restante_accesorios
-                    inventario_restante_accesorios = 0
-
-            if inventario_restante_accesorios == 0:
-                cantidad_accesorios = 0
-                total_accesorios_descuento = 0
-            else:
-                total_accesorios_descuento = cantidad_accesorios * self.accesorio_descuento
-
-            cantidad_mascotas_atendidas = self.obtener_cantidad_mascotas(numero, lista_mascotas)
+            horario_inicio = hora_actual
+            horario_termina = horario_inicio + timedelta(minutes=tiempo_consulta)
 
             aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
-            aleatorio_label.grid(row=i, column=0, padx=(10, 20), pady=10, sticky="nsew")
-            horario_inicio_label = CTkLabel(tabla_frame, text=horario_entrada.strftime("%H:%M"), font=("Arial", 12), text_color="white")
-            horario_inicio_label.grid(row=i, column=1, padx=(60, 20), pady=10, sticky="nsew")
-            horario_salida_label = CTkLabel(tabla_frame, text=horario_salida.strftime("%H:%M"), font=("Arial", 12), text_color="white")
-            horario_salida_label.grid(row=i, column=2, padx=(60, 20), pady=10, sticky="nsew")
-            alimento_label = CTkLabel(tabla_frame, text=str(cantidad_alimento), font=("Arial", 12), text_color="white")
-            alimento_label.grid(row=i, column=3, padx=(60, 20), pady=10, sticky="nsew")
-            total_alimento_label = CTkLabel(tabla_frame, text=f"{total_alimento_descuento:.2f}", font=("Arial", 12), text_color="white")
-            total_alimento_label.grid(row=i, column=4, padx=(50, 20), pady=10, sticky="nsew")
-            restante_alimento_label = CTkLabel(tabla_frame, text=str(inventario_restante_alimento), font=("Arial", 12), text_color="white")
-            restante_alimento_label.grid(row=i, column=5, padx=(50, 20), pady=10, sticky="nsew")
-            medicamento_label = CTkLabel(tabla_frame, text=str(cantidad_medicamentos), font=("Arial", 12), text_color="white")
-            medicamento_label.grid(row=i, column=6, padx=(60, 20), pady=10, sticky="nsew")
-            total_medicamentos_label = CTkLabel(tabla_frame, text=f"{total_medicamentos_descuento:.2f}", font=("Arial", 12), text_color="white")
-            total_medicamentos_label.grid(row=i, column=7, padx=(50, 20), pady=10, sticky="nsew")
-            restante_medicamento_label = CTkLabel(tabla_frame, text=str(inventario_restante_medicamento), font=("Arial", 12), text_color="white")
-            restante_medicamento_label.grid(row=i, column=8, padx=(50, 20), pady=10, sticky="nsew")
-            accesorio_label = CTkLabel(tabla_frame, text=str(cantidad_accesorios), font=("Arial", 12), text_color="white")
-            accesorio_label.grid(row=i, column=9, padx=(60, 20), pady=10, sticky="nsew")
-            total_accesorios_label = CTkLabel(tabla_frame, text=f"{total_accesorios_descuento:.2f}", font=("Arial", 12), text_color="white")
-            total_accesorios_label.grid(row=i, column=10, padx=(50, 20), pady=10, sticky="nsew")
-            restante_accesorios_label = CTkLabel(tabla_frame, text=str(inventario_restante_accesorios), font=("Arial", 12), text_color="white")
-            restante_accesorios_label.grid(row=i, column=11, padx=(50, 20), pady=10, sticky="nsew")
-            mascotas_atendidas_label = CTkLabel(tabla_frame, text=str(cantidad_mascotas_atendidas), font=("Arial", 12), text_color="white")
-            mascotas_atendidas_label.grid(row=i, column=12, padx=(60, 20), pady=10, sticky="nsew")
+            aleatorio_label.grid(row=i, column=0, padx=(20, 20), pady=10, sticky="nsew")
+            
+            mascotas_label = CTkLabel(tabla_frame, text=str(cantidad_mascotas), font=("Arial", 12), text_color="white")
+            mascotas_label.grid(row=i, column=1, padx=90, pady=10, sticky="nsew")
 
-            horario_entrada = horario_salida
+            hora_inicio_label = CTkLabel(tabla_frame, text=horario_inicio.strftime("%H:%M"), font=("Arial", 12), text_color="white")
+            hora_inicio_label.grid(row=i, column=2, padx=40, pady=10, sticky="nsew")
+
+            hora_termina_label = CTkLabel(tabla_frame, text=horario_termina.strftime("%H:%M"), font=("Arial", 12), text_color="white")
+            hora_termina_label.grid(row=i, column=3, padx=40, pady=10, sticky="nsew")
+
+            if inventario_restante_alimento <= 0 or cantidad_alimento > inventario_restante_alimento:
+                cantidad_alimento = 0
+                total_alimento = 0
+            else:
+                total_alimento = self.alimento_descuento * cantidad_alimento
+
+            cantidad_alimento_label = CTkLabel(tabla_frame, text=str(cantidad_alimento), font=("Arial", 12), text_color="white")
+            cantidad_alimento_label.grid(row=i, column=4, padx=40, pady=10, sticky="nsew")
+
+            total_alimento_label = CTkLabel(tabla_frame, text=str(total_alimento), font=("Arial", 12), text_color="white")
+            total_alimento_label.grid(row=i, column=5, padx=30, pady=10, sticky="nsew")
+
+            inventario_restante_alimento -= cantidad_alimento
+            inventario_restante_alimento_label = CTkLabel(tabla_frame, text=str(inventario_restante_alimento), font=("Arial", 12), text_color="white")
+            inventario_restante_alimento_label.grid(row=i, column=6, padx=30, pady=10, sticky="nsew")
+
+            if inventario_restante_medicamento <= 0 or cantidad_medicamentos > inventario_restante_medicamento:
+                cantidad_medicamentos = 0
+                total_medicamentos = 0
+            else:
+                total_medicamentos = self.medicamento_descuento * cantidad_medicamentos
+
+            cantidad_medicamentos_label = CTkLabel(tabla_frame, text=str(cantidad_medicamentos), font=("Arial", 12), text_color="white")
+            cantidad_medicamentos_label.grid(row=i, column=7, padx=60, pady=10, sticky="nsew")
+
+            total_medicamentos_label = CTkLabel(tabla_frame, text=str(total_medicamentos), font=("Arial", 12), text_color="white")
+            total_medicamentos_label.grid(row=i, column=8, padx=20, pady=10, sticky="nsew")
+
+            inventario_restante_medicamento -= cantidad_medicamentos
+            inventario_restante_medicamento_label = CTkLabel(tabla_frame, text=str(inventario_restante_medicamento), font=("Arial", 12), text_color="white")
+            inventario_restante_medicamento_label.grid(row=i, column=9, padx=40, pady=10, sticky="nsew")
+
+            if inventario_restante_accesorios <= 0 or cantidad_accesorios > inventario_restante_accesorios:
+                cantidad_accesorios = 0
+                total_accesorios = 0
+            else:
+                total_accesorios = self.accesorio_descuento * cantidad_accesorios
+
+            cantidad_accesorios_label = CTkLabel(tabla_frame, text=str(cantidad_accesorios), font=("Arial", 12), text_color="white")
+            cantidad_accesorios_label.grid(row=i, column=10, padx=35, pady=10, sticky="nsew")
+
+            total_accesorios_label = CTkLabel(tabla_frame, text=str(total_accesorios), font=("Arial", 12), text_color="white")
+            total_accesorios_label.grid(row=i, column=11, padx=45, pady=10, sticky="nsew")
+
+            inventario_restante_accesorios -= cantidad_accesorios
+            inventario_restante_accesorios_label = CTkLabel(tabla_frame, text=str(inventario_restante_accesorios), font=("Arial", 12), text_color="white")
+            inventario_restante_accesorios_label.grid(row=i, column=12, padx=30, pady=10, sticky="nsew")
+
+            hora_actual = horario_termina 
 
         for i in range(len(numeros)):
             tabla_frame.grid_rowconfigure(i, weight=1)
 
 SimulacionVeterinaria()
-
 

@@ -11,13 +11,7 @@
     "sueldo_mensual_personal_tecnico": 2000,
     "horario_apertura": "6:00",
     "horario_cierre": "22:00",
-    "tiempo_sesion_usuarios": 30,
-    "tiempo_uso_maquina": 15,
-    "tiempo_uso_ba\u00f1o": 10,
-    "tiempo_uso_vestidor": 10,
     "capacidad_gym": 200,
-    "cantidad_mujeres": 100,
-    "cantidad_hombres": 100,
     "cobro_usuario": 250,
     "cantidad_maquinas": 50,
     "pago_mensual_luz": 300,
@@ -26,23 +20,21 @@
     "pago_mensual_spotify": 200,
     "pago_mensual_renta_local": 2000,
     "cantidad_ba\u00f1os": 6,
-    "cantidad_ba\u00f1os_mujeres": 3,
-    "cantidad_ba\u00f1os_hombres": 3,
     "temporada_regular": [
         false,
         0
     ],
     "temporada_alta": [
-        true,
-        100
-    ],
-    "temporada_baja": [
         false,
         0
     ],
+    "temporada_baja": [
+        true,
+        60
+    ],
     "descuento_regular": 0,
-    "descuento_alta": 0.2,
-    "descuento_baja": 0,
+    "descuento_alta": 0,
+    "descuento_baja": 0.05,
     "llegada_usuarios": [
         [
             1,
@@ -109,6 +101,16 @@
         [
             20,
             "0.9001-1.0000"
+        ]
+    ],
+    "lista_sexo": [
+        [
+            "Mujer",
+            "0.0000-0.4000"
+        ],
+        [
+            "Hombre",
+            "0.4001-1.0000"
         ]
     ]
 }

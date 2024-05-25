@@ -19,18 +19,24 @@ def cargar_datos():
         print("Error al decodificar el archivo JSON.")
         return {}
 
-def generar_numeros_aleatorios(cantidad):
-    temporada = determinar_temporada()
-    if temporada == "alta":
-        cantidad = int(cantidad * 1.2)
-    elif temporada == "baja":
-        cantidad = int(cantidad * 0.8)
-    numeros = [round(random.uniform(0, 1), 4) for _ in range(cantidad)]
-    ruta_numeros = os.path.join(ruta_archivo, 'A_gimnasio.txt')
-    with open(ruta_numeros, 'w') as file:
-        for numero in numeros:
-            file.write(f"{numero}\n")
+def generar_numeros_aleatorios(hora_apertura, hora_cierre, lapso_usuarios):
+    numeros = []
+    hora_actual = hora_apertura
+    while True:
+        numero = round(random.uniform(0, 1), 4)
+        incremento_minutos = 0
+        for incremento, rango in lapso_usuarios:
+            limite_inferior, limite_superior = map(float, rango.split("-"))
+            if limite_inferior <= numero <= limite_superior:
+                incremento_minutos = incremento
+                break
+        hora_salida = incrementar_hora(hora_actual, incremento_minutos)
+        if hora_salida > hora_cierre:
+            break
+        numeros.append(numero)
+        hora_actual = hora_salida
     return numeros
+
 
 def obtener_personas_segun_rango(rango_aleatorio, rangos_llegada_usuarios):
     for cantidad_personas, rango in rangos_llegada_usuarios:
@@ -52,6 +58,14 @@ def obtener_tiempo_baño_segun_rango(rango_aleatorio, rangos_duracion_baño):
         if limite_inferior <= rango_aleatorio <= limite_superior:
             return tiempo_baño
     return 0
+
+def obtener_genero_segun_rango(rango_aleatorio, lista_sexo):
+    for genero, rango in lista_sexo:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return genero
+    return "Otro" 
+
 
 def determinar_temporada():
     datos = cargar_datos()
@@ -97,9 +111,15 @@ class SimulacionGimnasio:
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         
         self.datos = cargar_datos()
+        datos = cargar_datos()
+        horario_apertura = datos.get("horario_apertura", [])
+        horario_cierre = datos.get("horario_cierre", [])
+        lapso_usuarios = datos.get("lapso_usuarios", [])
+        
         self.ejecutar_simulacion()
 
-        self.numeros_aleatorios = generar_numeros_aleatorios(30)
+        self.numeros_aleatorios = generar_numeros_aleatorios(horario_apertura, horario_cierre, lapso_usuarios)
+
         self.crear_tabla_simulacion(self.numeros_aleatorios)
         self.ventana.mainloop()
 
@@ -146,7 +166,7 @@ class SimulacionGimnasio:
         else:
             temporada = "Sin Temporada Específica"
 
-        temporada_label = CTkLabel(self.inner_frame, text=f"Descuento del {descuento * 100}% aplicado en la mensualidad durante la {temporada}", font=("Arial", 12), text_color="white")
+        temporada_label = CTkLabel(self.inner_frame, text=f"Descuento del {descuento * 100}% aplicado durante la {temporada}", font=("Arial", 12), text_color="white")
         temporada_label.pack(padx=20, pady=5)
 
         resultados = {
@@ -160,14 +180,15 @@ class SimulacionGimnasio:
         
 
     def crear_tabla_simulacion(self, numeros):
-        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS EN USO", "SIN USO"]
+        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS EN USO", "SIN USO" , "MUJERES O HOMBRES"]
         llegada_usuarios = self.datos.get("llegada_usuarios", [])
-        horario_apertura = self.datos.get("horario_apertura", "06:00")
-        horario_cierre = self.datos.get("horario_cierre", "22:00")
+        horario_apertura = self.datos.get("horario_apertura", [])
+        horario_cierre = self.datos.get("horario_cierre", [])
         lapso_usuarios = self.datos.get("lapso_usuarios", [])
         duracion_gym = self.datos.get("duracion_gym", [])
         duracion_baño = self.datos.get("duracion_baño", [])
         cantidad_maquinas = self.datos.get("cantidad_maquinas", 0)
+        
 
         header_frame = CTkFrame(self.inner_frame)
         header_frame.pack(padx=20, pady=10, fill="x")
@@ -181,7 +202,7 @@ class SimulacionGimnasio:
         tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
         hora_actual = horario_apertura
-        maquinas_en_uso = 0
+        lista_sexo = self.datos.get("lista_sexo", {})
 
         for i, numero in enumerate(numeros):
             numero_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
@@ -189,7 +210,7 @@ class SimulacionGimnasio:
 
             personas = obtener_personas_segun_rango(numero, llegada_usuarios)
             personas_label = CTkLabel(tabla_frame, text=str(personas), font=("Arial", 12), text_color="white")
-            personas_label.grid(row=i, column=1, padx=(60, 20), pady=10, sticky="nsew")
+            personas_label.grid(row=i, column=1, padx=(70, 20), pady=10, sticky="nsew")
 
             cobro_desc = self.cobro_final * personas
             cobro_label = CTkLabel(tabla_frame, text=f"${cobro_desc}", font=("Arial", 12), text_color="white")
@@ -208,31 +229,24 @@ class SimulacionGimnasio:
             hora_actual = hora_llegada 
 
             hora_llegada_label = CTkLabel(tabla_frame, text=hora_llegada, font=("Arial", 12), text_color="white")
-            hora_llegada_label.grid(row=i, column=3, padx=(50, 20), pady=10, sticky="nsew")
+            hora_llegada_label.grid(row=i, column=3, padx=(40, 20), pady=10, sticky="nsew")
 
             duracion_gym_val = obtener_duracion_segun_rango(numero, duracion_gym)
             duracion_gym_label = CTkLabel(tabla_frame, text=str(duracion_gym_val), font=("Arial", 12), text_color="white")
-            duracion_gym_label.grid(row=i, column=4, padx=(70, 20), pady=10, sticky="nsew")
+            duracion_gym_label.grid(row=i, column=4, padx=(50, 20), pady=10, sticky="nsew")
 
             duracion_baño_val = obtener_tiempo_baño_segun_rango(numero, duracion_baño)
             duracion_baño_label = CTkLabel(tabla_frame, text=str(duracion_baño_val), font=("Arial", 12), text_color="white")
-            duracion_baño_label.grid(row=i, column=5, padx=(60, 20), pady=10, sticky="nsew")
+            duracion_baño_label.grid(row=i, column=5, padx=(50, 20), pady=10, sticky="nsew")
 
 
             hora_salida = incrementar_hora(hora_llegada, duracion_gym_val + duracion_baño_val)
             hora_salida_label = CTkLabel(tabla_frame, text=hora_salida, font=("Arial", 12), text_color="white")
             hora_salida_label.grid(row=i, column=6, padx=(60, 20), pady=10, sticky="nsew")
 
-    
-            if personas > 0:
-                maquinas_en_uso += personas
-            maquinas_sin_uso = cantidad_maquinas - maquinas_en_uso
-
-            maquinas_en_uso_label = CTkLabel(tabla_frame, text=str(maquinas_en_uso), font=("Arial", 12), text_color="white")
-            maquinas_en_uso_label.grid(row=i, column=7, padx=(60, 20), pady=10, sticky="nsew")
-
-            maquinas_sin_uso_label = CTkLabel(tabla_frame, text=str(maquinas_sin_uso), font=("Arial", 12), text_color="white")
-            maquinas_sin_uso_label.grid(row=i,column=8, padx=(60, 20), pady=10, sticky="nsew")
+            genero = obtener_genero_segun_rango(numero, lista_sexo)
+            genero_label = CTkLabel(tabla_frame, text=genero, font=("Arial", 12), text_color="white")
+            genero_label.grid(row=i, column=9, padx=(90, 20), pady=10, sticky="nsew")
 
         for i in range(len(numeros)):
             tabla_frame.grid_rowconfigure(i, weight=1)
@@ -241,5 +255,6 @@ class SimulacionGimnasio:
 
 
 
-
 SimulacionGimnasio()
+
+
