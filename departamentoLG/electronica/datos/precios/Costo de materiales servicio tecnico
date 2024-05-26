@@ -1,0 +1,4 @@
+Tipo,Stock,Precio compra,Precio venta,Probabilidad,Stock minimo,Cantidad a pedir
+Mantenimineto,100,100,150,0.2,50,60
+Reparacion,100,100,150,0.5,50,60
+Componentes,100,100,150,0.3,50,60

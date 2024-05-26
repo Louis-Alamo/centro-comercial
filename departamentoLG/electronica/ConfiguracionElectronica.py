@@ -14,7 +14,7 @@ class ConfiguracionElectronica:
     def __init__(self):
 
 
-        self.nombre_datos_historicos_probabilidades = ["Atraccion clientes", "Clasificacion de los productos", "Dias de promocion", "Eventos especiales", "Tipo de servicio", "Tipo de visita"]
+        self.nombre_datos_historicos_probabilidades = ["Atraccion clientes", "Clasificacion de los productos", "Dias de promocion", "Eventos especiales", "Tipo de servicio tecnico", "Tipo de visita"]
         self.nombre_datos_historicos_espera = ["Tiempo de espera de servicio", "Tiempo de espera en caja", "Tiempo de realizacion de servicio"]
         self.nombre_datos_precio = ["Costos de productos", "Costos de servicios", "Descuentos promocion servicios", "Descuentos por promocion productos productos"]
 
@@ -119,8 +119,8 @@ class ConfiguracionElectronica:
 
     def crear_caracteristicas_electronica(self):
 
-        self.lista_opciones_probabilidades_electronica = ["Atraccion de clientes", "Dias de promocion", "Eventos especiales", "Tipo de visita", "Temporadas de afluencia"]
-        self.lista_opciones_precio_electronica = ["Precio de mantenimiento de la tienda", "Descuentos por promocion productos"]
+        self.lista_opciones_probabilidades_electronica = ["Temporadas de afluencia", "Tipo de visita", "Dias de promocion"]
+        self.lista_opciones_precio_electronica = ["Tiempo de llegada clientes"]
 
 
         self.resetear_frame_caracteristicas()
@@ -171,10 +171,10 @@ class ConfiguracionElectronica:
 
     def crear_componentes_edificio_caja(self):
 
-        self.lista_opciones_probabilidades_caja = ["Dias de promocion caja", "Fallos en el sistema de caja", "Tiempo de reparacion de fallo"]
-        self.lista_costos_caja = ["Costos de mantenimiento de caja", "Costos de reparacion de caja"]
-        self.lista_opciones_tiempo_espera_caja = ["Tiempo de espera en caja", "Tiempo de realizacion de servicio en caja", "Tiempo de espera en fila caja"]
-        self.lista_opciones_productos_caja = ["Clasificacion de productos", "Descuentos por promocion productos"]
+        self.lista_opciones_probabilidades_caja = ["Cantidad productos a comprar"]
+        self.lista_costos_caja = ["Costo de mantenimineto caja", "Descuentos por promocion productos"]
+        self.lista_opciones_tiempo_espera_caja = ["Tiempo de realizacion de servicio en caja"]
+        self.lista_opciones_productos_caja = ["Productos de caja en tienda"]
 
         self.resetear_frame_caracteristicas()
 
@@ -245,9 +245,9 @@ class ConfiguracionElectronica:
 
     def crear_componetes_area_de_servicio_tecnico(self):
 
-        self.lista_opciones_probabilidad_servicio_tecnico = ["Fallos en el sistema de servicio tecnico","Tipo de servicio"]
-        self.lista_opciones_precio_servicio_tecnico = ["Costos de materiales", "Descuentos por promocion servicio tecnico", "Costos de mantenimiento de area servicio tecnico", "Costo de servicio tecnico"]
-        self.lista_opciones_tiempo_espera_servicio_tecnico = ["Tiempo de espera en fila servicio tecnico", "Tiempo de realizacion de servicio tecnico"]
+        self.lista_opciones_probabilidad_servicio_tecnico = [ "Cantidad materiales servicio tecnico"]
+        self.lista_opciones_precio_servicio_tecnico = ["Costos de materiales de servicio tecnico", "Descuentos por promocion servicio tecnico"]
+        self.lista_opciones_tiempo_espera_servicio_tecnico = [ "Tiempo de realizacion de servicio tecnico"]
 
         #Frame area de servicio tecnico
         self.resetear_frame_caracteristicas()
@@ -357,129 +357,84 @@ class ConfiguracionElectronica:
     #General
     def cargar_datos_probabilidades_electronica(self):
 
-        if self.opcion_probabilidades.get() == "Atraccion de clientes":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Atraccion de clientes")
-            self.crear_ventana_emergente("Costos de productos", path)
-
-        elif self.opcion_probabilidades.get() == "Dias de promocion":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion")
-            self.crear_ventana_emergente("Dias de promocion", path)
-
-        elif self.opcion_probabilidades.get() == "Eventos especiales":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Eventos especiales")
-            self.crear_ventana_emergente("Eventos especiales", path)
+        if self.opcion_probabilidades.get() == "Temporadas de afluencia":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Temporadas de afluencia")
+            self.crear_ventana_emergente("Temporadas de afluencia", path)
 
         elif self.opcion_probabilidades.get() == "Tipo de visita":
             path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de visita")
             self.crear_ventana_emergente("Tipo de visita", path)
 
-        elif self.opcion_probabilidades.get() == "Temporadas de afluencia":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Temporadas de afluencia")
-            self.crear_ventana_emergente("Temporadas de afluencia", path)
+        elif self.opcion_probabilidades.get() == "Dias de promocion":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Dias de promocion")
+            self.crear_ventana_emergente("Dias de promocion", path)
 
 
 
+    #Ya cambia ahora es el que maneja los tiempos de espera
     def cargar_datos_precios_electronica(self):
 
-        if self.opcion_precio.get() == "Precio de mantenimiento de la tienda":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Precio de mantenimiento de la tienda")
-            self.crear_ventana_emergente("Precio de mantenimiento de la tienda", path)
+        if self.opcion_precio.get() == "Tiempo de llegada clientes":
+            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de llegada clientes")
+            self.crear_ventana_emergente("Tiempo de llegada clientes", path)
 
-        elif self.opcion_precio.get() == "Descuentos por promocion productos":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion productos")
-            self.crear_ventana_emergente("Descuentos por promocion productos", path)
 
 
     #Caja
     def cargar_datos_probabilidades_caja(self):
 
-        if self.opcion_probabilidades_caja.get() == "Dias de promocion caja":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Dias de promocion en caja")
-            self.crear_ventana_emergente("Dias de promocion caja", path)
+        if self.opcion_probabilidades_caja.get() == "Cantidad productos a comprar":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Cantidad productos a comprar")
+            self.crear_ventana_emergente("Cantidad productos a comprar", path)
 
-        elif self.opcion_probabilidades_caja.get() == "Fallos en el sistema de caja":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Fallos en el sistema de caja")
-            self.crear_ventana_emergente("Fallos en el sistema de caja", path)
-
-        elif self.opcion_probabilidades_caja.get() == "Tiempo de reparacion de fallo":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tiempo de reparacion de fallo")
-            self.crear_ventana_emergente("Tiempo de reparacion de fallo", path)
 
     def cargar_datos_costos_caja(self):
 
-            if self.opcion_costos_caja.get() == "Costos de mantenimiento de caja":
-                path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de caja")
-                self.crear_ventana_emergente("Costos de mantenimiento de caja", path)
+        if self.opcion_costos_caja.get() == "Costo de mantenimineto caja":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de caja")
+            self.crear_ventana_emergente("Costo de mantenimineto caja", path)
 
-            elif self.opcion_costos_caja.get() == "Costos de reparacion de caja":
-                path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de reparacion de caja")
-                self.crear_ventana_emergente("Costos de reparacion de caja", path)
+        elif self.opcion_costos_caja.get() == "Descuentos por promocion productos":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion productos")
+            self.crear_ventana_emergente("Descuentos por promocion productos", path)
 
     def cargar_datos_tiempo_espera_caja(self):
 
-        if self.opcion_tiempo_espera_caja.get() == "Tiempo de espera en caja":
-            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera en caja")
-            self.crear_ventana_emergente("Tiempo de espera en caja", path)
-
-        elif self.opcion_tiempo_espera_caja.get() == "Tiempo de realizacion de servicio en caja":
+        if self.opcion_tiempo_espera_caja.get() == "Tiempo de realizacion de servicio en caja":
             path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de realizacion de servicio en caja")
             self.crear_ventana_emergente("Tiempo de realizacion de servicio en caja", path)
 
-        elif self.opcion_tiempo_espera_caja.get() == "Tiempo de espera en fila caja":
-            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera en fila caja")
-            self.crear_ventana_emergente("Tiempo de espera en fila caja", path)
 
     def cargar_datos_productos_caja(self):
 
-        if self.opcion_productos_caja.get() == "Clasificacion de productos":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Clasificacion de productos")
-            self.crear_ventana_emergente("Clasificacion de productos", path)
-
-        elif self.opcion_productos_caja.get() == "Descuentos por promocion productos":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion productos")
-            self.crear_ventana_emergente("Descuentos por promocion", path)
-
+        if self.opcion_productos_caja.get() == "Productos de caja en tienda":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Productos de caja en tienda")
+            self.crear_ventana_emergente("Productos de caja en tienda", path)
     #Servicio tecnico
     def cargar_datos_probabilidades_servicio_tecnico(self):
 
-        if self.opcion_probabilidades_servicio_tecnico.get() == "Fallos en el sistema de servicio tecnico":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Fallos en el sistema de servicio tecnico")
-            self.crear_ventana_emergente("Fallos en el sistema de servicio tecnico", path)
 
-        elif self.opcion_probabilidades_servicio_tecnico.get() == "Tipo de servicio":
-            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Tipo de servicio")
-            self.crear_ventana_emergente("Tipo de servicio", path)
+        if self.opcion_probabilidades_servicio_tecnico.get() == "Costos de materiales de servicio tecnico":
+            path = os.path.join(self.ruta_ventana, "datos\\probabilidades\\Cantidad materiales servicio tecnico")
+            self.crear_ventana_emergente("Cantidad materiales servicio tecnico", path)
+
 
 
     def cargar_datos_precio_servicio_tecnico(self):
 
-        if self.opcion_precio_servicio_tecnico.get() == "Costos de materiales":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de materiales")
-            self.crear_ventana_emergente("Costos de materiales", path)
+        if self.opcion_precio_servicio_tecnico.get() == "Costos de materiales de servicio tecnico":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de materiales servicio tecnico")
+            self.crear_ventana_emergente("Costos de materiales de servicio tecnico", path)
 
         elif self.opcion_precio_servicio_tecnico.get() == "Descuentos por promocion servicio tecnico":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Descuentos por promocion servicio tecnico")
             self.crear_ventana_emergente("Descuentos por promocion servicio tecnico", path)
 
-        elif self.opcion_precio_servicio_tecnico.get() == "Costos de mantenimiento de area servicio tecnico":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costos de mantenimiento de area servicio tecnico")
-            self.crear_ventana_emergente("Costos de mantenimiento de area servicio tecnico", path)
-
-        elif self.opcion_precio_servicio_tecnico.get() == "Costo de servicio tecnico":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de servicio tecnico")
-            self.crear_ventana_emergente("Costo de servicio tecnico", path)
-
-
     def cargar_datos_tiempo_espera_servicio_tecnico(self):
 
-        if self.opcion_tiempo_espera_servicio_tecnico.get() == "Tiempo de espera en fila servicio tecnico":
-            path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de espera en fila servicio tecnico")
-            self.crear_ventana_emergente("Tiempo de espera en fila servicio tecnico", path)
-
-        elif self.opcion_tiempo_espera_servicio_tecnico.get() == "Tiempo de realizacion de servicio tecnico":
+        if self.opcion_tiempo_espera_servicio_tecnico.get() == "Tiempo de realizacion de servicio tecnico":
             path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de realizacion de servicio tecnico")
             self.crear_ventana_emergente("Tiempo de realizacion de servicio tecnico", path)
-
 
     #Guardar datos
 
@@ -516,3 +471,5 @@ class ConfiguracionElectronica:
 
         messagebox.showinfo("Guardado", "Datos guardados localmente")
 
+
+ConfiguracionElectronica()

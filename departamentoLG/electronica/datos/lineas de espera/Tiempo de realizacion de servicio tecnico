@@ -1,4 +1,6 @@
-Tiempo(minutos),Probabilidad
-30,0.5
-60,0.3
-80,0.2
+Tiempo,Probabilidad
+60,0.2
+90,0.3
+120,0.2
+150,0.2
+180,0.1

@@ -138,3 +138,7 @@ class Hora:
         """
         return self.hora != other.hora
 
+    def copiar(self):
+        return Hora(self.get_hora())
+
+
