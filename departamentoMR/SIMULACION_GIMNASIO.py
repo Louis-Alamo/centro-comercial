@@ -1,7 +1,7 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
+import NumerosAleatorios
 import json
 import os
-import random
 from datetime import datetime, timedelta
 
 
@@ -23,7 +23,7 @@ def generar_numeros_aleatorios(hora_apertura, hora_cierre, lapso_usuarios):
     numeros = []
     hora_actual = hora_apertura
     while True:
-        numero = round(random.uniform(0, 1), 4)
+        numero = round(NumerosAleatorios.generar_aleatorio(), 4)
         incremento_minutos = 0
         for incremento, rango in lapso_usuarios:
             limite_inferior, limite_superior = map(float, rango.split("-"))

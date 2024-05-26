@@ -1,7 +1,7 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 import json
 import os
-import random
+import NumerosAleatorios
 from datetime import datetime, timedelta
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
@@ -164,12 +164,13 @@ class SimulacionVeterinaria:
         numeros = []
 
         while hora_actual < horario_salida:
-            numero = round(random.uniform(0, 1), 4)
+            numero = round(NumerosAleatorios.generar_aleatorio(), 4)
             numeros.append(numero)
             tiempo_consulta = self.obtener_tiempo_consulta(numero, self.datos.get("lista_tiempo", []))
             hora_actual += timedelta(minutes=tiempo_consulta)
 
         return numeros
+
 
     def crear_tabla_simulacion(self, numeros):
         columnas = ["ALEATORIOS", "MASCOTAS ATENDIDAS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL", "RESTANTE", "MEDICAMENTO", "TOTAL", "RESTANTE", "ACCESORIOS", "TOTAL", "RESTANTE"]
