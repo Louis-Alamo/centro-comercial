@@ -67,6 +67,7 @@ class TablaInventario:
                 if int(datos[1]) >= cantidad:
                     datos[1] = str(int(datos[1]) - cantidad)
                     return True
+        return False
 
     def registrar_pedido(self, cantidad: int, producto: str):
         for datos in self.datos:
@@ -132,7 +133,7 @@ class Ventas:
         print(f"Numero de ventas: {len(self.registro_ventas_diaria)}")
 
     def contar_productos_vendidos(self):
-        print("PRODUCTOS VENDIDOS")
+        #print("PRODUCTOS VENDIDOS")
 
         lista_productos = self.tabla_inventario.get_nombres_productos()
         lista_cantidad_comprados = [0] * len(lista_productos)
@@ -144,33 +145,41 @@ class Ventas:
             lista_cantidad_comprados[indice] += cantidad
 
         productos_cantidad = list(zip(lista_productos, lista_cantidad_comprados))
-        print(tabulate.tabulate(productos_cantidad, headers=['Producto', 'Cantidad'], tablefmt="simple"))
+        #print(tabulate.tabulate(productos_cantidad, headers=['Producto', 'Cantidad'], tablefmt="simple"))
+
         return productos_cantidad
 
     def cierre_dia(self):
-        print("RESULTADOS DE VENTAS EN EL DIA")
-        self.mostrar_tabla_ventas()
+
+        dinero_total = 0
+
+        for i in range(len(self.registro_ventas_diaria)):
+            dinero_total += self.registro_ventas_diaria[i][3]
+
+
+        self.dinero_total += dinero_total
+
+
         lista_productos_vendidos = self.contar_productos_vendidos()
         self.registro_ventas.append(self.registro_ventas_diaria)
 
         self.registro_total["dias"][f"Dia {self.contador_dias}"] = {
-            "ventas": self.registro_ventas_diaria.copy(),
             "Productos vendidos": lista_productos_vendidos,
-            "Dinero total": self.dinero_total,
+            "Dinero total": dinero_total,
             "Numero de ventas": len(self.registro_ventas_diaria)
         }
 
         # Reiniciamos las variables para el próximo día
-        self.dinero_total = 0
         self.numero_ventas = 0
         self.registro_ventas_diaria = []
         self.contador_dias += 1
 
+
     def cierre_total(self):
         pass
 
-    def guardar_informacion_json(self):
-        with open('ventas.json', 'w') as archivo:
+    def guardar_informacion_json(self, nombre = "Ventas"):
+        with open(f'{nombre}.json', 'w') as archivo:
             json.dump(self.registro_total, archivo, indent=4)  # Indentación para legibilidad
 
 
@@ -232,8 +241,8 @@ class Pedidos:
         print(f"Numero de pedidos pendientes: {self.pedidos_pendientes}")
         print(f"Dinero total: {self.dinero_total}")
 
-    def guardar_datos_json(self):
-        with open('pedidos.json', 'w') as archivo:
+    def guardar_datos_json(self, nombre_archivo = "Pedidos"):
+        with open(f'{nombre_archivo}.json', 'w') as archivo:
             json.dump(self.registro_total, archivo, indent=4)  # Indentación para legibilidad
 
 

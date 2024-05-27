@@ -1,7 +1,5 @@
 Productos,Stock,Precio compra,Precio venta,Stock minimo (porcentaje),Cantidad de reorden (porcentaje),Probabilidad
-Muñecas y figuras de acción,20,150,165,10,100,0.1
-Juegos de construcción,30,100,110,10,101,0.2
-Juegos de mesa y puzzles,20,120,132,10,102,0.1
-Peluches y juguetes de felpa,30,50,55,10,103,0.3
-Juguetes electrónicos,20,200,220,10,104,0.2
-Juguetes de imitación,30,100,110,10,105,0.1
+Accesorios,90,150,165,50,30,0.3
+Equipos,90,100,110,50,25,0.2
+Componentes,90,120,132,50,25,0.2
+Limpieza,90,120,132,50,30,0.3

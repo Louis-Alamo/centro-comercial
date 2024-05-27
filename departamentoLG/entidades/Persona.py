@@ -5,18 +5,21 @@ class Persona:
         self.numero_persona = numero
         self.hora_llegada = Hora(hora_llegada)
 
-        self.hora_atencion = None #Hora en la que inicia el servicio en el servidor
-        self.hora_salida = None #Hora de finalizacion de servicio en el servidor
-        self.tiempo_espera_servidor = None #Tiempo que estuvo esperando en el servidor para ser atendido
+
+
+        self.hora_atencion = None #Hora en la que se le atiende en su servidor
+        self.hora_salida = None #Hora en la que finaliza el servidor
         self.servidor_asignado = None #Servidor al que se le asigno a la persona
-        self.tiempo_servicio = None
+        self.tiempo_servicio = None #Tiempo que tarda en realizar el servicio a la persona
+        self.tiempo_llegada = None #Tiempo en la que se tarda en llegar la persona a la tienda
+        self.tiempo_espera_servidor = None #Tiempo que estuvo esperando en el servidor para ser atendido
 
-
+        self.tipo_visita = None #No en todos aplica
     def __str__(self):
         return f"Persona {self.numero_persona} - {self.hora_llegada} - {self.hora_atencion} - {self.hora_salida}"
 
     def mostrar_informacion(self):
-        print(f"Persona {self.numero_persona} - Hora de llegada: {self.hora_llegada} - Hora de atención: {self.hora_atencion} - Hora de salida: {self.hora_salida} - Tiempo de espera en el servidor: {self.tiempo_espera_servidor} minutos")
+        print(f"Persona: {self.numero_persona} -Tiempo de llegada: {self.tiempo_llegada} - Hora de llegada: {self.hora_llegada} - Hora de atencion: {self.hora_atencion} - Hora de salida: {self.hora_salida} - Tiempo de servicio: {self.tiempo_servicio} - Servidor: {self.servidor_asignado}")
 
     def set_tipo_visita(self, tipo_visita : str):
         self.tipo_visita = tipo_visita
@@ -33,6 +36,9 @@ class Persona:
     def set_servidor_asignado(self, servidor_asignado: str):
         self.servidor_asignado = servidor_asignado
 
+    def set_tiempo_llegada(self, tiempo):
+        self.tiempo_llegada = tiempo
+
     def set_tiempo_servicio(self, tiempo_servicio: int):
         self.tiempo_servicio = tiempo_servicio
 
@@ -41,6 +47,9 @@ class Persona:
 
     def get_numero_persona(self):
         return self.numero_persona
+
+    def get_tiempo_servicio(self):
+        return int(self.tiempo_servicio)
 
     def get_informacion_completa(self):
         return [

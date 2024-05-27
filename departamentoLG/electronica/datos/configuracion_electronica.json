@@ -1,8 +1,8 @@
 {
     "Generales": {
         "capacidad_maxima_personas": 50,
-        "horario_inicio": "08:00",
-        "horario_cierre": "20:00"
+        "horario_inicio": "08:00 AM",
+        "horario_cierre": "06:00 PM"
     },
     "Caja": {
         "Cantidad de cajas": 2,
@@ -13,7 +13,7 @@
         "Cantidad de empleados": 2,
         "Pago por empleado": 1000,
         "Rendimiento por empleado": 10,
-        "Horario inicio": "08:00",
-        "Horario cierre": "20:00"
+        "Horario inicio": "10:00 AM",
+        "Horario cierre": "06:00 PM"
     }
 }

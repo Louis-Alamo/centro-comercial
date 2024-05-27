@@ -163,4 +163,4 @@ class SimularJugueteria:
 
 
 # Ejecutar simulación
-SimularJugueteria(365)
+SimularJugueteria(50)
