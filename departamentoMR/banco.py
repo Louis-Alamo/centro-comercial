@@ -22,7 +22,7 @@ class Banco:
         self.lista_tipo=[["Oro", "0.0000-0.0000"]]
         self.lista_acude=[["Secretaria", "0.0000-0.0000"]]
         self.lista_llegada=[[3, "0.0000-0.0000"]]
-        self.lista_caja=[[3, "0.0000-0.0000"]]
+        self.lista_ventanilla=[[3, "0.0000-0.0000"]]
         self.lista_secre=[[3, "0.0000-0.0000"]]
         self.lista_cajero_a=[[3, "0.0000-0.0000"]]
         self.lista_olvido=[[1, "0.0000-0.0000"]]
@@ -124,10 +124,10 @@ class Banco:
             "temporada_baja": self.lista_temporadas[0][2],
             "tipo": self.lista_tipo,
             "acude": self.lista_acude,
-            "llegada": self.lista_llegada,
-            "caja": self.lista_caja,
-            "secre": self.lista_secre,
-            "cajero_a": self.lista_cajero_a,
+            "horario_llegada": self.lista_llegada,
+            "duracion_ventanilla": self.lista_ventanilla,
+            "duracion_secre": self.lista_secre,
+            "duracion_cajero_a": self.lista_cajero_a,
             "olvido": self.lista_olvido
         }
         
@@ -417,7 +417,7 @@ class Banco:
         tipo_cliente = simpledialog.askinteger("Entrada", "Renglones Para Tipo De Clientes", minvalue=1, parent=self.frame_caracteristicas)
         acude_a = simpledialog.askinteger("Entrada", "Renglones De Acude A", minvalue=1, parent=self.frame_caracteristicas)
         tiempo_llegada = simpledialog.askinteger("Entrada", "Renglones Para Tiempo De Llegada", minvalue=1, parent=self.frame_caracteristicas)
-        duracion_caja = simpledialog.askinteger("Entrada", "Renglones Tiempo En Caja", minvalue=1, parent=self.frame_caracteristicas)
+        duracion_ventanilla = simpledialog.askinteger("Entrada", "Renglones Tiempo En ventanilla", minvalue=1, parent=self.frame_caracteristicas)
         duracion_secre = simpledialog.askinteger("Entrada", "Renglones Tiempo En Secretarias", minvalue=1, parent=self.frame_caracteristicas)
         duracion_cajero_a= simpledialog.askinteger("Entrada", "Renglones Tiempo En Cajero Automatico", minvalue=1, parent=self.frame_caracteristicas)
         olvido_tarjeta=simpledialog.askinteger("Entrada", "Renglones Para Olvido De Tarjeta", minvalue=1, parent=self.frame_caracteristicas)
@@ -495,22 +495,21 @@ class Banco:
             self.valores_llegada.append(entry_llegada)
             current_row += 1
 
-        self.check_caja = StringVar()
-        self.checkbutton_caja = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS CAJA", variable=self.check_caja, onvalue="Si", offvalue="No")
-        self.checkbutton_caja.deselect()
-        self.checkbutton_caja.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
+        self.check_ventanilla = StringVar()
+        self.checkbutton_ventanilla = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS VENTANILLA", variable=self.check_ventanilla, onvalue="Si", offvalue="No")
+        self.checkbutton_ventanilla.deselect()
+        self.checkbutton_ventanilla.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-        self.entrys_caja = []
-        self.valores_caja = []
-        for i in range(duracion_caja):
-            entry_caja = LtkEntryLine(scrollable_frame, "3")
-            entry_caja.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
+        self.entrys_ventanilla = []
+        self.valores_ventanilla = []
+        for i in range(duracion_ventanilla):
+            entry_ventanilla = LtkEntryLine(scrollable_frame, "3")
+            entry_ventanilla.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
             entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
-            self.entrys_caja.append(entry)
-            self.valores_caja.append(entry_caja)
+            self.entrys_ventanilla.append(entry)
+            self.valores_ventanilla.append(entry_ventanilla)
             current_row += 1
-        
 
         self.check_secre = StringVar()
         self.checkbutton_secre = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS SECRE", variable=self.check_secre, onvalue="Si", offvalue="No")
@@ -565,14 +564,14 @@ class Banco:
             return (self.check_tipo.get() == "Si" and
                     self.check_acude.get() == "Si" and
                     self.check_llegada.get() == "Si" and
-                    self.check_caja.get() == "Si" and
+                    self.check_ventanilla.get() == "Si" and
                     self.check_secre.get() == "Si" and
                     self.check_cajero_a.get() == "Si" and
                     self.check_olvido.get() == "Si")
         
         def guardar_si_todo_seleccionado():
             if all_checkbuttons_selected():
-                self.guardar_ajustes9(tipo_cliente, acude_a, tiempo_llegada, duracion_caja, duracion_secre, duracion_cajero_a, olvido_tarjeta)
+                self.guardar_ajustes9(tipo_cliente, acude_a, tiempo_llegada, duracion_ventanilla, duracion_secre, duracion_cajero_a, olvido_tarjeta)
             else:
                 messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
 
@@ -580,11 +579,11 @@ class Banco:
         boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
 
 
-    def guardar_ajustes9(self, tipo_cliente, acude_a, tiempo_llegada, duracion_caja, duracion_secre, duracion_cajero_a, olvido_tarjeta):
+    def guardar_ajustes9(self, tipo_cliente, acude_a, tiempo_llegada, duracion_ventanilla, duracion_secre, duracion_cajero_a, olvido_tarjeta):
         rangos_tipo=self.calcular_rangos([float(entry.get()) for entry in self.entrys_tipo])
         rangos_acude=self.calcular_rangos([float(entry.get()) for entry in self.entrys_acude])
         rangos_llegada=self.calcular_rangos([float(entry.get()) for entry in self.entrys_llegada])
-        rangos_caja=self.calcular_rangos([float(entry.get()) for entry in self.entrys_caja])
+        rangos_ventanilla=self.calcular_rangos([float(entry.get()) for entry in self.entrys_ventanilla])
         rangos_secre=self.calcular_rangos([float(entry.get()) for entry in self.entrys_secre])
         rangos_cajero_a=self.calcular_rangos([float(entry.get()) for entry in self.entrys_cajero_a])
         rangos_olvido=self.calcular_rangos([float(entry.get()) for entry in self.entrys_olvido])
@@ -592,7 +591,7 @@ class Banco:
         self.lista_tipo = [(str(self.valores_tipo[i].get()), rangos_tipo[i][1]) for i in range(tipo_cliente)]
         self.lista_acude = [(str(self.valores_acude[i].get()), rangos_acude[i][1]) for i in range(acude_a)]
         self.lista_llegada = [(int(self.valores_llegada[i].get()), rangos_llegada[i][1]) for i in range(tiempo_llegada)]
-        self.lista_caja = [(int(self.valores_caja[i].get()), rangos_caja[i][1]) for i in range(duracion_caja)]
+        self.lista_ventanilla = [(int(self.valores_ventanilla[i].get()), rangos_ventanilla[i][1]) for i in range(duracion_ventanilla)]
         self.lista_secre = [(int(self.valores_secre[i].get()), rangos_secre[i][1]) for i in range(duracion_secre)]
         self.lista_cajero_a = [(int(self.valores_cajero_a[i].get()), rangos_cajero_a[i][1]) for i in range(duracion_cajero_a)]
         self.lista_olvido = [(int(self.valores_olvido[i].get()), rangos_olvido[i][1]) for i in range(olvido_tarjeta)]
@@ -600,7 +599,7 @@ class Banco:
         self.tablas_tipo = [(str(self.valores_tipo[i].get()), float(self.entrys_tipo[i].get()), rangos_tipo[i][0], rangos_tipo[i][1]) for i in range(tipo_cliente)]
         self.tablas_acude = [(str(self.valores_acude[i].get()), float(self.entrys_acude[i].get()), rangos_acude[i][0], rangos_acude[i][1]) for i in range(acude_a)]
         self.tablas_llegada = [(int(self.valores_llegada[i].get()), float(self.entrys_llegada[i].get()), rangos_llegada[i][0], rangos_llegada[i][1]) for i in range(tiempo_llegada)]
-        self.tablas_caja = [(int(self.valores_caja[i].get()), float(self.entrys_caja[i].get()), rangos_caja[i][0], rangos_caja[i][1]) for i in range(duracion_caja)]
+        self.tablas_ventanilla = [(int(self.valores_ventanilla[i].get()), float(self.entrys_ventanilla[i].get()), rangos_ventanilla[i][0], rangos_ventanilla[i][1]) for i in range(duracion_ventanilla)]
         self.tablas_secre = [(int(self.valores_secre[i].get()), float(self.entrys_secre[i].get()), rangos_secre[i][0], rangos_secre[i][1]) for i in range(duracion_secre)]
         self.tablas_cajero_a = [(int(self.valores_cajero_a[i].get()), float(self.entrys_cajero_a[i].get()), rangos_cajero_a[i][0], rangos_cajero_a[i][1]) for i in range(duracion_cajero_a)]
         self.tablas_olvido = [(int(self.valores_olvido[i].get()), float(self.entrys_olvido[i].get()), rangos_olvido[i][0], rangos_olvido[i][1]) for i in range(olvido_tarjeta)]
@@ -634,7 +633,7 @@ class Banco:
         self.insertar_tabla(treeview, "Tipo de Cliente", self.tablas_tipo)
         self.insertar_tabla(treeview, "Acude A", self.tablas_acude)
         self.insertar_tabla(treeview, "Tiempo de Llegada", self.tablas_llegada)
-        self.insertar_tabla(treeview, "Duración en Caja", self.tablas_caja)
+        self.insertar_tabla(treeview, "Duración en ventanilla", self.tablas_ventanilla)
         self.insertar_tabla(treeview, "Duración en Secretarias", self.tablas_secre)
         self.insertar_tabla(treeview, "Duración en Cajero Automático", self.tablas_cajero_a)
         self.insertar_tabla(treeview, "Olvido de Tarjeta", self.tablas_olvido)

@@ -2,6 +2,7 @@ from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 import NumerosAleatorios
 import json
 import os
+from datetime import datetime, timedelta
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
 ruta_completa = os.path.join(ruta_archivo, 'banco.json')
@@ -17,15 +18,54 @@ def cargar_datos():
         print("Error al decodificar el archivo JSON.")
         return {}
 
-def determinar_temporada():
-    datos = cargar_datos()
-    if datos.get("temporada_alta", [False])[0]:
-        return "alta"
-    elif datos.get("temporada_regular", [False])[0]:
-        return "regular"
-    elif datos.get("temporada_baja", [False])[0]:
-        return "baja"
-    return "sin temporada"
+def obtener_tipo_cliente(rango_aleatorio, tipo):
+    for tipo_cliente, rango in tipo:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return tipo_cliente
+    return "Error"
+
+def obtener_acude_cliente(rango_aleatorio, acude):
+    for acude_cliente, rango in acude:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return acude_cliente
+    return "Error"
+
+def obtener_tiempo_llegada(rango_aleatorio, horario_llegada):
+    for llegada_cliente, rango in horario_llegada:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return llegada_cliente
+    return "Error"
+
+def obtener_duracion_ventanilla(rango_aleatorio, duracion_ventanilla):
+    for ventanilla_cliente, rango in duracion_ventanilla:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return int(ventanilla_cliente)
+    return "Error"
+
+def obtener_duracion_secretaria(rango_aleatorio, duracion_secre):
+    for secre_cliente, rango in duracion_secre:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return int(secre_cliente)
+    return "Error"
+
+def obtener_duracion_cajero(rango_aleatorio, duracion_cajero_a):
+    for cajero_cliente, rango in duracion_cajero_a:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return int(cajero_cliente)
+    return "Error"
+
+def obtener_olvido_tarjeta(rango_aleatorio, olvido):
+    for olvido_cliente, rango in olvido:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return olvido_cliente
+    return "Error"
 
 class SimulacionBanco:
     def __init__(self):
@@ -59,7 +99,7 @@ class SimulacionBanco:
     def on_canvas_configure(self, event=None):
         canvas_width = event.width
         self.canvas.itemconfig(self.canvas.create_window((0, 0), window=self.inner_frame, anchor="nw"), width=canvas_width)
-    
+
     def ejecutar_simulacion(self):
         temporada_regular = self.datos.get("temporada_regular", [False])[0]
         temporada_alta = self.datos.get("temporada_alta", [False])[0]
@@ -85,7 +125,7 @@ class SimulacionBanco:
         resultados_label.pack(padx=20, pady=20, fill="x", expand=True)
 
     def crear_tabla_simulacion(self):
-        columnas = ["ALEATORIOS", "TIPO CLIENTE", "ACUDIO", "HORARIO LLEGADA", "TIEMPO", "CAJA EN USO", "DISPONIBLE", "SECRE EN USO", "DISPONIBLE", "CAJERO A. EN USO", "DISPONIBLE", "HORA SALIDA", "OLVIDO TARJETA"]
+        columnas = ["ALEATORIOS", "TIPO CLIENTE", "ACUDIO", "HORA LLEGADA", "DURACION", "CAJA EN USO", "DISPONIBLE", "SECRE EN USO", "DISPONIBLE", "CAJERO A. EN USO", "DISPONIBLE", "HORA SALIDA", "OLVIDO TARJETA"]
 
         header_frame = CTkFrame(self.inner_frame)
         header_frame.pack(padx=20, pady=10, fill="x")
@@ -99,13 +139,65 @@ class SimulacionBanco:
         tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
 
+
         numeros_aleatorios = [round(num, 4) for num in NumerosAleatorios.generar_numeros_aleatorios(20)]
+
+
+
+        tipo = self.datos.get("tipo", [])
+        acude = self.datos.get("acude", [])
+        horario_llegada = self.datos.get("horario_llegada", [])
+        duracion_ventanilla = self.datos.get("duracion_ventanilla", [])
+        duracion_secre = self.datos.get("duracion_secre", [])
+        duracion_cajero_a = self.datos.get("duracion_cajero_a", [])
+        olvido = self.datos.get("olvido", [])
+
+        horario_entrada = self.datos.get("horario_entrada", "08:00")
+
+        
+        horarios_entrada = {}
 
         for i, numero in enumerate(numeros_aleatorios):
             aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
             aleatorio_label.grid(row=i, column=0, padx=20, pady=10, sticky="nsew")
 
-        for i in range(len(numeros_aleatorios)):
-            tabla_frame.grid_rowconfigure(i, weight=1)
+            tipo_cliente = obtener_tipo_cliente(numero, tipo)
+            tipo_label = CTkLabel(tabla_frame, text=tipo_cliente, font=("Arial", 12), text_color="white")
+            tipo_label.grid(row=i, column=1, padx=35, pady=10, sticky="nsew")
 
+            acude_cliente = obtener_acude_cliente(numero, acude)
+            acude_label = CTkLabel(tabla_frame, text=acude_cliente, font=("Arial", 12), text_color="white")
+            acude_label.grid(row=i, column=2, padx=10, pady=10, sticky="nsew")
+
+            horario_llegada_cliente = obtener_tiempo_llegada(numero, horario_llegada)
+            if acude_cliente not in horarios_entrada:
+                horarios_entrada[acude_cliente] = datetime.strptime(horario_entrada, "%H:%M")
+            horarios_entrada[acude_cliente] += timedelta(minutes=horario_llegada_cliente)
+            horario_label = CTkLabel(tabla_frame, text=horarios_entrada[acude_cliente].strftime("%H:%M"), font=("Arial", 12), text_color="white")
+            horario_label.grid(row=i, column=3, padx=30, pady=10, sticky="nsew")
+
+
+            if acude_cliente == "Ventanilla":
+                tiempo = obtener_duracion_ventanilla(numero, duracion_ventanilla)
+            elif acude_cliente == "Cajero":
+                tiempo = obtener_duracion_cajero(numero, duracion_cajero_a)
+            else:
+                tiempo = obtener_duracion_secretaria(numero, duracion_secre)
+            
+            tiempo_label = CTkLabel(tabla_frame, text=tiempo, font=("Arial", 12), text_color="white")
+            tiempo_label.grid(row=i, column=4, padx=40, pady=10, sticky="nsew")
+
+                        
+
+
+
+            hora_salida = horarios_entrada[acude_cliente] + timedelta(minutes=tiempo)
+            hora_salida_label = CTkLabel(tabla_frame, text=hora_salida.strftime("%H:%M"), font=("Arial", 12), text_color="white")
+            hora_salida_label.grid(row=i, column=11, padx=60, pady=10, sticky="nsew")
+
+            olvido_tarjt = obtener_olvido_tarjeta(numero, olvido)
+            olvido_label = CTkLabel(tabla_frame, text=olvido_tarjt, font=("Arial", 12), text_color="white")
+            olvido_label.grid(row=i, column=12, padx=20, pady=10, sticky="nsew")
+
+        
 SimulacionBanco()

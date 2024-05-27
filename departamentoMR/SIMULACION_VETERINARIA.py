@@ -1,8 +1,9 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
+from datetime import datetime, timedelta
 import json
 import os
 import NumerosAleatorios
-from datetime import datetime, timedelta
+
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
 ruta_completa = os.path.join(ruta_archivo, 'veterinaria.json')
