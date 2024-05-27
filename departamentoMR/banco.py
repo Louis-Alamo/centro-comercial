@@ -102,7 +102,7 @@ class Banco:
     def guardar_informacion(self):
         informacion={
             "cantidad_gerentes": self.lista_personal[0][0],
-            "cantidad_cajeras": self.lista_personal[0][1],
+            "cantidad_ventanillas": self.lista_personal[0][1],
             "cantidad_secretarias": self.lista_personal[0][2],
             "cantidad_guardias_seguridad": self.lista_personal[0][3],
             "cantidad_personal_tecnico": self.lista_personal[0][4],
@@ -112,7 +112,7 @@ class Banco:
             "sueldo_guardia_seguridad": self.lista_sueldos[0][3],
             "sueldo_personal_tecnico": self.lista_sueldos[0][4],
             "horario_entrada": self.lista_horarios[0][0],
-            "horario_salida": self.lista_horarios[0][1],
+            "horario_cierre": self.lista_horarios[0][1],
             "cantidad_usuarios": self.lista_usuarios[0][0],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],	
             "pago_mensual_agua": self.lista_servicios_generales[0][1],

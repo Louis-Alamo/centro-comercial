@@ -1,6 +1,6 @@
 {
     "cantidad_gerentes": 1,
-    "cantidad_cajeras": 3,
+    "cantidad_ventanillas": 4,
     "cantidad_secretarias": 3,
     "cantidad_guardias_seguridad": 3,
     "cantidad_personal_tecnico": 3,
@@ -10,7 +10,7 @@
     "sueldo_guardia_seguridad": 3000,
     "sueldo_personal_tecnico": 3000,
     "horario_entrada": "8:00",
-    "horario_salida": "17:00",
+    "horario_cierre": "16:00",
     "cantidad_usuarios": 100,
     "pago_mensual_luz": 300,
     "pago_mensual_agua": 200,
