@@ -282,3 +282,5 @@ class ConfiguracionLibreria:
         self.ventana_emergente.mainloop()
 
 
+
+ConfiguracionLibreria()

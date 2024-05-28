@@ -1,0 +1,90 @@
+    def agregar_persona(self, persona: Persona, tiempo_servicio: int):
+        if self.puede_atender(tiempo_servicio, persona.get_hora_llegada()):
+            if self.servidor_vacio():
+                persona.set_hora_atencion(persona.get_hora_llegada())
+                persona.set_tiempo_servicio(tiempo_servicio)
+                self.calcular_hora_finalizacion_servidor_vacio(tiempo_servicio, persona.get_hora_llegada())
+            else:
+                persona.set_hora_atencion(self.hora_finalizacion)
+                persona.set_tiempo_servicio(tiempo_servicio)
+
+                self.calcular_hora_finalizacion(tiempo_servicio)
+
+            persona.set_servidor_asignado(self.numero_servidor)
+            persona.set_hora_salida(self.hora_finalizacion)
+            persona.set_tiempo_servicio(int(tiempo_servicio))
+
+            self.cola_espera.append(persona)
+            self.personas_en_espera += 1
+            self.numero_total_personas_atendidas += 1
+
+            return True  # Se agregó la persona al servidor
+
+        return False  # No se agregó la persona al servidor
+
+
+
+
+    def puede_atender(self, tiempo, hora_llegada=None):
+        hora_finalizacion = self.hora_finalizacion.copiar()
+
+        if hora_llegada:
+            hora_finalizacion = hora_llegada.copiar()
+            hora_finalizacion.sumar_minutos(int(tiempo))
+            if hora_finalizacion > self.horario_fin:
+                return False
+        else:
+            hora_finalizacion.sumar_minutos(int(tiempo))
+            if hora_finalizacion > self.horario_fin:
+                return False
+
+        return True
+
+
+
+
+
+
+
+
+
+
+
+        def asignar_persona_servidor(self, persona: Persona):
+        """
+        Asigna una persona al servidor menos ocupado o libre que pueda atender.
+
+        Args:
+            persona (Persona): La persona que se desea asignar a un servidor.
+
+        Returns:
+            bool: True si la persona fue asignada, False de lo contrario.
+        """
+        tiempo_servicio = self.tabla_datos.obtener_valor(random.random())
+        persona.set_tiempo_servicio(tiempo_servicio)
+
+        servidor_seleccionado = None
+        for servidor in self.servidores:
+            if servidor.get_estado_servidor():
+                if servidor.puede_atender(tiempo_servicio, persona.get_hora_llegada()):
+                    servidor_seleccionado = servidor
+                    break
+                elif servidor_seleccionado is None or len(servidor.cola_espera) < len(servidor_seleccionado.cola_espera):
+                    if servidor.puede_atender(tiempo_servicio, persona.get_hora_llegada()):
+                        servidor_seleccionado = servidor
+
+        if servidor_seleccionado:
+            servidor_seleccionado.agregar_persona(persona, tiempo_servicio)
+            self.ordenar_servidores_prioridad()
+            return True
+
+        return False
+
+
+
+
+
+
+
+
+

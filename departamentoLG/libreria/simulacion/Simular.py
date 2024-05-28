@@ -11,7 +11,7 @@ from departamentoLG.entidades.Persona import Persona
 from util.NumerosAleatorios import generar_numeros_aleatorios
 
 
-class SimularJugueteria:
+class SimularLibreria:
 
     def __init__(self, dias_simulacion: int):
         self.dias_simulacion = dias_simulacion
@@ -25,19 +25,19 @@ class SimularJugueteria:
         self.tabla_tiempo_entrega_proveedor = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\lineas de espera\Tiempo de entrega proveedor"))
 
         # Tablas de precios e inventario
-        self.tabla_costos_mantenimiento_caja = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\precios\Costo de mantenimiento de jugueteria"))
+        self.tabla_costos_mantenimiento_caja = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\precios\Costo de mantenimiento de libreria"))
         self.tabla_descuentos_promocion_productos = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\precios\Descuentos por promocion"))
         self.tabla_productos_caja_en_tienda = TablaInventario(os.path.join(ruta_clase, r"..\datos\precios\Productos"))
 
         # Tablas de probabilidades
-        self.tabla_cantidad_productos_comprar = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\probabilidades\Cantidad juguetes a comprar"))
+        self.tabla_cantidad_productos_comprar = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\probabilidades\Cantidad libros a comprar"))
 
         # Tablas que no retornan numeros si no que cadenas de texto
         self.tabla_temporadas_afluencia = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\probabilidades\Temporadas de afluencia"))
         self.tabla_dias_promocion = TablaDatosHistoricos(os.path.join(ruta_clase, r"..\datos\precios\Dias de promocion"))
 
         # Obtener datos del JSON de configuración
-        with open(os.path.join(ruta_clase, r"..\datos\configuraciones_jugueteria.json"), 'r') as f:
+        with open(os.path.join(ruta_clase, r"..\datos\configuraciones_libreria.json"), 'r') as f:
             self.datos_json = json.load(f)
 
         # Variables y objetos necesarios
@@ -148,4 +148,4 @@ class SimularJugueteria:
 
 
 # Ejecutar simulación
-SimularJugueteria(1)
+SimularLibreria(1)

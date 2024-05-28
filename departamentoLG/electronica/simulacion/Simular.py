@@ -328,4 +328,4 @@ class Simular:
         self.pedidos_ventas_productos.guardar_datos_json("Pedidos de productos caja")
         self.pedidos_servicio_tecnico.guardar_datos_json("Pedidos de productos servicio")
 
-Simular(365)
+Simular(1)

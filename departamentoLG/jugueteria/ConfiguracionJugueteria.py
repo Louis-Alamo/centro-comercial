@@ -101,7 +101,7 @@ class ConfiguracionJugeteria:
     def caracteristicas_jugueteria(self):
 
         self.lista_opciones_probabilidad_general = ["Cantidad juguetes a comprar", "Temporadas de afluencia", "Tiempo de llegada cliente"]
-        self.lista_opciones_precio_general = ["Costo de mantenimiento de jugueteria", "Descuentos por promocion", "Dias de promocion"]
+        self.lista_opciones_precio_general = ["Costo de mantenimiento de libreria", "Descuentos por promocion", "Dias de promocion"]
 
 
         self.resetear_frame_caracteristicas()
@@ -237,7 +237,7 @@ class ConfiguracionJugeteria:
 
         informacion =  json.dumps(datos, indent=4)
 
-        with open(os.path.join(self.ruta_ventana, "datos\\configuraciones_jugueteria.json"), "w") as file:
+        with open(os.path.join(self.ruta_ventana, "datos\\configuraciones_libreria.json"), "w") as file:
             file.write(informacion)
 
 
@@ -275,9 +275,9 @@ class ConfiguracionJugeteria:
             path = os.path.join(self.ruta_ventana, "datos\\lineas de espera\\Tiempo de llegada cliente")
             self.crear_ventana_emergente("Tiempo de llegada cliente", path)
 
-        elif self.opcion_precio_general.get() == "Costo de mantenimiento de jugueteria":
-            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de jugueteria")
-            self.crear_ventana_emergente("Costo de mantenimiento de jugueteria", path)
+        elif self.opcion_precio_general.get() == "Costo de mantenimiento de libreria":
+            path = os.path.join(self.ruta_ventana, "datos\\precios\\Costo de mantenimiento de libreria")
+            self.crear_ventana_emergente("Costo de mantenimiento de libreria", path)
 
         elif self.opcion_precio_general.get() == "Descuentos por promocion":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Dias de promocion")
@@ -302,6 +302,8 @@ class ConfiguracionJugeteria:
         if self.opcion_productos.get() == "Productos":
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Productos")
             self.crear_ventana_emergente("Productos", path)
+
+ConfiguracionJugeteria()
 
 
 
