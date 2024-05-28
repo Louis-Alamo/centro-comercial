@@ -23,7 +23,6 @@ class Gimnasio:
         self.lista_usuarios = [[200, 100, 100, 250]]
         self.lista_maquinas = [[50]]
         self.lista_servicios_generales = [[300, 200, 420, 200, 2000]]
-        self.lista_baños = [[6]]
         self.lista_temporadas = [[True, 100], [False, 0], [False, 0]]
         self.lista_descuento = [[.10, .20, .05]]
         self.lista_llegada = [(0, "0.0000-0.0000")]
@@ -71,8 +70,6 @@ class Gimnasio:
         boton_maquinas.grid(row=4, column=0, padx=(5,5), pady=(5, 5))
         boton_servicios_generales=LtkButtonLine(frame_opciones, self.servicios_generales, "Servicios Generales")
         boton_servicios_generales.grid(row=5, column=0, padx=(5,5), pady=(5, 5))
-        boton_baños=LtkButtonLine(frame_opciones, self.baños, "Baños")
-        boton_baños.grid(row=6, column=0, padx=(5,5), pady=(5, 5))
         boton_lista_historicos=LtkButtonLine(frame_opciones, self.datos_historicos, "Datos Historicos")
         boton_lista_historicos.grid(row=8, column=0, padx=(5,5), pady=(5, 5))
         boton_temporadas=LtkButtonLine(frame_opciones, self.temporadas, "Temporadas")
@@ -92,7 +89,6 @@ class Gimnasio:
         self.usuarios()
         self.maquinas()
         self.servicios_generales()
-        self.baños()
         self.temporadas()
         self.datos_historicos()
         self.personal()
@@ -134,7 +130,6 @@ class Gimnasio:
             "pago_mensual_internet": self.lista_servicios_generales[0][2],
             "pago_mensual_spotify": self.lista_servicios_generales[0][3],
             "pago_mensual_renta_local": self.lista_servicios_generales[0][4],
-            "cantidad_baños": self.lista_baños[0][0],
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
@@ -397,32 +392,6 @@ class Gimnasio:
                                     int(pago_mensual_spotify),
                                     int(pago_mensual_renta_local)])
         
-
-
-    def baños(self):
-        self.resetear_frame_caracteristicas()
-
-        self.etiqueta_titulo_caracteristicas=LtkLabel(self.frame_caracteristicas, texto="Ajustes De Baños")
-        self.etiqueta_titulo_caracteristicas.configure(font=('Poppins', 14, "bold"))
-        self.etiqueta_titulo_caracteristicas.grid(row=0, column=0, columnspan=3, pady=(5, 10))
-        self.frame_caracteristicas.columnconfigure(1, weight=1)
-        self.frame_caracteristicas.columnconfigure(2, weight=1)
-        self.etiqueta_baños=LtkLabel(self.frame_caracteristicas, texto="Cantidad De Baños:")
-        self.etiqueta_baños.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
-        self.cantidad_baños=LtkEntryLine(self.frame_caracteristicas, "6")
-        self.cantidad_baños.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
- 
-
-        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes6(), "Guardar Ajustes")
-        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
-    
-    def guardar_ajustes6(self):
-        cantidad_baños=self.cantidad_baños.get()
-
-        self.lista_baños.clear()
-        self.lista_baños.append([int(cantidad_baños)])
-
-
 
     def datos_historicos(self):
         self.resetear_frame_caracteristicas()

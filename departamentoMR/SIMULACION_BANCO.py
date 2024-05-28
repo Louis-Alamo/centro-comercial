@@ -1,5 +1,5 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
-import NumerosAleatorios
+from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
 import json
 import os
 from datetime import datetime, timedelta
@@ -18,53 +18,11 @@ def cargar_datos():
         print("Error al decodificar el archivo JSON.")
         return {}
 
-def obtener_tipo_cliente(rango_aleatorio, tipo):
-    for tipo_cliente, rango in tipo:
+def obtener_rango(rango_aleatorio, datos):
+    for valor, rango in datos:
         limite_inferior, limite_superior = map(float, rango.split("-"))
         if limite_inferior <= rango_aleatorio <= limite_superior:
-            return tipo_cliente
-    return "Error"
-
-def obtener_acude_cliente(rango_aleatorio, acude):
-    for acude_cliente, rango in acude:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return acude_cliente
-    return "Error"
-
-def obtener_tiempo_llegada(rango_aleatorio, horario_llegada):
-    for llegada_cliente, rango in horario_llegada:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return llegada_cliente
-    return "Error"
-
-def obtener_duracion_ventanilla(rango_aleatorio, duracion_ventanilla):
-    for ventanilla_cliente, rango in duracion_ventanilla:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return int(ventanilla_cliente)
-    return "Error"
-
-def obtener_duracion_secretaria(rango_aleatorio, duracion_secre):
-    for secre_cliente, rango in duracion_secre:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return int(secre_cliente)
-    return "Error"
-
-def obtener_duracion_cajero(rango_aleatorio, duracion_cajero_a):
-    for cajero_cliente, rango in duracion_cajero_a:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return int(cajero_cliente)
-    return "Error"
-
-def obtener_olvido_tarjeta(rango_aleatorio, olvido):
-    for olvido_cliente, rango in olvido:
-        limite_inferior, limite_superior = map(float, rango.split("-"))
-        if limite_inferior <= rango_aleatorio <= limite_superior:
-            return olvido_cliente
+            return valor
     return "Error"
 
 class SimulacionBanco:
@@ -138,7 +96,7 @@ class SimulacionBanco:
         tabla_frame = CTkFrame(self.inner_frame)
         tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
-        numeros_aleatorios = [round(num, 4) for num in NumerosAleatorios.generar_numeros_aleatorios(10000)]
+        numeros_aleatorios = generar_numeros_aleatorios(10000)
 
         tipo = self.datos.get("tipo", [])
         acude = self.datos.get("acude", [])
@@ -157,127 +115,99 @@ class SimulacionBanco:
         horarios_entrada = {}
 
         ventanillas_disponibles = cantidad_ventanillas
-        ventanillas_en_uso = 0
-        ventanillas_ocupadas = []
-
         secretarias_disponibles = cantidad_secretarias
-        secretarias_en_uso = 0
-        secretarias_ocupadas = []
-
         cajero_automatico_disponible = cantidad_cajeros_automaticos
-        cajero_automatico_en_uso = 0
-        cajero_automatico_ocupado = []
+
+        eventos_salida = []
 
         for i, numero in enumerate(numeros_aleatorios):
             aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
             aleatorio_label.grid(row=i, column=0, padx=20, pady=10, sticky="nsew")
 
-            tipo_cliente = obtener_tipo_cliente(numero, tipo)
+            tipo_cliente = obtener_rango(numero, tipo)
             tipo_label = CTkLabel(tabla_frame, text=tipo_cliente, font=("Arial", 12), text_color="white")
             tipo_label.grid(row=i, column=1, padx=35, pady=10, sticky="nsew")
 
-            acude_cliente = obtener_acude_cliente(numero, acude)
+            acude_cliente = obtener_rango(numero, acude)
             acude_label = CTkLabel(tabla_frame, text=acude_cliente, font=("Arial", 12), text_color="white")
             acude_label.grid(row=i, column=2, padx=10, pady=10, sticky="nsew")
 
-            horario_llegada_cliente = obtener_tiempo_llegada(numero, horario_llegada)
+            horario_llegada_cliente = obtener_rango(numero, horario_llegada)
             if acude_cliente not in horarios_entrada:
                 horarios_entrada[acude_cliente] = datetime.strptime(horario_entrada, "%H:%M")
-            horarios_entrada[acude_cliente] += timedelta(minutes=horario_llegada_cliente)
+            horarios_entrada[acude_cliente] += timedelta(minutes=int(horario_llegada_cliente))
             horario_label = CTkLabel(tabla_frame, text=horarios_entrada[acude_cliente].strftime("%H:%M"), font=("Arial", 12), text_color="white")
             horario_label.grid(row=i, column=3, padx=30, pady=10, sticky="nsew")
 
+            duracion = 0
+
             if acude_cliente == "Ventanilla":
-                tiempo = obtener_duracion_ventanilla(numero, duracion_ventanilla)
+                duracion = int(obtener_rango(numero, duracion_ventanilla))
                 if ventanillas_disponibles > 0:
                     ventanillas_disponibles -= 1
-                    ventanillas_en_uso += 1
-                    ventanillas_ocupadas.append((horarios_entrada[acude_cliente], tiempo))
                 else:
-                    tiempo = 0
-                caja_en_uso_label = CTkLabel(tabla_frame, text=str(ventanillas_en_uso), font=("Arial", 12), text_color="white")
+                    duracion = 0
+
+            elif acude_cliente == "Secretaria":
+                duracion = int(obtener_rango(numero, duracion_secre))
+                if secretarias_disponibles > 0:
+                    secretarias_disponibles -= 1
+                else:
+                    duracion = 0
+
+            elif acude_cliente == "Cajero":
+                duracion = int(obtener_rango(numero, duracion_cajero_a))
+                if cajero_automatico_disponible > 0:
+                    cajero_automatico_disponible -= 1
+                else:
+                    duracion = 0
+
+            duracion_label = CTkLabel(tabla_frame, text=str(duracion), font=("Arial", 12), text_color="white")
+            duracion_label.grid(row=i, column=4, padx=40, pady=10, sticky="nsew")
+
+            if acude_cliente == "Ventanilla":
+                caja_en_uso_label = CTkLabel(tabla_frame, text=str(cantidad_ventanillas - ventanillas_disponibles), font=("Arial", 12), text_color="white")
                 caja_en_uso_label.grid(row=i, column=5, padx=40, pady=10, sticky="nsew")
 
                 caja_disponible_label = CTkLabel(tabla_frame, text=str(ventanillas_disponibles), font=("Arial", 12), text_color="white")
                 caja_disponible_label.grid(row=i, column=6, padx=40, pady=10, sticky="nsew")
-            else:
-                tiempo = obtener_duracion_secretaria(numero, duracion_secre) if acude_cliente == "Secretaria" else obtener_duracion_cajero(numero, duracion_cajero_a)
 
-
-            if acude_cliente == "Secretaria":
-                tiempo = obtener_duracion_secretaria(numero, duracion_secre)
-                if secretarias_disponibles > 0:
-                    secretarias_disponibles -= 1
-                    secretarias_en_uso += 1
-                    secretarias_ocupadas.append((horarios_entrada[acude_cliente], tiempo))
-
-                else:
-                    tiempo = 0
-                secre_en_uso_label = CTkLabel(tabla_frame, text=str(secretarias_en_uso), font=("Arial", 12), text_color="white")
+            elif acude_cliente == "Secretaria":
+                secre_en_uso_label = CTkLabel(tabla_frame, text=str(cantidad_secretarias - secretarias_disponibles), font=("Arial", 12), text_color="white")
                 secre_en_uso_label.grid(row=i, column=7, padx=60, pady=10, sticky="nsew")
 
                 secre_disponible_label = CTkLabel(tabla_frame, text=str(secretarias_disponibles), font=("Arial", 12), text_color="white")
                 secre_disponible_label.grid(row=i, column=8, padx=40, pady=10, sticky="nsew")
-            else:
-                tiempo= obtener_duracion_cajero(numero, duracion_cajero_a) if acude_cliente == "Cajero" else obtener_duracion_ventanilla(numero, duracion_ventanilla)
 
-
-            if acude_cliente == "Cajero":
-                tiempo = obtener_duracion_cajero(numero, duracion_cajero_a)
-                if cajero_automatico_disponible > 0:
-                    cajero_automatico_disponible -= 1
-                    cajero_automatico_en_uso += 1
-                    cajero_automatico_ocupado.append((horarios_entrada[acude_cliente], tiempo))
-                else:
-                    tiempo = 0
-                cajero_en_uso_label = CTkLabel(tabla_frame, text=str(cajero_automatico_en_uso), font=("Arial", 12), text_color="white")
+            elif acude_cliente == "Cajero":
+                cajero_en_uso_label = CTkLabel(tabla_frame, text=str(cantidad_cajeros_automaticos - cajero_automatico_disponible), font=("Arial", 12), text_color="white")
                 cajero_en_uso_label.grid(row=i, column=9, padx=40, pady=10, sticky="nsew")
 
                 cajero_disponible_label = CTkLabel(tabla_frame, text=str(cajero_automatico_disponible), font=("Arial", 12), text_color="white")
                 cajero_disponible_label.grid(row=i, column=10, padx=60, pady=10, sticky="nsew")
 
-            else:
-                tiempo = obtener_duracion_ventanilla(numero, duracion_ventanilla) if acude_cliente == "Ventanilla" else obtener_duracion_secretaria(numero, duracion_secre)
-
-
-            tiempo_label = CTkLabel(tabla_frame, text=tiempo, font=("Arial", 12), text_color="white")
-            tiempo_label.grid(row=i, column=4, padx=40, pady=10, sticky="nsew")
-
-            hora_salida = horarios_entrada[acude_cliente] + timedelta(minutes=tiempo)
+            hora_salida = horarios_entrada[acude_cliente] + timedelta(minutes=duracion)
             hora_salida_label = CTkLabel(tabla_frame, text=hora_salida.strftime("%H:%M"), font=("Arial", 12), text_color="white")
             hora_salida_label.grid(row=i, column=11, padx=50, pady=10, sticky="nsew")
 
-            olvido_tarjt = obtener_olvido_tarjeta(numero, olvido)
+            olvido_tarjt = obtener_rango(numero, olvido)
             olvido_label = CTkLabel(tabla_frame, text=olvido_tarjt, font=("Arial", 12), text_color="white")
             olvido_label.grid(row=i, column=12, padx=20, pady=10, sticky="nsew")
 
-            if acude_cliente == "Ventanilla" and tiempo > 0:
-                horarios_entrada[acude_cliente] = hora_salida
-                for ventana, dur in ventanillas_ocupadas:
-                    if hora_salida >= ventana + timedelta(minutes=dur):
-                        ventanillas_ocupadas.remove((ventana, dur))
-                        ventanillas_disponibles += 1
-                        ventanillas_en_uso -= 1
-                        break
-
-            if acude_cliente == "Secretaria" and tiempo > 0:
-                horarios_entrada[acude_cliente] = hora_salida
-                for secre, dur in secretarias_ocupadas:
-                    if hora_salida >= secre + timedelta(minutes=dur):
-                        secretarias_ocupadas.remove((secre, dur))
-                        secretarias_disponibles += 1
-                        secretarias_en_uso -= 1
-                        break
-
-            if acude_cliente == "Cajero" and tiempo > 0:
-                horarios_entrada[acude_cliente] = hora_salida
-                for cajero, dur in cajero_automatico_ocupado:
-                    if hora_salida >= cajero + timedelta(minutes=dur):
-                        cajero_automatico_ocupado.remove((cajero, dur))
-                        cajero_automatico_disponible += 1
-                        cajero_automatico_en_uso -= 1
-                        break
+            eventos_salida.append((hora_salida, acude_cliente))
 
             if hora_salida.strftime("%H:%M") >= horario_cierre:
                 break
+
+        eventos_salida.sort()
+
+        for evento in eventos_salida:
+            hora_salida, acude_cliente = evento
+            if acude_cliente == "Ventanilla":
+                ventanillas_disponibles += 1
+            elif acude_cliente == "Secretaria":
+                secretarias_disponibles += 1
+            elif acude_cliente == "Cajero":
+                cajero_automatico_disponible += 1
+
 

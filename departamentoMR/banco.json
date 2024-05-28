@@ -1,7 +1,7 @@
 {
     "cantidad_gerentes": 1,
-    "cantidad_ventanillas": 4,
-    "cantidad_secretarias": 3,
+    "cantidad_ventanillas": 5,
+    "cantidad_secretarias": 6,
     "cantidad_guardias_seguridad": 3,
     "cantidad_personal_tecnico": 3,
     "sueldo_gerente": 4000,
@@ -16,7 +16,7 @@
     "pago_mensual_agua": 200,
     "pago_mensual_internet": 420,
     "pago_mensual_renta_local": 2000,
-    "cantidad_cajeros_automaticos": 3,
+    "cantidad_cajeros_automaticos": 4,
     "temporada_regular": [
         false,
         0

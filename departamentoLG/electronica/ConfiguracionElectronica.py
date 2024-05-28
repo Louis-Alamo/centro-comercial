@@ -471,5 +471,3 @@ class ConfiguracionElectronica:
 
         messagebox.showinfo("Guardado", "Datos guardados localmente")
 
-
-ConfiguracionElectronica()

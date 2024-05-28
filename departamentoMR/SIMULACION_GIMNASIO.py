@@ -1,5 +1,6 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
-import NumerosAleatorios
+from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
+import tkinter as tk
 import json
 import os
 from datetime import datetime, timedelta
@@ -23,7 +24,7 @@ def generar_numeros_aleatorios(hora_apertura, hora_cierre, lapso_usuarios):
     numeros = []
     hora_actual = hora_apertura
     while True:
-        numero = round(NumerosAleatorios.generar_aleatorio(), 4)
+        numero = round(generar_aleatorio(), 4)
         incremento_minutos = 0
         for incremento, rango in lapso_usuarios:
             limite_inferior, limite_superior = map(float, rango.split("-"))
@@ -115,6 +116,7 @@ class SimulacionGimnasio:
         horario_apertura = datos.get("horario_apertura", [])
         horario_cierre = datos.get("horario_cierre", [])
         lapso_usuarios = datos.get("lapso_usuarios", [])
+        self.capacidad_gym = datos.get("capacidad_gym", 0)
         
         self.ejecutar_simulacion()
 
@@ -171,9 +173,7 @@ class SimulacionGimnasio:
 
         resultados = {
             "Cobro Por Usuario (Sin Descuento)": self.cobro,
-            "Cobro Por Usuario (Con Descuento)": self.cobro_final,
-            "Ganancia Del Dia": self.total_cobro,
-        }
+            "Cobro Por Usuario (Con Descuento)": self.cobro_final}
 
         resultados_label = CTkLabel(self.inner_frame, text=f"Resultados de la simulación GIMNASIO:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20), text_color="white")
         resultados_label.pack(padx=20, pady=20, fill="x", expand=True)
@@ -188,7 +188,21 @@ class SimulacionGimnasio:
         duracion_gym = self.datos.get("duracion_gym", [])
         duracion_baño = self.datos.get("duracion_baño", [])
         cantidad_maquinas = self.datos.get("cantidad_maquinas", 0)
-        
+        cantidad_recepcionistas = self.datos.get("cantidad_recepcionistas", 0)
+        cantidad_personal_limpieza = self.datos.get("cantidad_personal_limpieza", 0)
+        cantidad_gerentes = self.datos.get("cantidad_gerentes", 0)
+        cantidad_entrenadores = self.datos.get("cantidad_entrenadores", 0)
+        cantidad_personal_tecnico = self.datos.get("cantidad_personal_tecnico", 0)
+        sueldo_mensual_gerente = self.datos.get("sueldo_mensual_gerente", 0)
+        sueldo_mensual_entrenador = self.datos.get("sueldo_mensual_entrenador", 0)
+        sueldo_mensual_recepcionista = self.datos.get("sueldo_mensual_recepcionista", 0)
+        sueldo_mensual_personal_limpieza = self.datos.get("sueldo_mensual_personal_limpieza", 0)
+        sueldo_mensual_personal_tecnico = self.datos.get("sueldo_mensual_personal_tecnico", 0)
+        pago_mensual_luz = self.datos.get("pago_mensual_luz", 0)
+        pago_mensual_agua = self.datos.get("pago_mensual_agua", 0)
+        pago_mensual_internet = self.datos.get("pago_mensual_internet", 0)
+        pago_mensual_spotify = self.datos.get("pago_mensual_spotify", 0)
+        pago_mensual_renta_local = self.datos.get("pago_mensual_renta_local", 0)
 
         maquinas_disponibles = cantidad_maquinas
         eventos = []
@@ -266,4 +280,93 @@ class SimulacionGimnasio:
 
         for i in range(len(numeros)):
             tabla_frame.grid_rowconfigure(i, weight=1)
+
+
+        def show_results():
+            window = tk.Toplevel()
+            window.title("Resultados")
+
+            total_personas = sum(obtener_personas_segun_rango(numero, llegada_usuarios) for numero in numeros)
+            total_personas_label = tk.Label(window, text=f"La cantidad de personas que acudieron al Gimnasio fue de: {total_personas}", font=("Arial", 12))
+            total_personas_label.pack(padx=20, pady=10)
+
+            hombres = 0
+            mujeres = 0
+            otros = 0
+
+            for numero in numeros:
+                personas = obtener_personas_segun_rango(numero, llegada_usuarios)
+                genero = obtener_genero_segun_rango(numero, lista_sexo)
+                if genero == "Hombre":
+                    hombres += personas
+                elif genero == "Mujer":
+                    mujeres += personas
+                else:
+                    otros += personas
+
+            genero_label = tk.Label(window, text=f"Hombres: {hombres}, Mujeres: {mujeres}, Otros: {otros}", font=("Arial", 12))
+            genero_label.pack(padx=20, pady=10)
+
+            if total_personas > self.capacidad_gym:
+                expansion_label = tk.Label(window, text="Se necesita hacer una expansión a un terreno más grande", font=("Arial", 12))
+                expansion_label.pack(padx=20, pady=10)
+
+            horario_label = tk.Label(window, text=f"En un horario de: {horario_apertura} a {horario_cierre}", font=("Arial", 12))
+            horario_label.pack(padx=20, pady=10)
+            
+            ganancias_label = tk.Label(window, text=f"Las ganancias del día fueron de: {self.total_cobro}", font=("Arial", 12))
+            ganancias_label.pack(padx=20, pady=10)
+
+            duracion_promedio_gym = round(sum(obtener_duracion_segun_rango(numero, duracion_gym) for numero in numeros) / len(numeros), 1)
+            duracion_promedio_baño = round(sum(obtener_tiempo_baño_segun_rango(numero, duracion_baño) for numero in numeros) / len(numeros), 1)
+            duracion_promedio_gym_label = tk.Label(window, text=f"El tiempo promedio de duración en el gimnasio por persona es de: {duracion_promedio_gym} minutos", font=("Arial", 12))
+            duracion_promedio_gym_label.pack(padx=20, pady=10)
+            duracion_promedio_baño_label = tk.Label(window, text=f"Y el tiempo promedio de duración en el baño por persona es de: {duracion_promedio_baño} minutos", font=("Arial", 12))
+            duracion_promedio_baño_label.pack(padx=20, pady=10)
+
+
+            costo_salario_gerentes = cantidad_gerentes * sueldo_mensual_gerente
+            costo_salario_entrenadores = cantidad_entrenadores * sueldo_mensual_entrenador
+            costo_salario_recepcionistas = cantidad_recepcionistas * sueldo_mensual_recepcionista
+            costo_salario_personal_limpieza = cantidad_personal_limpieza * sueldo_mensual_personal_limpieza
+            costo_salario_personal_tecnico = cantidad_personal_tecnico * sueldo_mensual_personal_tecnico
+
+            total_costos_salario = (
+                costo_salario_gerentes + 
+                costo_salario_entrenadores + 
+                costo_salario_recepcionistas + 
+                costo_salario_personal_limpieza + 
+                costo_salario_personal_tecnico)
+
+            ganancias_netas = self.total_cobro - total_costos_salario
+
+            if ganancias_netas >= 0:
+                mensaje = f"Las ganancias del día son suficientes para cubrir todos los salarios de un mes. Ganancias netas: {ganancias_netas}"
+            else:
+                dias_necesarios = abs(ganancias_netas) / self.total_cobro
+                mensaje = f"Las ganancias del día no son suficientes para cubrir todos los salarios. Se necesitarían {dias_necesarios} días adicionales para cubrir los salarios."
+
+            
+            resultado_salarios_label = tk.Label(window, text=mensaje, font=("Arial", 12))
+            resultado_salarios_label.pack(padx=20, pady=10)
+            total_gastos_adicionales = (
+                pago_mensual_luz + 
+                pago_mensual_agua + 
+                pago_mensual_internet + 
+                pago_mensual_spotify + 
+                pago_mensual_renta_local)
+
+            ganancias_netas_despues_gastos = ganancias_netas - total_gastos_adicionales
+
+            resultado_gastos_label = tk.Label(window, text=f"Después de restar los gastos adicionales como lo son renta del local, luz, spotify, agua, \nlas ganancias finales son: {ganancias_netas_despues_gastos}", font=("Arial", 12))
+            resultado_gastos_label.pack(padx=20, pady=10)
+
+
+        show_results()
+
+
+
+
+
+
 

@@ -13,13 +13,12 @@
     "horario_cierre": "22:00",
     "capacidad_gym": 200,
     "cobro_usuario": 250,
-    "cantidad_maquinas": 10,
+    "cantidad_maquinas": 30,
     "pago_mensual_luz": 300,
     "pago_mensual_agua": 200,
     "pago_mensual_internet": 420,
     "pago_mensual_spotify": 200,
     "pago_mensual_renta_local": 2000,
-    "cantidad_ba\u00f1os": 6,
     "temporada_regular": [
         false,
         0

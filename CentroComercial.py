@@ -1,6 +1,8 @@
 from tkinter import *
 from componentes_graficos.LtkButton import LtkButtonFill
 from departamentoMR.SIMULACION_VETERINARIA import SimulacionVeterinaria
+from departamentoMR.SIMULACION_GIMNASIO import SimulacionGimnasio
+from departamentoMR.SIMULACION_BANCO import SimulacionBanco
 
 class CentroComercial():
 
@@ -26,8 +28,8 @@ class CentroComercial():
         boton_gimnasio = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_gimnasio(), nombre_boton="Gimnasio")
         boton_gimnasio.grid(row=0, column=0, padx=20, pady=20)
 
-        boton_supermercado = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Tienda")
-        boton_supermercado.grid(row=0, column=1, padx=20, pady=20)
+        boton_banco = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_banco(), nombre_boton="Banco")
+        boton_banco.grid(row=0, column=1, padx=20, pady=20)
 
         boton_veterinaria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_veterinaria(), nombre_boton="Veterinaria")
         boton_veterinaria.grid(row=0, column=2, padx=20, pady=20)
@@ -51,10 +53,10 @@ class CentroComercial():
         boton_electronica.grid(row=2, column=2, padx=20, pady=20)
 
     def abrir_gimnasio(self):
-        pass
+        SimulacionGimnasio()
 
-    def abrir_tienda(self):
-        pass
+    def abrir_banco(self):
+        SimulacionBanco()
 
     def abrir_veterinaria(self):
         SimulacionVeterinaria()
