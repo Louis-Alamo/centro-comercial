@@ -179,7 +179,7 @@ class SimulacionVeterinaria:
         numeros = []
 
         while hora_actual < horario_salida:
-            numero = round(NumerosAleatorios.generar_aleatorio(), 4)
+            numero = round(generar_aleatorio(), 4)
             numeros.append(numero)
             tiempo_consulta = self.obtener_tiempo_consulta(numero, self.datos.get("lista_tiempo", []))
             hora_actual += timedelta(minutes=tiempo_consulta)
