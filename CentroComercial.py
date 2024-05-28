@@ -1,5 +1,6 @@
 from tkinter import *
 from componentes_graficos.LtkButton import LtkButtonFill
+from departamentoMR.SIMULACION_VETERINARIAS import SimulacionVeterinaria
 
 class CentroComercial():
 
@@ -56,7 +57,7 @@ class CentroComercial():
         pass
 
     def abrir_veterinaria(self):
-        pass
+        SimulacionVeterinaria()
 
     def abrir_estacionamiento(self):
         pass
