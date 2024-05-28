@@ -1,6 +1,6 @@
 from tkinter import *
 from componentes_graficos.LtkButton import LtkButtonFill
-from departamentoMR.SIMULACION_VETERINARIAS import SimulacionVeterinaria
+from departamentoMR.SIMULACION_VETERINARIA import SimulacionVeterinaria
 
 class CentroComercial():
 
