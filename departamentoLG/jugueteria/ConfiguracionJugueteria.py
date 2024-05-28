@@ -303,7 +303,6 @@ class ConfiguracionJugeteria:
             path = os.path.join(self.ruta_ventana, "datos\\precios\\Productos")
             self.crear_ventana_emergente("Productos", path)
 
-ConfiguracionJugeteria()
 
 
 

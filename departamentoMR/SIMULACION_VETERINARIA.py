@@ -2,8 +2,8 @@ from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 from datetime import datetime, timedelta
 import json
 import os
-import NumerosAleatorios
 import tkinter as tk
+from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
 
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
