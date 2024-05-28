@@ -267,4 +267,3 @@ class SimulacionGimnasio:
         for i in range(len(numeros)):
             tabla_frame.grid_rowconfigure(i, weight=1)
 
-SimulacionGimnasio()
