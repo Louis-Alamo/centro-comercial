@@ -281,4 +281,3 @@ class SimulacionBanco:
             if hora_salida.strftime("%H:%M") >= horario_cierre:
                 break
 
-SimulacionBanco()
