@@ -29,7 +29,7 @@ class CentroComercial():
         boton_supermercado = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Tienda")
         boton_supermercado.grid(row=0, column=1, padx=20, pady=20)
 
-        boton_veterinaria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Veterinaria")
+        boton_veterinaria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_veterinaria(), nombre_boton="Veterinaria")
         boton_veterinaria.grid(row=0, column=2, padx=20, pady=20)
 
         boton_estacionamiento = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Estacionamiento")
