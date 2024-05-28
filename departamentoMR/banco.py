@@ -644,4 +644,3 @@ class Banco:
             treeview.insert("", tk.END, text=str(valor), values=(probabilidad, prob_acum, rango))
 
 
-Banco()
