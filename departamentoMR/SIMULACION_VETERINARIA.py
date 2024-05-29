@@ -1,5 +1,7 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 from datetime import datetime, timedelta
+from tkinter import ttk
+import tkinter
 import json
 import os
 import tkinter as tk
@@ -70,12 +72,17 @@ class SimulacionVeterinaria:
         self.datos = cargar_datos()
         self.inventario_inicial = self.datos.get("paquetes_alimento", 0)
         self.ejecutar_simulacion()
+        
         for i in range(cantidad_dias):
             self.numeros_aleatorios = self.generar_hasta_horario_salida()
             self.total_personas = len(self.numeros_aleatorios) 
             self.crear_tabla_simulacion(self.numeros_aleatorios)
-
+        self.resultados_finales()
         self.ventana.mainloop()
+
+        
+        
+        
 
     def on_frame_configure(self, event=None):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
@@ -190,17 +197,15 @@ class SimulacionVeterinaria:
 
 
     def crear_tabla_simulacion(self, numeros):
-        columnas = ["ALEATORIOS", "MASCOTAS","VETERINARIOS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL", "RESTANTE", "MEDICAMENTO", "TOTAL", "RESTANTE", "ACCESORIOS", "TOTAL", "RESTANTE"]
+        columnas = ["ALEATORIOS", "MASCOTAS", "VETERINARIOS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL AL", "RESTANTE AL", "MEDICAMENTO", "TOTAL M", "RESTANTE M", "ACCESORIOS", "TOTAL A", "RESTANTE A"]
 
-        header_frame = CTkFrame(self.inner_frame)
-        header_frame.pack(padx=20, pady=10, fill="x")
 
-        for i, columna in enumerate(columnas):
-            columna_label = CTkLabel(header_frame, text=columna, font=("Arial", 12), text_color="white")
-            columna_label.grid(row=0, column=i, padx=10, pady=5, sticky="nsew")
+        tree = ttk.Treeview(self.inner_frame, columns=columnas, show="headings", height=10)
+        tree.pack(padx=20, pady=10, fill="both", expand=True)
 
-        tabla_frame = CTkFrame(self.inner_frame)
-        tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
+        for columna, ancho in zip(columnas, [10]*14):
+            tree.heading(columna, text=columna)
+            tree.column(columna, width=ancho, anchor="center")
 
         lista_tiempo = self.datos.get("lista_tiempo", [])
         lista_alimento = self.datos.get("lista_alimento", [])
@@ -208,7 +213,7 @@ class SimulacionVeterinaria:
         lista_accesorios = self.datos.get("lista_accesorios", [])
         lista_mascotas = self.datos.get("lista_mascotas", [])
         cantidad_veterinarios = self.datos.get("cantidad_veterinarios", 0)
-        
+
         inventario_restante_alimento = self.inventario_inicial
         inventario_restante_medicamento = self.datos.get("cantidad_medicamento", 0)
         inventario_restante_accesorios = self.datos.get("cantidad_accesorios", 0)
@@ -228,41 +233,13 @@ class SimulacionVeterinaria:
             horario_inicio = hora_actual
             horario_termina = horario_inicio + timedelta(minutes=tiempo_consulta)
 
-            aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
-            aleatorio_label.grid(row=i, column=1, padx=(20, 20), pady=10, sticky="nsew")
-            
-            mascotas_label = CTkLabel(tabla_frame, text=str(cantidad_mascotas), font=("Arial", 12), text_color="white")
-            mascotas_label.grid(row=i, column=2, padx=40, pady=10, sticky="nsew")
-
-            veterinarios_label = CTkLabel(tabla_frame, text=str(cantidad_veterinarios), font=("Arial", 12), text_color="white")
-            veterinarios_label.grid(row=i, column=3, padx=40, pady=10, sticky="nsew")
-
-            hora_inicio_label = CTkLabel(tabla_frame, text=horario_inicio.strftime("%H:%M"), font=("Arial", 12), text_color="white")
-            hora_inicio_label.grid(row=i, column=4, padx=40, pady=10, sticky="nsew")
-
-            hora_termina_label = CTkLabel(tabla_frame, text=horario_termina.strftime("%H:%M"), font=("Arial", 12), text_color="white")
-            hora_termina_label.grid(row=i, column=5, padx=40, pady=10, sticky="nsew")
-
             if inventario_restante_alimento <= 0 or cantidad_alimento > inventario_restante_alimento:
                 cantidad_alimento = 0
                 total_alimento = 0
             else:
                 total_alimento = self.alimento_descuento * cantidad_alimento
 
-            cantidad_alimento_label = CTkLabel(tabla_frame, text=str(cantidad_alimento), font=("Arial", 12), text_color="white")
-            cantidad_alimento_label.grid(row=i, column=6, padx=40, pady=10, sticky="nsew")
-
-            total_alimento_label = CTkLabel(tabla_frame, text=str(total_alimento), font=("Arial", 12), text_color="white")
-            total_alimento_label.grid(row=i, column=7, padx=20, pady=10, sticky="nsew")
-
             inventario_restante_alimento -= cantidad_alimento
-            inventario_restante_alimento_label = CTkLabel(tabla_frame, text=str(inventario_restante_alimento), font=("Arial", 12), text_color="white")
-            inventario_restante_alimento_label.grid(row=i, column=8, padx=30, pady=10, sticky="nsew")
-            
-            self.total_alimentos_vendidos += cantidad_alimento
-            total_alimento = self.alimento_descuento * cantidad_alimento
-            self.ganancia_alimentos += total_alimento
-    
 
             if inventario_restante_medicamento <= 0 or cantidad_medicamentos > inventario_restante_medicamento:
                 cantidad_medicamentos = 0
@@ -270,20 +247,7 @@ class SimulacionVeterinaria:
             else:
                 total_medicamentos = self.medicamento_descuento * cantidad_medicamentos
 
-            cantidad_medicamentos_label = CTkLabel(tabla_frame, text=str(cantidad_medicamentos), font=("Arial", 12), text_color="white")
-            cantidad_medicamentos_label.grid(row=i, column=9, padx=40, pady=10, sticky="nsew")
-
-            total_medicamentos_label = CTkLabel(tabla_frame, text=str(total_medicamentos), font=("Arial", 12), text_color="white")
-            total_medicamentos_label.grid(row=i, column=10, padx=25, pady=10, sticky="nsew")
-
             inventario_restante_medicamento -= cantidad_medicamentos
-            inventario_restante_medicamento_label = CTkLabel(tabla_frame, text=str(inventario_restante_medicamento), font=("Arial", 12), text_color="white")
-            inventario_restante_medicamento_label.grid(row=i, column=11, padx=40, pady=10, sticky="nsew")
-
-            self.total_medicamentos_vendidos += cantidad_medicamentos
-            total_medicamentos = self.medicamento_descuento * cantidad_medicamentos
-            self.ganancia_medicamentos += total_medicamentos
-
 
             if inventario_restante_accesorios <= 0 or cantidad_accesorios > inventario_restante_accesorios:
                 cantidad_accesorios = 0
@@ -291,88 +255,87 @@ class SimulacionVeterinaria:
             else:
                 total_accesorios = self.accesorio_descuento * cantidad_accesorios
 
-            cantidad_accesorios_label = CTkLabel(tabla_frame, text=str(cantidad_accesorios), font=("Arial", 12), text_color="white")
-            cantidad_accesorios_label.grid(row=i, column=12, padx=35, pady=10, sticky="nsew")
-
-            total_accesorios_label = CTkLabel(tabla_frame, text=str(total_accesorios), font=("Arial", 12), text_color="white")
-            total_accesorios_label.grid(row=i, column=13, padx=25, pady=10, sticky="nsew")
-
             inventario_restante_accesorios -= cantidad_accesorios
-            inventario_restante_accesorios_label = CTkLabel(tabla_frame, text=str(inventario_restante_accesorios), font=("Arial", 12), text_color="white")
-            inventario_restante_accesorios_label.grid(row=i, column=14, padx=30, pady=10, sticky="nsew")
 
+            self.total_alimentos_vendidos += cantidad_alimento
+            self.ganancia_alimentos += total_alimento
+            self.total_medicamentos_vendidos += cantidad_medicamentos
+            self.ganancia_medicamentos += total_medicamentos
             self.total_accesorios_vendidos += cantidad_accesorios
-            total_accesorios = self.accesorio_descuento * cantidad_accesorios
             self.ganancia_accesorios += total_accesorios
 
 
-            hora_actual = horario_termina 
+            tree.insert("", "end", values=(numero, cantidad_mascotas, cantidad_veterinarios, horario_inicio.strftime("%H:%M"),
+                                        horario_termina.strftime("%H:%M"), cantidad_alimento, total_alimento,
+                                        inventario_restante_alimento, cantidad_medicamentos, total_medicamentos,
+                                        inventario_restante_medicamento, cantidad_accesorios, total_accesorios,
+                                        inventario_restante_accesorios))
 
-        for i in range(len(numeros)):
-            tabla_frame.grid_rowconfigure(i, weight=1)
+            hora_actual = horario_termina
 
-
-        def show_results():
-            window = tk.Toplevel()
-            window.title("Resultados")
             
-            
-            total_personas_label = tk.Label(window, text=f"Total de Personas Atendidas: {self.total_personas}", font=("Arial", 15), fg="black")
-            total_personas_label.pack(pady=10)
-            en_un_horario_de= tk.Label(window, text=f"En un horario de {horario_entrada} a {self.datos.get('horario_salida')}", font=("Arial", 15), fg="black")
-            en_un_horario_de.pack(pady=10)
-            total_mascotas_label = tk.Label(window, text=f"Total de Mascotas Atendidas: {self.total_mascotas}", font=("Arial", 15), fg="black")
-            total_mascotas_label.pack(pady=10)
-            
-            resultados_alimentos_label = tk.Label(window, text=f"Total Por Paquetes De Alimentos Vendidos: {self.total_alimentos_vendidos}\n"
-                                                               f"Ganancia de Alimentos: {self.ganancia_alimentos}\n"
-                                                               f"Alimentos Restantes en Almacén: {self.almacen_alimentos - self.total_alimentos_vendidos}\n",
-                                                  font=("Arial", 15), fg="black")
-            resultados_alimentos_label.pack(padx=10, pady=10, fill="x")
 
-            resultados_medicamentos_label = tk.Label(window, text=f"Total Medicamentos Vendidos: {self.total_medicamentos_vendidos}\n"
-                                                                 f"Ganancia de Medicamentos: {self.ganancia_medicamentos}\n"
-                                                                 f"Medicamentos Restantes en Almacén: {self.almacen_medicamentos - self.total_medicamentos_vendidos}\n",
-                                                     font=("Arial", 15), fg="black")
-            resultados_medicamentos_label.pack(padx=10, pady=10, fill="x")
+    def resultados_finales(self):
+        resultados_finales = tkinter.Toplevel()
+        resultados_finales.title("Resultados Finales")
+        resultados_finales.configure(bg="gray")
 
-            resultados_accesorios_label = tk.Label(window, text=f"Total Accesorios Vendidos: {self.total_accesorios_vendidos}\n"
-                                                                f"Ganancia de Accesorios: {self.ganancia_accesorios}\n"
-                                                                f"Accesorios Restantes en Almacén: {self.almacen_accesorios - self.total_accesorios_vendidos}\n",
-                                                   font=("Arial", 15), fg="black")
-            resultados_accesorios_label.pack(padx=10, pady=10, fill="x")
+        total_mascotas_simuladas = self.total_mascotas
+        total_alimentos_vendidos = self.total_alimentos_vendidos
+        total_medicamentos_vendidos = self.total_medicamentos_vendidos
+        total_accesorios_vendidos = self.total_accesorios_vendidos
+        total_ganancia_alimentos = self.ganancia_alimentos
+        total_ganancia_medicamentos = self.ganancia_medicamentos
+        total_ganancia_accesorios = self.ganancia_accesorios
+        horario_entrada = self.datos.get("horario_entrada", 0)
+        horario_salida = self.datos.get("horario_salida", 0)
+        cantidad_gerentes = self.datos.get("cantidad_gerentes", 0)
+        sueldo_mensual_gerente = self.datos.get("sueldo_mensual_gerente", 0)
+        cantidad_veterinarios = self.datos.get("cantidad_veterinarios", 0)
+        sueldo_mensual_veterinario = self.datos.get("sueldo_mensual_veterinario", 0)
+        pago_mensual_luz = self.datos.get("pago_mensual_luz", 0)
+        pago_mensual_agua = self.datos.get("pago_mensual_agua", 0)
+        pago_mensual_internet = self.datos.get("pago_mensual_internet", 0)
+        pago_mensual_spotify = self.datos.get("pago_mensual_spotify", 0)
+        pago_mensual_renta_local = self.datos.get("pago_mensual_renta_local", 0)
 
-            ganancia_total = self.ganancia_alimentos + self.ganancia_medicamentos + self.ganancia_accesorios
+        gastos_servicios = pago_mensual_luz + pago_mensual_agua + pago_mensual_internet + pago_mensual_spotify
+        sueldo_personal = cantidad_gerentes * sueldo_mensual_gerente + cantidad_veterinarios * sueldo_mensual_veterinario
 
-            sueldo_gerente = self.datos.get("sueldo_mensual_gerente", 0)
-            sueldog = sueldo_gerente * self.datos.get("cantidad_gerentes", 0)
-            sueldo_veterinario = self.datos.get("sueldo_mensual_veterinario", 0)
-            sueldov = sueldo_veterinario * self.datos.get("cantidad_veterinarios", 0)
-
-            sueldos_totales = sum([sueldog]) + sum([sueldov])
-
-            gasto_luz = self.datos.get("pago_mensual_luz", 0)
-            gasto_agua = self.datos.get("pago_mensual_agua", 0)
-            gasto_internet = self.datos.get("pago_mensual_internet", 0)
-            gasto_spotify = self.datos.get("pago_mensual_spotify", 0)
-            gasto_renta_local = self.datos.get("pago_mensual_renta_local", 0)
-            gastos_mensuales = sum([gasto_luz, gasto_agua, gasto_internet, gasto_spotify, gasto_renta_local])
-
-            analisis_ganancia = "buena" if ganancia_total >= sueldos_totales + gastos_mensuales else "insuficiente"
-            sueldoPersonal = f"Sueldo Por Gerentes: ${sueldog} + Sueldo Por Veterinarios: ${sueldov}\n generan un total de: ${sueldos_totales} mensuales"
-            gastos = f"Gastos Mensuales Contemplando Todos Los Servicios: ${gastos_mensuales}"
-            comentario = f"SE OBTUVO UNA GANANCIA TOTAL DE ${ganancia_total}, que es {analisis_ganancia} para cubrir los sueldos y gastos mensuales."
-
-            sueldoPersonal_label = tk.Label(window, text=sueldoPersonal, font=("Arial", 15), fg="black")
-            sueldoPersonal_label.pack(padx=10, pady=10, fill="x")
-            
-            gastos_label = tk.Label(window, text=gastos, font=("Arial", 15), fg="black")
-            gastos_label.pack(padx=10, pady=10, fill="x")
-            
-            resultado_label = tk.Label(window, text=comentario, font=("Arial", 15), fg="black")
-            resultado_label.pack(padx=10, pady=10, fill="x")
-
-        show_results()
-
-
+        horario_label = CTkLabel(resultados_finales, text=f"En un horario de atención por día de: {horario_entrada} - {horario_salida}", font=("Arial", 18), text_color="black")
+        horario_label.pack(padx=20, pady=10)
         
+        total_mascotas_label = CTkLabel(resultados_finales, text=f"Se atendió a {total_mascotas_simuladas} mascotas", font=("Arial", 18), text_color="black")
+        total_mascotas_label.pack(padx=20, pady=10)
+
+        total_alimentos_label = CTkLabel(resultados_finales, text=f"En esos días simulados se vendieron: {total_alimentos_vendidos} paquetes de alimento", font=("Arial", 18), text_color="black")
+        total_alimentos_label.pack(padx=20, pady=10)
+
+        total_medicamentos_label = CTkLabel(resultados_finales, text=f"También se vendieron: {total_medicamentos_vendidos} de medicamentos y", font=("Arial", 18), text_color="black")
+        total_medicamentos_label.pack(padx=20, pady=10)
+
+        total_accesorios_label = CTkLabel(resultados_finales, text=f" {total_accesorios_vendidos} accesorios para las mascotas", font=("Arial", 18), text_color="black")
+        total_accesorios_label.pack(padx=20, pady=10)
+
+        total_ganancia = CTkLabel(resultados_finales, text=f"Con un total de ganancias por alimentos, medicamentos y accesorios de: ${total_ganancia_alimentos}, ${total_ganancia_medicamentos}, ${total_ganancia_accesorios}, respectivamente.", font=("Arial", 18), text_color="black")
+        total_ganancia.pack(padx=20, pady=10)
+
+        gastos_personal = CTkLabel(resultados_finales, text=f"Gastos mensuales en personal de: ${sueldo_personal}", font=("Arial", 18), text_color="black")
+        gastos_personal.pack(padx=20, pady=10)
+
+        gastos_servicios_label = CTkLabel(resultados_finales, text=f"Gastos mensuales en servicios de luz, agua, internet: ${gastos_servicios}", font=("Arial", 18), text_color="black")
+        gastos_servicios_label.pack(padx=20, pady=10)
+
+        gastos_renta = CTkLabel(resultados_finales, text=f"Y gastos mensuales en renta del local: ${pago_mensual_renta_local}", font=("Arial", 18), text_color="black")
+        gastos_renta.pack(padx=20, pady=10)
+
+        total_gastos = sueldo_personal + gastos_servicios + pago_mensual_renta_local
+        total_ganancias = total_ganancia_alimentos + total_ganancia_medicamentos + total_ganancia_accesorios
+
+        if total_ganancias >= total_gastos:
+            veredicto = "Las ganancias cubren todos los gastos mensuales."
+        else:
+            veredicto = "Las ganancias no son suficientes para cubrir todos los gastos mensuales. Es necesario ajustar precios e inventarios."
+
+        conclusion = CTkLabel(resultados_finales, text=f"Conclusion: {veredicto}", font=("Arial", 18), text_color="black")
+        conclusion.pack(padx=20, pady=10)

@@ -49,9 +49,11 @@ class SimulacionBanco:
         self.inner_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         self.datos = cargar_datos()
+
         for i in range(cantidad_dias):
             self.ejecutar_simulacion()
             self.crear_tabla_simulacion()
+            
 
         self.ventana.mainloop()
 
