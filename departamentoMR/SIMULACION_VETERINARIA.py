@@ -1,11 +1,10 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
+from util.NumerosAleatorios import generar_aleatorio
 from datetime import datetime, timedelta
 from tkinter import ttk
 import tkinter
 import json
 import os
-import tkinter as tk
-from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
 
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
@@ -69,6 +68,7 @@ class SimulacionVeterinaria:
         self.canvas.create_window((0, 0), window=self.inner_frame, anchor="nw")
         self.inner_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
+
         self.datos = cargar_datos()
         self.inventario_inicial = self.datos.get("paquetes_alimento", 0)
         self.ejecutar_simulacion()
@@ -200,12 +200,19 @@ class SimulacionVeterinaria:
         columnas = ["ALEATORIOS", "MASCOTAS", "VETERINARIOS", "HORA INICIO", "HORA TERMINA", "ALIMENTO", "TOTAL AL", "RESTANTE AL", "MEDICAMENTO", "TOTAL M", "RESTANTE M", "ACCESORIOS", "TOTAL A", "RESTANTE A"]
 
 
-        tree = ttk.Treeview(self.inner_frame, columns=columnas, show="headings", height=10)
-        tree.pack(padx=20, pady=10, fill="both", expand=True)
+        tree_frame = CTkFrame(self.inner_frame)
+        tree_frame.pack(padx=20, pady=10, fill="x", expand=True)
+
+        tree = ttk.Treeview(tree_frame, columns=columnas, show="headings")
+        tree.pack(side="left", fill="both", expand=True)
 
         for columna, ancho in zip(columnas, [10]*14):
             tree.heading(columna, text=columna)
             tree.column(columna, width=ancho, anchor="center")
+
+        scrollbar = CTkScrollbar(tree_frame, command=tree.yview)
+        scrollbar.pack(side="right", fill="y")
+        tree.configure(yscrollcommand=scrollbar.set)
 
         lista_tiempo = self.datos.get("lista_tiempo", [])
         lista_alimento = self.datos.get("lista_alimento", [])
@@ -277,7 +284,7 @@ class SimulacionVeterinaria:
 
     def resultados_finales(self):
         resultados_finales = tkinter.Toplevel()
-        resultados_finales.title("Resultados Finales")
+        resultados_finales.title("Resultados Finales Veterinaria")
         resultados_finales.configure(bg="gray")
 
         total_mascotas_simuladas = self.total_mascotas
@@ -302,31 +309,31 @@ class SimulacionVeterinaria:
         gastos_servicios = pago_mensual_luz + pago_mensual_agua + pago_mensual_internet + pago_mensual_spotify
         sueldo_personal = cantidad_gerentes * sueldo_mensual_gerente + cantidad_veterinarios * sueldo_mensual_veterinario
 
-        horario_label = CTkLabel(resultados_finales, text=f"En un horario de atención por día de: {horario_entrada} - {horario_salida}", font=("Arial", 18), text_color="black")
+        horario_label = CTkLabel(resultados_finales, text=f"En un horario de atención por día de: {horario_entrada} - {horario_salida}", font=("Arial", 18), text_color="white")
         horario_label.pack(padx=20, pady=10)
         
-        total_mascotas_label = CTkLabel(resultados_finales, text=f"Se atendió a {total_mascotas_simuladas} mascotas", font=("Arial", 18), text_color="black")
+        total_mascotas_label = CTkLabel(resultados_finales, text=f"Se atendió a {total_mascotas_simuladas} mascotas", font=("Arial", 18), text_color="white")
         total_mascotas_label.pack(padx=20, pady=10)
 
-        total_alimentos_label = CTkLabel(resultados_finales, text=f"En esos días simulados se vendieron: {total_alimentos_vendidos} paquetes de alimento", font=("Arial", 18), text_color="black")
+        total_alimentos_label = CTkLabel(resultados_finales, text=f"En esos días simulados se vendieron: {total_alimentos_vendidos} paquetes de alimento", font=("Arial", 18), text_color="white")
         total_alimentos_label.pack(padx=20, pady=10)
 
-        total_medicamentos_label = CTkLabel(resultados_finales, text=f"También se vendieron: {total_medicamentos_vendidos} de medicamentos y", font=("Arial", 18), text_color="black")
+        total_medicamentos_label = CTkLabel(resultados_finales, text=f"También se vendieron: {total_medicamentos_vendidos} de medicamentos y", font=("Arial", 18), text_color="white")
         total_medicamentos_label.pack(padx=20, pady=10)
 
-        total_accesorios_label = CTkLabel(resultados_finales, text=f" {total_accesorios_vendidos} accesorios para las mascotas", font=("Arial", 18), text_color="black")
+        total_accesorios_label = CTkLabel(resultados_finales, text=f" {total_accesorios_vendidos} accesorios para las mascotas", font=("Arial", 18), text_color="white")
         total_accesorios_label.pack(padx=20, pady=10)
 
-        total_ganancia = CTkLabel(resultados_finales, text=f"Con un total de ganancias por alimentos, medicamentos y accesorios de: ${total_ganancia_alimentos}, ${total_ganancia_medicamentos}, ${total_ganancia_accesorios}, respectivamente.", font=("Arial", 18), text_color="black")
+        total_ganancia = CTkLabel(resultados_finales, text=f"Con un total de ganancias por alimentos, medicamentos y accesorios de: ${total_ganancia_alimentos}, ${total_ganancia_medicamentos}, ${total_ganancia_accesorios}, respectivamente.", font=("Arial", 18), text_color="white")
         total_ganancia.pack(padx=20, pady=10)
 
-        gastos_personal = CTkLabel(resultados_finales, text=f"Gastos mensuales en personal de: ${sueldo_personal}", font=("Arial", 18), text_color="black")
+        gastos_personal = CTkLabel(resultados_finales, text=f"Gastos mensuales en personal de: ${sueldo_personal}", font=("Arial", 18), text_color="white")
         gastos_personal.pack(padx=20, pady=10)
 
-        gastos_servicios_label = CTkLabel(resultados_finales, text=f"Gastos mensuales en servicios de luz, agua, internet: ${gastos_servicios}", font=("Arial", 18), text_color="black")
+        gastos_servicios_label = CTkLabel(resultados_finales, text=f"Gastos mensuales en servicios de luz, agua, internet: ${gastos_servicios}", font=("Arial", 18), text_color="white")
         gastos_servicios_label.pack(padx=20, pady=10)
 
-        gastos_renta = CTkLabel(resultados_finales, text=f"Y gastos mensuales en renta del local: ${pago_mensual_renta_local}", font=("Arial", 18), text_color="black")
+        gastos_renta = CTkLabel(resultados_finales, text=f"Y gastos mensuales en renta del local: ${pago_mensual_renta_local}", font=("Arial", 18), text_color="white")
         gastos_renta.pack(padx=20, pady=10)
 
         total_gastos = sueldo_personal + gastos_servicios + pago_mensual_renta_local
@@ -337,5 +344,5 @@ class SimulacionVeterinaria:
         else:
             veredicto = "Las ganancias no son suficientes para cubrir todos los gastos mensuales. Es necesario ajustar precios e inventarios."
 
-        conclusion = CTkLabel(resultados_finales, text=f"Conclusion: {veredicto}", font=("Arial", 18), text_color="black")
+        conclusion = CTkLabel(resultados_finales, text=f"Conclusion: {veredicto}", font=("Arial", 18), text_color="white")
         conclusion.pack(padx=20, pady=10)

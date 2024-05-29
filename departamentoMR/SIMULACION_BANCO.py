@@ -1,10 +1,11 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
-from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
-from collections import Counter
-import json
-import tkinter as tk
-import os
+from util.NumerosAleatorios import generar_numeros_aleatorios
 from datetime import datetime, timedelta
+from collections import Counter
+import tkinter as tk
+import json
+import os
+
 
 ruta_archivo = os.path.dirname(os.path.abspath(__file__))
 ruta_completa = os.path.join(ruta_archivo, 'banco.json')
