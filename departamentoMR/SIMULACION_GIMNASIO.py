@@ -84,7 +84,7 @@ def incrementar_hora(base_hora, incremento_minutos):
     return nueva_hora_dt.strftime("%H:%M")
 
 class SimulacionGimnasio:
-    def __init__(self):
+    def __init__(self,cantidad_dias):
         self.total_cobro = 0
         self.ventana = CTk()
         self.ventana.title("Gimnasio")
@@ -119,10 +119,10 @@ class SimulacionGimnasio:
         self.capacidad_gym = datos.get("capacidad_gym", 0)
         
         self.ejecutar_simulacion()
+        for i in range(cantidad_dias):
+            self.numeros_aleatorios = generar_numeros_aleatorios(horario_apertura, horario_cierre, lapso_usuarios)
+            self.crear_tabla_simulacion(self.numeros_aleatorios)
 
-        self.numeros_aleatorios = generar_numeros_aleatorios(horario_apertura, horario_cierre, lapso_usuarios)
-
-        self.crear_tabla_simulacion(self.numeros_aleatorios)
         self.ventana.mainloop()
 
     def on_frame_configure(self, event=None):

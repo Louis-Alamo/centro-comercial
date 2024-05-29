@@ -53,13 +53,13 @@ class CentroComercial():
         boton_electronica.grid(row=2, column=2, padx=20, pady=20)
 
     def abrir_gimnasio(self):
-        SimulacionGimnasio()
+        SimulacionGimnasio(self.cantidad_dias)
 
     def abrir_banco(self):
-        SimulacionBanco()
+        SimulacionBanco(self.cantidad_dias)
 
     def abrir_veterinaria(self):
-        SimulacionVeterinaria()
+        SimulacionVeterinaria(self.cantidad_dias)
 
     def abrir_estacionamiento(self):
         pass

@@ -1,6 +1,8 @@
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
+from collections import Counter
 import json
+import tkinter as tk
 import os
 from datetime import datetime, timedelta
 
@@ -26,7 +28,7 @@ def obtener_rango(rango_aleatorio, datos):
     return "Error"
 
 class SimulacionBanco:
-    def __init__(self):
+    def __init__(self,cantidad_dias):
         self.ventana = CTk()
         self.ventana.title("Banco")
         self.ventana.geometry("1350x800+350+100")
@@ -47,8 +49,10 @@ class SimulacionBanco:
         self.inner_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         self.datos = cargar_datos()
-        self.ejecutar_simulacion()
-        self.crear_tabla_simulacion()
+        for i in range(cantidad_dias):
+            self.ejecutar_simulacion()
+            self.crear_tabla_simulacion()
+
         self.ventana.mainloop()
 
     def on_frame_configure(self, event=None):
@@ -62,6 +66,8 @@ class SimulacionBanco:
         temporada_regular = self.datos.get("temporada_regular", [False])[0]
         temporada_alta = self.datos.get("temporada_alta", [False])[0]
         temporada_baja = self.datos.get("temporada_baja", [False])[0]
+        horario_entrada = self.datos.get("horario_entrada", [0])
+        horario_cierre = self.datos.get("horario_cierre", [0])
 
         if temporada_regular:
             temporada = "Temporada Regular"
@@ -76,7 +82,8 @@ class SimulacionBanco:
         temporada_label.pack(padx=20, pady=5)
 
         resultados = {
-            "resultados": "aqui iran mas resultados de la simulacion del banco"
+            "Con un horario de": f"{horario_entrada} a {horario_cierre}",
+            "Se obtuvieron los siguientes resultados:":""
         }
 
         resultados_label = CTkLabel(self.inner_frame, text=f"Resultados de la simulación BANCO:\n{json.dumps(resultados, indent=2)}", font=("Arial", 20), text_color="white")
@@ -96,7 +103,7 @@ class SimulacionBanco:
         tabla_frame = CTkFrame(self.inner_frame)
         tabla_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
-        numeros_aleatorios = generar_numeros_aleatorios(10000)
+        numeros_aleatorios = generar_numeros_aleatorios(100000)
 
         tipo = self.datos.get("tipo", [])
         acude = self.datos.get("acude", [])
@@ -119,10 +126,17 @@ class SimulacionBanco:
         cajero_automatico_disponible = cantidad_cajeros_automaticos
 
         eventos_salida = []
+        personas_atendidas = 0
+        olvidaron_tarjeta=0
+
+        tipo_cliente_counter = Counter()
+        acude_counter = Counter()
+        horario_counter = Counter()
 
         for i, numero in enumerate(numeros_aleatorios):
-            aleatorio_label = CTkLabel(tabla_frame, text=str(numero), font=("Arial", 12), text_color="white")
+            aleatorio_label = CTkLabel(tabla_frame, text=f"{numero:.4f}", font=("Arial", 12), text_color="white")
             aleatorio_label.grid(row=i, column=0, padx=20, pady=10, sticky="nsew")
+            personas_atendidas += 1
 
             tipo_cliente = obtener_rango(numero, tipo)
             tipo_label = CTkLabel(tabla_frame, text=tipo_cliente, font=("Arial", 12), text_color="white")
@@ -131,6 +145,9 @@ class SimulacionBanco:
             acude_cliente = obtener_rango(numero, acude)
             acude_label = CTkLabel(tabla_frame, text=acude_cliente, font=("Arial", 12), text_color="white")
             acude_label.grid(row=i, column=2, padx=10, pady=10, sticky="nsew")
+
+            tipo_cliente_counter[tipo_cliente] += 1
+            acude_counter[acude_cliente] += 1
 
             horario_llegada_cliente = obtener_rango(numero, horario_llegada)
             if acude_cliente not in horarios_entrada:
@@ -175,7 +192,6 @@ class SimulacionBanco:
             elif acude_cliente == "Secretaria":
                 secre_en_uso_label = CTkLabel(tabla_frame, text=str(cantidad_secretarias - secretarias_disponibles), font=("Arial", 12), text_color="white")
                 secre_en_uso_label.grid(row=i, column=7, padx=60, pady=10, sticky="nsew")
-
                 secre_disponible_label = CTkLabel(tabla_frame, text=str(secretarias_disponibles), font=("Arial", 12), text_color="white")
                 secre_disponible_label.grid(row=i, column=8, padx=40, pady=10, sticky="nsew")
 
@@ -193,8 +209,12 @@ class SimulacionBanco:
             olvido_tarjt = obtener_rango(numero, olvido)
             olvido_label = CTkLabel(tabla_frame, text=olvido_tarjt, font=("Arial", 12), text_color="white")
             olvido_label.grid(row=i, column=12, padx=20, pady=10, sticky="nsew")
+            if olvido_tarjt == 1:
+                olvidaron_tarjeta += 1
 
             eventos_salida.append((hora_salida, acude_cliente))
+            hora_llegada_intervalo = horarios_entrada[acude_cliente].replace(minute=0, second=0, microsecond=0)
+            horario_counter[hora_llegada_intervalo] += 1
 
             if hora_salida.strftime("%H:%M") >= horario_cierre:
                 break
@@ -210,4 +230,59 @@ class SimulacionBanco:
             elif acude_cliente == "Cajero":
                 cajero_automatico_disponible += 1
 
+        def show_results():
+            window = tk.Toplevel()
+            window.title("Resultados")
 
+            cantidad_usuarios = self.datos.get("cantidad_usuarios", 0)
+            if personas_atendidas > cantidad_usuarios:
+                mensaje = f"Se atendieron {personas_atendidas} personas. Lo que ocasionó que la capacidad de la sucursal fuera sobrepasada. Favor de solicitar una sucursal más grande."
+            else:
+                mensaje = f"Se atendieron {personas_atendidas} personas."
+
+            resultado_label = CTkLabel(window, text=mensaje, font=("Arial", 15), text_color="black")
+            resultado_label.pack(padx=20, pady=20)
+
+            tipo_cliente_mas_comun = tipo_cliente_counter.most_common(1)[0]
+            tipo_cliente_menos_comun = tipo_cliente_counter.most_common()[-1]
+            visita_mas_comun = acude_counter.most_common(1)[0]
+            visita_menos_comun = acude_counter.most_common()[-1]
+            horario_mas_comun = horario_counter.most_common(1)[0]
+
+            resultado_tipo_mas_comun = CTkLabel(window, text=f"Tipo de cliente que acudió más: {tipo_cliente_mas_comun[0]} ({tipo_cliente_mas_comun[1]} veces)", font=("Arial", 15), text_color="black")
+            resultado_tipo_mas_comun.pack(padx=20, pady=5)
+
+            resultado_tipo_menos_comun = CTkLabel(window, text=f"Tipo de cliente que acudió menos: {tipo_cliente_menos_comun[0]} ({tipo_cliente_menos_comun[1]} veces)", font=("Arial", 15), text_color="black")
+            resultado_tipo_menos_comun.pack(padx=20, pady=5)
+
+            resultado_visita_mas_comun = CTkLabel(window, text=f"Tipo de visita más común: {visita_mas_comun[0]} ({visita_mas_comun[1]} veces)", font=("Arial", 15), text_color="black")
+            resultado_visita_mas_comun.pack(padx=20, pady=5)
+
+            resultado_visita_menos_comun = CTkLabel(window, text=f"Tipo de visita menos común: {visita_menos_comun[0]} ({visita_menos_comun[1]} veces)", font=("Arial", 15), text_color="black")
+            resultado_visita_menos_comun.pack(padx=20, pady=5)
+
+            resultado_horario_mas_comun = CTkLabel(window, text=f"Horario más común: {horario_mas_comun[0].strftime('%H:%M')} ({horario_mas_comun[1]} veces)", font=("Arial", 15), text_color="black")
+            resultado_horario_mas_comun.pack(padx=20, pady=5)
+
+            intervalos_horarios = list(horario_counter.keys())
+            total_llegadas = sum(horario_counter.values())
+            llegadas_acumuladas = 0
+            horario_medio = None
+
+            for intervalo in sorted(intervalos_horarios):
+                llegadas_acumuladas += horario_counter[intervalo]
+                if llegadas_acumuladas >= total_llegadas / 2:
+                    horario_medio = intervalo
+                    break
+
+            if horario_medio:
+                resultado_horario_medio = CTkLabel(window, text=f"Horario medio de llegada: {horario_medio.strftime('%H:%M')}", font=("Arial", 15), text_color="black")
+                resultado_horario_medio.pack(padx=20, pady=5)
+            else:
+                resultado_horario_medio = CTkLabel(window, text="No se pudo calcular el horario medio de llegada.", font=("Arial", 15), text_color="black")
+                resultado_horario_medio.pack(padx=20, pady=5)
+
+            resultado_olvidaron_tarjeta = CTkLabel(window, text=f"Personas que olvidaron su tarjeta: {olvidaron_tarjeta}", font=("Arial", 15), text_color="black")
+            resultado_olvidaron_tarjeta.pack(padx=20, pady=5)
+
+        show_results()

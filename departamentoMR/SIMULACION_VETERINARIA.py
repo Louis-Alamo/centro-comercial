@@ -33,7 +33,7 @@ def determinar_temporada():
 
 
 class SimulacionVeterinaria:
-    def __init__(self):
+    def __init__(self,cantidad_dias):
         self.total_cobro = 0
         self.total_mascotas = 0  
         self.total_personas = 0 
@@ -70,9 +70,11 @@ class SimulacionVeterinaria:
         self.datos = cargar_datos()
         self.inventario_inicial = self.datos.get("paquetes_alimento", 0)
         self.ejecutar_simulacion()
-        self.numeros_aleatorios = self.generar_hasta_horario_salida()
-        self.total_personas = len(self.numeros_aleatorios) 
-        self.crear_tabla_simulacion(self.numeros_aleatorios)
+        for i in range(cantidad_dias):
+            self.numeros_aleatorios = self.generar_hasta_horario_salida()
+            self.total_personas = len(self.numeros_aleatorios) 
+            self.crear_tabla_simulacion(self.numeros_aleatorios)
+
         self.ventana.mainloop()
 
     def on_frame_configure(self, event=None):
