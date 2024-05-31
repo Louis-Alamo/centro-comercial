@@ -1,6 +1,7 @@
 from util.NumerosAleatorios import generar_aleatorio, generar_numeros_aleatorios
 from customtkinter import CTk, CTkLabel, CTkFrame, CTkCanvas, CTkScrollbar
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 from tkinter import ttk
 import tkinter
 import json
@@ -46,6 +47,13 @@ def obtener_personas_segun_rango(rango_aleatorio, rangos_llegada_usuarios):
             return cantidad_personas
     return 0
 
+def obtener_lapso_segun_rango(rango_aleatorio, rangos_lapso_usuarios):
+    for lapso, rango in rangos_lapso_usuarios:
+        limite_inferior, limite_superior = map(float, rango.split("-"))
+        if limite_inferior <= rango_aleatorio <= limite_superior:
+            return lapso
+    return 0
+
 def obtener_duracion_segun_rango(rango_aleatorio, rangos_duracion_gym):
     for duracion, rango in rangos_duracion_gym:
         limite_inferior, limite_superior = map(float, rango.split("-"))
@@ -84,11 +92,16 @@ def incrementar_hora(base_hora, incremento_minutos):
 
 class SimulacionGimnasio:
     def __init__(self, cantidad_dias):
+        self.ganancias_por_tabla = [] 
+        self.personas_por_tabla = [] 
         self.total_cobro = 0
         self.total_personas = 0
         self.total_hombres = 0
         self.total_mujeres = 0
         self.total_otros = 0
+        self.total_ganancias = 0
+        self.total_duracion = 0
+        self.total_tiempo_baño = 0
         self.ventana = CTk()
         self.ventana.title("Gimnasio")
         self.ventana.geometry("1150x800+350+100")
@@ -179,7 +192,7 @@ class SimulacionGimnasio:
         resultados_label.pack(padx=20, pady=20, fill="x", expand=True)
 
     def crear_tabla_simulacion(self, numeros):
-        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS USO", "SIN USO", "HOMBRE/MUJER/OTRO"]
+        columnas = ["ALEATORIOS", "PERSONAS", "COBRO", "LLEGO", "DURACION", "TIEMPO BAÑO", "SALIDA", "MAQUINAS USO", "SIN USO", "FEMENINO/MASCULINO"]
         llegada_usuarios = self.datos.get("llegada_usuarios", [])
         horario_apertura = self.datos.get("horario_apertura", [])
         horario_cierre = self.datos.get("horario_cierre", [])
@@ -203,21 +216,34 @@ class SimulacionGimnasio:
         scrollbar.pack(side="right", fill="y")
         tabla.configure(yscrollcommand=scrollbar.set)
 
+        total_personas_tabla = 0
+        total_ganancias_tabla = 0
         total_cobro = 0
         total_cobro_descuento = 0
+        llego_anterior = horario_apertura 
+        total_maquinas_uso = 0
+        total_personas_sin_maquina = 0
+
 
         for i, aleatorio in enumerate(numeros):
+            lapso = obtener_lapso_segun_rango(aleatorio, lapso_usuarios)
+            llego = llego_anterior 
+            llego_anterior = incrementar_hora(llego_anterior, lapso)
             personas = obtener_personas_segun_rango(aleatorio, llegada_usuarios)
-            llego = incrementar_hora(horario_apertura, i * lapso_usuarios[0][0])
             duracion = obtener_duracion_segun_rango(aleatorio, duracion_gym)
             tiempo_baño = obtener_tiempo_baño_segun_rango(aleatorio, duracion_baño)
             salida = incrementar_hora(llego, duracion + tiempo_baño)
             genero = obtener_genero_segun_rango(aleatorio, lista_sexo)
             cobro = self.cobro_final * personas
-            maquinas_en_uso = personas
-            maquinas_sin_uso = cantidad_maquinas - maquinas_en_uso
+            maquinas_en_uso = min(personas, cantidad_maquinas)
+            maquinas_sin_uso = max(0, cantidad_maquinas - maquinas_en_uso)
             total_cobro += self.cobro * personas
             total_cobro_descuento += cobro
+            total_ganancias_tabla += cobro
+            total_personas_tabla += personas
+
+            total_maquinas_uso += maquinas_en_uso
+            total_personas_sin_maquina += max(0, personas - maquinas_en_uso)
 
             fila = [aleatorio, personas, cobro, llego, duracion, tiempo_baño, salida, maquinas_en_uso, maquinas_sin_uso, genero]
             tabla.insert("", "end", values=fila)
@@ -230,23 +256,109 @@ class SimulacionGimnasio:
             else:
                 self.total_otros += personas
 
+            self.total_ganancias += cobro
+            self.total_duracion += duracion * personas
+            self.total_tiempo_baño += tiempo_baño * personas
+
         self.total_cobro = total_cobro
         self.total_cobro_descuento = total_cobro_descuento
+        self.total_maquinas_uso = total_maquinas_uso
+        self.total_personas_sin_maquina = total_personas_sin_maquina
+        self.ganancias_por_tabla.append(total_ganancias_tabla)
+        self.personas_por_tabla.append(total_personas_tabla) 
+
 
     def resultados_finales(self):
         resultados_finales = tkinter.Toplevel()
         resultados_finales.title("Resultados Finales Gimnasio")
         resultados_finales.configure(bg="gray")
+        horario_apertura = self.datos.get("horario_apertura", [])
+        horario_cierre = self.datos.get("horario_cierre", [])
+        cantidad_recepcionistas = self.datos.get("cantidad_recepcionistas", 0)
+        cantidad_personal_limpieza = self.datos.get("cantidad_personal_limpieza", 0)
+        cantidad_gerentes = self.datos.get("cantidad_gerentes", 0)
+        cantidad_entrenadores = self.datos.get("cantidad_entrenadores", 0)
+        cantidad_personal_tecnico = self.datos.get("cantidad_personal_tecnico", 0)
+        sueldo_mensual_gerente = self.datos.get("sueldo_mensual_gerente", 0)
+        sueldo_mensual_entrenador = self.datos.get("sueldo_mensual_entrenador", 0)
+        sueldo_mensual_recepcionista = self.datos.get("sueldo_mensual_recepcionista", 0)
+        sueldo_mensual_personal_limpieza = self.datos.get("sueldo_mensual_personal_limpieza", 0)
+        sueldo_mensual_personal_tecnico = self.datos.get("sueldo_mensual_personal_tecnico", 0)
 
+        pago_mensual_luz = self.datos.get("pago_mensual_luz", 0)
+        pago_mensual_agua = self.datos.get("pago_mensual_agua", 0)
+        pago_mensual_internet = self.datos.get("pago_mensual_internet", 0)
+        pago_mensual_spotify = self.datos.get("pago_mensual_spotify", 0)
+        pago_mensual_renta_local = self.datos.get("pago_mensual_renta_local", 0)
 
-        total_personas_label = CTkLabel(resultados_finales, text=f"Cantidad Total de Personas: {self.total_personas}", font=("Arial", 18), text_color="white")
+        total_salarios = (
+            cantidad_recepcionistas * sueldo_mensual_recepcionista +
+            cantidad_personal_limpieza * sueldo_mensual_personal_limpieza +
+            cantidad_gerentes * sueldo_mensual_gerente +
+            cantidad_entrenadores * sueldo_mensual_entrenador +
+            cantidad_personal_tecnico * sueldo_mensual_personal_tecnico)
+
+        total_gastos_servicios = (pago_mensual_luz + pago_mensual_agua + pago_mensual_internet + pago_mensual_spotify + pago_mensual_renta_local)
+
+        promedio_duracion = self.total_duracion / self.total_personas if self.total_personas > 0 else 0
+        promedio_tiempo_baño = self.total_tiempo_baño / self.total_personas if self.total_personas > 0 else 0
+
+        total_personas_label = tkinter.Label(resultados_finales, text=f"La cantidad total de personas que acudieron al Gimnasio fue de: {self.total_personas}", font=("Arial", 18), bg="gray", fg="white")
         total_personas_label.pack(padx=20, pady=10)
- 
-        total_hombres_label = CTkLabel(resultados_finales, text=f"Cantidad Total de Hombres: {self.total_hombres}", font=("Arial", 18), text_color="white")
-        total_hombres_label.pack(padx=20, pady=10)
-        total_mujeres_label = CTkLabel(resultados_finales, text=f"Cantidad Total de Mujeres: {self.total_mujeres}", font=("Arial", 18), text_color="white")
-        total_mujeres_label.pack(padx=20, pady=10)
-        total_otros_label = CTkLabel(resultados_finales, text=f"Cantidad Total de Otros: {self.total_otros}", font=("Arial", 18), text_color="white")
-        total_otros_label.pack(padx=20, pady=10)
 
- 
+        total_sexo_label = tkinter.Label(resultados_finales, text=f"Cantidad de Masculinos: {self.total_hombres}, Femeninas: {self.total_mujeres}", font=("Arial", 18), bg="gray", fg="white")
+        total_sexo_label.pack(padx=20, pady=10)
+
+        horario_etiqueta = tkinter.Label(resultados_finales, text=f"En un horario de atención por día de: {horario_apertura} - {horario_cierre}", font=("Arial", 18), bg="gray", fg="white")
+        horario_etiqueta.pack(padx=20, pady=10)
+
+        ganancias_totales = tkinter.Label(resultados_finales, text=f"Las ganancias totales durante la simulación fueron de: ${self.total_ganancias}", font=("Arial", 18), bg="gray", fg="white")
+        ganancias_totales.pack(padx=20, pady=10)
+
+        promedio_duracion_label = tkinter.Label(resultados_finales, text=f"El tiempo promedio de duración en el gimnasio por persona fue de: {promedio_duracion:.2f} minutos", font=("Arial", 18), bg="gray", fg="white")
+        promedio_duracion_label.pack(padx=20, pady=10)
+
+        promedio_tiempo_baño_label = tkinter.Label(resultados_finales, text=f"El tiempo promedio en el baño por persona fue de: {promedio_tiempo_baño:.2f} minutos", font=("Arial", 18), bg="gray", fg="white")
+        promedio_tiempo_baño_label.pack(padx=20, pady=10)
+      
+        total_gastos_label = tkinter.Label(resultados_finales, text=f"Los gastos totales en salarios de todo el personal fue de: ${total_salarios}", font=("Arial", 18), bg="gray", fg="white")
+        total_gastos_label.pack(padx=20, pady=10)
+
+        si_restamos_gastos_a_ganancias = tkinter.Label(resultados_finales, text=f"Si restamos los gastos a las ganancias, obtenemos: ${self.total_ganancias - (total_salarios + total_gastos_servicios)}", font=("Arial", 18), bg="gray", fg="white")
+        si_restamos_gastos_a_ganancias.pack(padx=20, pady=10)
+
+
+        total_maquinas_label = tkinter.Label(resultados_finales, text=f"La cantidad total de veces que se utilizaron las maquinas fue de: {self.total_maquinas_uso}", font=("Arial", 18), bg="gray", fg="white")
+        total_maquinas_label.pack(padx=20, pady=10)
+
+        total_personas_sin_maquina_label = tkinter.Label(resultados_finales, text=f"La cantidad de personas que no usaron máquinas fue de: {self.total_personas_sin_maquina}", font=("Arial", 18), bg="gray", fg="white")
+        total_personas_sin_maquina_label.pack(padx=20, pady=10)
+
+        fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+
+        # Crea un gráfico de pastel para mostrar el promedio de duración
+        axes[0, 0].pie([promedio_duracion, 100 - promedio_duracion], labels=["Promedio", "Restante"], autopct='%1.1f%%', colors=["blue", "lightgrey"])
+        axes[0, 0].set_title("Duración Promedio en el Gimnasio")
+                
+
+        axes[0, 1].plot(range(1, len(self.personas_por_tabla) + 1), self.personas_por_tabla, marker='o', color='green', linestyle='-')
+        axes[0, 1].set_title('Cantidad de Personas por Dia')
+        axes[0, 1].set_xlabel('Dia')
+        axes[0, 1].set_ylabel('Cantidad de Personas')
+        axes[0, 1].grid(True)
+
+
+        sexos = ['Masculino', 'Femenino']
+        cantidades = [self.total_hombres, self.total_mujeres]
+        axes[1, 0].bar(sexos, cantidades, color=['blue', 'pink'])
+        axes[1, 0].set_title("Cantidad de Personas por Sexo")
+        axes[1, 0].set_ylabel("Cantidad")
+
+        axes[1, 1].plot(range(1, len(self.ganancias_por_tabla) + 1), self.ganancias_por_tabla, marker='o', color='b', linestyle='-')
+        axes[1, 1].set_title('Ganancias por Dia')
+        axes[1, 1].set_xlabel('Dia')
+        axes[1, 1].set_ylabel('Ganancias')
+        axes[1, 1].grid(True)
+
+        plt.tight_layout()
+        plt.show()
