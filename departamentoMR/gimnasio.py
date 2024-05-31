@@ -20,10 +20,10 @@ class Gimnasio:
         self.lista_personal = [[3, 3, 3, 3, 3]]
         self.lista_sueldos = [[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios = [["6:00", "22:00"]]
-        self.lista_usuarios = [[200,80]]
+        self.lista_usuarios = [[200, 250]]
         self.lista_maquinas = [[50]]
         self.lista_servicios_generales = [[300, 200, 420, 200, 2000]]
-        self.lista_temporadas = [[True, 100], [False, 0], [False, 0]]
+        self.lista_temporadas=[[True, 100], [False, 0], [False, 0]]
         self.lista_descuento = [[.10, .20, .05]]
         self.lista_llegada = [(0, "0.0000-0.0000")]
         self.lista_lapso = [(0, "0.0000-0.0000")]
@@ -123,19 +123,24 @@ class Gimnasio:
             "horario_apertura": self.lista_horarios[0][0],
             "horario_cierre": self.lista_horarios[0][1],
             "capacidad_gym": self.lista_usuarios[0][0],
-            "cobro_usuario": self.lista_usuarios[0][3],
+            "cobro_usuario": self.lista_usuarios[0][1],
             "cantidad_maquinas": self.lista_maquinas[0][0],
             "pago_mensual_luz": self.lista_servicios_generales[0][0],
             "pago_mensual_agua": self.lista_servicios_generales[0][1],
             "pago_mensual_internet": self.lista_servicios_generales[0][2],
             "pago_mensual_spotify": self.lista_servicios_generales[0][3],
             "pago_mensual_renta_local": self.lista_servicios_generales[0][4],
+
+
             "temporada_regular": self.lista_temporadas[0][0],
             "temporada_alta": self.lista_temporadas[0][1],
             "temporada_baja": self.lista_temporadas[0][2],
             "descuento_regular": self.lista_descuento[0][0],
             "descuento_alta": self.lista_descuento[0][1],
             "descuento_baja": self.lista_descuento[0][2],
+
+
+
             "llegada_usuarios": self.lista_llegada,
             "lapso_usuarios": self.lista_lapso,
             "duracion_gym": self.lista_duracion_gym,
@@ -308,7 +313,7 @@ class Gimnasio:
 
     def guardar_ajustes3(self):
         capacidad_gym=self.capacidad_gym.get()
-        cobro_usuario=self.cobro_mensual_usuario.get()
+        cobro_usuario=self.cobro_usuario.get()
 
         self.lista_usuarios.clear()
         self.lista_usuarios.append([int(capacidad_gym), 
@@ -449,12 +454,12 @@ class Gimnasio:
             self.valores_llegada.append(entry_llegada)
             current_row += 1
 
+
         self.check_lapso = StringVar()
         self.checkbutton_lapso = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS LAPSO LLEGADA", variable=self.check_lapso, onvalue="Si", offvalue="No")
         self.checkbutton_lapso.deselect()
         self.checkbutton_lapso.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-
         self.entrys_lapso = []
         self.valores_lapso = []
         for i in range(lapso_llegada):
@@ -466,12 +471,12 @@ class Gimnasio:
             self.valores_lapso.append(entry_lapso)
             current_row += 1
 
+
         self.check_duracion_gym = StringVar()
         self.checkbutton_duracion_gym = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS DURACION EN GYM", variable=self.check_duracion_gym, onvalue="Si", offvalue="No")
         self.checkbutton_duracion_gym.deselect()
         self.checkbutton_duracion_gym.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-
         self.entrys_duracion_gym = []
         self.valores_duracion_gym = []
         for i in range(duracion_gym):
@@ -483,12 +488,12 @@ class Gimnasio:
             self.valores_duracion_gym.append(entry_duracion_gym)
             current_row += 1
 
+
         self.check_baño = StringVar()
         self.checkbutton_baño = Checkbutton(scrollable_frame, text="MARCA PARA USAR DATOS HISTORICOS TIEMPO EN BAÑO", variable=self.check_baño, onvalue="Si", offvalue="No")
         self.checkbutton_baño.deselect()
         self.checkbutton_baño.grid(row=current_row, column=0, padx=(10, 10), pady=(5, 2), sticky="w")
         current_row += 1
-
         self.entrys_baño = []
         self.valores_baño = []
         for i in range(tiempo_baño):
@@ -508,7 +513,7 @@ class Gimnasio:
         self.entrys_sexo = []
         self.valores_sexo = []
         for i in range(cantidad_genero):
-            entry_sexo = LtkEntryLine(scrollable_frame, "Mujer")
+            entry_sexo = LtkEntryLine(scrollable_frame, "Femenino")
             entry_sexo.grid(row=current_row, column=0, padx=(5, 10), pady=(5, 5), sticky="nsew")
             entry = LtkEntryLine(scrollable_frame, ".15")
             entry.grid(row=current_row, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
@@ -523,11 +528,10 @@ class Gimnasio:
                     self.check_baño.get() == "Si" and
                     self.check_sexo.get() == "Si")
 
+
         def guardar_si_todo_seleccionado():
-            if all_checkbuttons_selected():
-                self.guardar_ajustes9(llegada_personas, lapso_llegada, duracion_gym, tiempo_baño, cantidad_genero)
-            else:
-                messagebox.showerror("Error", "Por favor, selecciona todos los checkbuttons antes de guardar.")
+            self.guardar_ajustes9(llegada_personas, lapso_llegada, duracion_gym, tiempo_baño, cantidad_genero)
+            messagebox.showinfo("Ajustes Guardados", "Los ajustes han sido guardados exitosamente.")
 
         boton_guardar = LtkButtonFill(self.frame_caracteristicas, guardar_si_todo_seleccionado, "Guardar Ajustes Y Ver Tablas")
         boton_guardar.grid(row=current_row, column=0, columnspan=2, pady=(5, 10))
@@ -616,11 +620,11 @@ class Gimnasio:
         self.descuento_baja = LtkEntryLine(self.frame_caracteristicas, ".05")
         self.descuento_baja.grid(row=5, column=2, padx=(5, 10), pady=(5, 5), sticky="w")
 
-        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes8(), "Guardar Ajustes")
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas, lambda: self.guardar_ajustes81(), "Guardar Ajustes")
         boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
 
-    def guardar_ajustes8(self):
+    def guardar_ajustes81(self):
         seleccion = self.temporada_var.get()
 
         if seleccion == 1:
@@ -650,4 +654,3 @@ class Gimnasio:
             self.lista_descuento.append([0, 0, float(descuento_baja)])
 
         self.lista_temporadas.append([temporada_regular, temporada_alta, temporada_baja])
-
