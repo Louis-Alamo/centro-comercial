@@ -20,7 +20,7 @@ class Gimnasio:
         self.lista_personal = [[3, 3, 3, 3, 3]]
         self.lista_sueldos = [[4000, 3000, 2000, 2000, 2000]]
         self.lista_horarios = [["6:00", "22:00"]]
-        self.lista_usuarios = [[200, 100, 100, 250]]
+        self.lista_usuarios = [[200,80]]
         self.lista_maquinas = [[50]]
         self.lista_servicios_generales = [[300, 200, 420, 200, 2000]]
         self.lista_temporadas = [[True, 100], [False, 0], [False, 0]]
@@ -308,14 +308,10 @@ class Gimnasio:
 
     def guardar_ajustes3(self):
         capacidad_gym=self.capacidad_gym.get()
-        cantidad_mujeres=self.cantidad_mujeres.get()
-        cantidad_hombres=self.cantidad_hombres.get()
         cobro_usuario=self.cobro_mensual_usuario.get()
 
         self.lista_usuarios.clear()
         self.lista_usuarios.append([int(capacidad_gym), 
-                                    int(cantidad_mujeres), 
-                                    int(cantidad_hombres),
                                     int(cobro_usuario)])
 
 

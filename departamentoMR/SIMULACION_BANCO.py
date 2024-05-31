@@ -222,16 +222,7 @@ class SimulacionBanco:
             if hora_salida.strftime("%H:%M") >= horario_cierre:
                 break
 
-        eventos_salida.sort()
 
-        for evento in eventos_salida:
-            hora_salida, acude_cliente = evento
-            if acude_cliente == "Ventanilla":
-                ventanillas_disponibles += 1
-            elif acude_cliente == "Secretaria":
-                secretarias_disponibles += 1
-            elif acude_cliente == "Cajero":
-                cajero_automatico_disponible += 1
 
         def show_results():
             window = tk.Toplevel()
