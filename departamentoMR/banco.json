@@ -1,22 +1,22 @@
 {
     "cantidad_gerentes": 1,
-    "cantidad_ventanillas": 8,
-    "cantidad_secretarias": 6,
-    "cantidad_guardias_seguridad": 3,
+    "cantidad_ventanillas": 4,
+    "cantidad_secretarias": 5,
+    "cantidad_guardias_seguridad": 2,
     "cantidad_personal_tecnico": 3,
     "sueldo_gerente": 4000,
     "sueldo_cajera": 3000,
     "sueldo_secretaria": 3000,
     "sueldo_guardia_seguridad": 3000,
     "sueldo_personal_tecnico": 3000,
-    "horario_entrada": "8:00",
-    "horario_cierre": "16:00",
-    "cantidad_usuarios": 100,
-    "pago_mensual_luz": 300,
-    "pago_mensual_agua": 200,
-    "pago_mensual_internet": 420,
-    "pago_mensual_renta_local": 2000,
-    "cantidad_cajeros_automaticos": 2,
+    "horario_entrada": "9:00",
+    "horario_cierre": "15:00",
+    "cantidad_usuarios": 120,
+    "pago_mensual_luz": 800,
+    "pago_mensual_agua": 600,
+    "pago_mensual_internet": 1500,
+    "pago_mensual_renta_local": 3500,
+    "cantidad_cajeros_automaticos": 4,
     "temporada_regular": [
         false,
         0
@@ -40,11 +40,11 @@
         ],
         [
             "Medio",
-            "0.7001-0.8000"
+            "0.7001-0.9000"
         ],
         [
             "Diamante",
-            "0.8001-1.0000"
+            "0.9001-1.0000"
         ]
     ],
     "acude": [
@@ -63,38 +63,38 @@
     ],
     "horario_llegada": [
         [
-            20,
+            3,
             "0.0000-0.2000"
         ],
         [
-            15,
+            4,
             "0.2001-0.4000"
         ],
         [
-            10,
+            5,
             "0.4001-0.9000"
         ],
         [
-            30,
+            10,
             "0.9001-1.0000"
         ]
     ],
     "duracion_ventanilla": [
         [
-            20,
-            "0.0000-0.4000"
+            15,
+            "0.0000-0.3000"
+        ],
+        [
+            25,
+            "0.3001-0.6000"
         ],
         [
             30,
-            "0.4001-0.6000"
+            "0.6001-0.9000"
         ],
         [
             40,
-            "0.6001-0.8000"
-        ],
-        [
-            60,
-            "0.8001-1.0000"
+            "0.9001-1.0000"
         ]
     ],
     "duracion_secre": [
@@ -135,12 +135,12 @@
     ],
     "olvido": [
         [
-            0,
-            "0.0000-0.9500"
+            1,
+            "0.0000-0.1000"
         ],
         [
-            1,
-            "0.9501-1.0000"
+            0,
+            "0.1001-1.0000"
         ]
     ]
 }

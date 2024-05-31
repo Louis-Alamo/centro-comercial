@@ -650,4 +650,3 @@ class Banco:
         for valor, probabilidad, prob_acum, rango in datos_tabla:
             treeview.insert("", tk.END, text=str(valor), values=(probabilidad, prob_acum, rango))
 
-
