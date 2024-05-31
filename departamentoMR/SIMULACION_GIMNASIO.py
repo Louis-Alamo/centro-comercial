@@ -297,13 +297,17 @@ class SimulacionGimnasio:
 
         total_gastos_servicios=(pago_mensual_luz + pago_mensual_agua + pago_mensual_internet + pago_mensual_spotify + pago_mensual_renta_local)
 
+        
+        
+        mony=total_salarios + total_gastos_servicios
+        
         promedio_duracion=self.total_duracion / self.total_personas if self.total_personas > 0 else 0
         promedio_tiempo_baño=self.total_tiempo_baño / self.total_personas if self.total_personas > 0 else 0
 
         total_personas_label=tkinter.Label(resultados_finales, text=f"La cantidad total de personas que acudieron al Gimnasio fue de: {self.total_personas}", font=("Arial", 18), bg="gray", fg="white")
         total_personas_label.pack(padx=20, pady=10)
 
-        total_sexo_label=tkinter.Label(resultados_finales, text=f"Cantidad de Masculinos: {self.total_hombres}, Femeninas: {self.total_mujeres}", font=("Arial", 18), bg="gray", fg="white")
+        total_sexo_label=tkinter.Label(resultados_finales, text=f"Cantidad de Masculinos: {self.total_hombres}, Femeninas: {self.total_mujeres}, Otros: {self.total_otros}", font=("Arial", 18), bg="gray", fg="white")
         total_sexo_label.pack(padx=20, pady=10)
 
         horario_etiqueta=tkinter.Label(resultados_finales, text=f"En un horario de atención por día de: {horario_apertura} - {horario_cierre}", font=("Arial", 18), bg="gray", fg="white")
@@ -321,8 +325,15 @@ class SimulacionGimnasio:
         total_gastos_label=tkinter.Label(resultados_finales, text=f"Los gastos totales en salarios de todo el personal fue de: ${total_salarios}", font=("Arial", 18), bg="gray", fg="white")
         total_gastos_label.pack(padx=20, pady=10)
 
-        si_restamos_gastos_a_ganancias=tkinter.Label(resultados_finales, text=f"Si restamos los gastos a las ganancias, obtenemos: ${self.total_ganancias - (total_salarios + total_gastos_servicios)}", font=("Arial", 18), bg="gray", fg="white")
+        si_restamos_gastos_a_ganancias=tkinter.Label(resultados_finales, text=f"Si restamos los gastos a las ganancias, obtenemos: ${self.total_ganancias-mony}", font=("Arial", 18), bg="gray", fg="white")
         si_restamos_gastos_a_ganancias.pack(padx=20, pady=10)
+
+        balance = self.total_ganancias - mony
+        if balance < 0:
+            balance_label = tkinter.Label(resultados_finales, text="El balance es negativo. Se necesita hacer un ajuste de sueldos y costos por pérdidas.", font=("Arial", 18), bg="gray", fg="white")
+        else:
+            balance_label = tkinter.Label(resultados_finales, text="El balance es positivo. Hay un buen balance financiero.", font=("Arial", 18), bg="gray", fg="white")
+        balance_label.pack(padx=20, pady=10)
 
 
         total_maquinas_label=tkinter.Label(resultados_finales, text=f"La cantidad total de veces que se utilizaron las maquinas fue de: {self.total_maquinas_uso}", font=("Arial", 18), bg="gray", fg="white")
@@ -342,9 +353,9 @@ class SimulacionGimnasio:
         axes[0, 1].set_ylabel('Cantidad de Personas')
         axes[0, 1].grid(True)
 
-        sexos=['Masculino', 'Femenino']
-        cantidades=[self.total_hombres, self.total_mujeres]
-        axes[1, 0].bar(sexos, cantidades, color=['blue', 'pink'])
+        sexos=['Masculino', 'Femenino','Otro']
+        cantidades=[self.total_hombres, self.total_mujeres, self.total_otros]
+        axes[1, 0].bar(sexos, cantidades, color=['blue', 'pink', 'green'])
         axes[1, 0].set_title("Cantidad de Personas por Sexo")
         axes[1, 0].set_ylabel("Cantidad")
 

@@ -291,6 +291,9 @@ class Banco:
         self.cantidad_usuarios = LtkEntryLine(self.frame_caracteristicas, "100")
         self.cantidad_usuarios.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
 
+        boton_guardar = LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes3(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
+
     def guardar_ajustes3(self):
         cantidad_usuarios=self.cantidad_usuarios.get()
 
@@ -350,6 +353,10 @@ class Banco:
         self.etiqueta_cantidad_cajeros_automaticos.grid(row=3, column=0,padx=(10,10), pady=(5, 2), sticky="w")
         self.cantidad_cajeros_automaticos=LtkEntryLine(self.frame_caracteristicas, "3")
         self.cantidad_cajeros_automaticos.grid(row=3, column=1, padx=(5,10), pady=(5, 5), sticky="nsew",columnspan=2)
+
+
+        boton_guardar=LtkButtonFill(self.frame_caracteristicas,lambda: self.guardar_ajustes4(), "Guardar Ajustes")
+        boton_guardar.grid(row=10, column=0, columnspan=3, pady=(5, 10))
 
     def guardar_ajustes4(self):
         cantidad_cajeros_automaticos=self.cantidad_cajeros_automaticos.get()

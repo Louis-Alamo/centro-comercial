@@ -1,75 +1,83 @@
 {
-    "cantidad_recepcionistas": 2,
-    "cantidad_personal_limpieza": 2,
-    "cantidad_gerentes": 1,
-    "cantidad_entrenadores": 3,
-    "cantidad_personal_tecnico": 2,
-    "sueldo_mensual_gerente": 7000,
-    "sueldo_mensual_entrenador": 6500,
-    "sueldo_mensual_recepcionista": 5320,
-    "sueldo_mensual_personal_limpieza": 4500,
-    "sueldo_mensual_personal_tecnico": 4800,
-    "horario_apertura": "6:00",
-    "horario_cierre": "20:00",
-    "capacidad_gym": 250,
-    "cobro_usuario": 60,
-    "cantidad_maquinas": 25,
-    "pago_mensual_luz": 450,
-    "pago_mensual_agua": 300,
-    "pago_mensual_internet": 412,
-    "pago_mensual_spotify": 200,
-    "pago_mensual_renta_local": 5200,
+    "cantidad_recepcionistas": 1561,
+    "cantidad_personal_limpieza": 3452,
+    "cantidad_gerentes": 513,
+    "cantidad_entrenadores": 6744,
+    "cantidad_personal_tecnico": 6525,
+    "sueldo_mensual_gerente": 78522,
+    "sueldo_mensual_entrenador": 14563,
+    "sueldo_mensual_recepcionista": 33468,
+    "sueldo_mensual_personal_limpieza": 72163,
+    "sueldo_mensual_personal_tecnico": 25384,
+    "horario_apertura": "4:00",
+    "horario_cierre": "23:00",
+    "capacidad_gym": 9712,
+    "cobro_usuario": 6452,
+    "cantidad_maquinas": 50,
+    "pago_mensual_luz": 7452,
+    "pago_mensual_agua": 3654,
+    "pago_mensual_internet": 9856,
+    "pago_mensual_spotify": 2365,
+    "pago_mensual_renta_local": 78965,
     "temporada_regular": [
         false,
         0
     ],
     "temporada_alta": [
+        true,
+        100
+    ],
+    "temporada_baja": [
         false,
         0
     ],
-    "temporada_baja": [
-        true,
-        60
-    ],
     "descuento_regular": 0,
-    "descuento_alta": 0,
-    "descuento_baja": 0.0,
+    "descuento_alta": 0.05,
+    "descuento_baja": 0,
     "llegada_usuarios": [
         [
-            1,
-            "0.0000-0.4000"
+            5,
+            "0.0000-0.3000"
         ],
         [
-            2,
-            "0.4001-0.7000"
+            10,
+            "0.3001-0.6000"
         ],
         [
-            3,
-            "0.7001-0.9000"
-        ],
-        [
-            4,
-            "0.9001-1.0000"
+            15,
+            "0.6001-1.0000"
         ]
     ],
     "lapso_usuarios": [
         [
+            1,
+            "0.0000-0.2000"
+        ],
+        [
+            2,
+            "0.2001-0.4000"
+        ],
+        [
+            3,
+            "0.4001-0.6000"
+        ],
+        [
+            4,
+            "0.6001-0.8000"
+        ],
+        [
             5,
-            "0.0000-0.4000"
-        ],
-        [
-            10,
-            "0.4001-0.8000"
-        ],
-        [
-            15,
             "0.8001-1.0000"
         ]
     ],
     "duracion_gym": [
         [
+            10,
+            "0.0000-0.2000"
+        ],
+        [
             20,
-            "0.0000-0.4000"
+            "0.2001-0.4000"
         ],
         [
             30,
@@ -80,36 +88,32 @@
             "0.6001-0.8000"
         ],
         [
-            60,
+            50,
             "0.8001-1.0000"
         ]
     ],
     "duracion_ba\u00f1o": [
         [
-            5,
-            "0.0000-0.2000"
-        ],
-        [
-            10,
-            "0.2001-0.6000"
+            20,
+            "0.0000-0.4000"
         ],
         [
             15,
-            "0.6001-0.9000"
-        ],
-        [
-            20,
-            "0.9001-1.0000"
+            "0.4001-1.0000"
         ]
     ],
     "lista_sexo": [
         [
-            "Femenino",
-            "0.0000-0.5000"
+            "Masculino",
+            "0.0000-0.4000"
         ],
         [
-            "Masculino",
-            "0.5001-1.0000"
+            "Femenino",
+            "0.4001-0.7000"
+        ],
+        [
+            "Hetero",
+            "0.7001-1.0000"
         ]
     ]
 }
