@@ -1,21 +1,21 @@
 {
-    "cantidad_gerentes": 1,
-    "cantidad_veterinarios": 1,
-    "sueldo_mensual_gerente": 5500,
-    "sueldo_mensual_veterinario": 5000,
-    "horario_entrada": "8:00",
-    "horario_salida": "18:00",
-    "pago_mensual_luz": 800,
-    "pago_mensual_agua": 1300,
-    "pago_mensual_internet": 1500,
+    "cantidad_gerentes": 2,
+    "cantidad_veterinarios": 2,
+    "sueldo_mensual_gerente": 7800,
+    "sueldo_mensual_veterinario": 10000,
+    "horario_entrada": "9:00",
+    "horario_salida": "20:00",
+    "pago_mensual_luz": 1500,
+    "pago_mensual_agua": 2000,
+    "pago_mensual_internet": 1000,
     "pago_mensual_spotify": 200,
-    "pago_mensual_renta_local": 3100,
-    "paquetes_alimento": 200,
-    "precio_por_alimento": 320,
-    "cantidad_medicamento": 145,
-    "precio_medicamento": 400,
-    "cantidad_accesorios": 1000,
-    "precio_accesorios": 200,
+    "pago_mensual_renta_local": 4500,
+    "paquetes_alimento": 780,
+    "precio_por_alimento": 200,
+    "cantidad_medicamento": 1500,
+    "precio_medicamento": 350,
+    "cantidad_accesorios": 10000,
+    "precio_accesorios": 180,
     "temporada_regular": [
         false,
         0
@@ -29,46 +29,42 @@
         0
     ],
     "descuento_regular": 0,
-    "descuento_alta": 0.3,
+    "descuento_alta": 0.05,
     "descuento_baja": 0,
     "lista_alimento": [
         [
-            1,
-            "0.0000-0.3000"
-        ],
-        [
-            2,
-            "0.3001-0.6000"
-        ],
-        [
-            3,
-            "0.6001-0.8000"
-        ],
-        [
-            4,
-            "0.8001-0.9000"
-        ],
-        [
             5,
-            "0.9001-1.0000"
+            "0.0000-0.2000"
+        ],
+        [
+            7,
+            "0.2001-0.5000"
+        ],
+        [
+            8,
+            "0.5001-0.7000"
+        ],
+        [
+            10,
+            "0.7001-1.0000"
         ]
     ],
     "lista_medicamento": [
         [
-            1,
-            "0.0000-0.5000"
+            5,
+            "0.0000-0.3000"
         ],
         [
-            2,
-            "0.5001-0.8000"
+            10,
+            "0.3001-0.4000"
         ],
         [
-            3,
-            "0.8001-0.9000"
+            15,
+            "0.4001-0.5000"
         ],
         [
-            4,
-            "0.9001-1.0000"
+            7,
+            "0.5001-1.0000"
         ]
     ],
     "lista_mascotas": [
@@ -78,51 +74,47 @@
         ],
         [
             2,
-            "0.6001-0.8000"
+            "0.6001-0.7000"
         ],
         [
             3,
-            "0.8001-0.9000"
+            "0.7001-0.8000"
         ],
         [
-            4,
-            "0.9001-1.0000"
+            8,
+            "0.8001-1.0000"
         ]
     ],
     "lista_accesorios": [
         [
+            10,
+            "0.0000-0.3000"
+        ],
+        [
             2,
-            "0.0000-0.2000"
+            "0.3001-0.5000"
         ],
         [
-            3,
-            "0.2001-0.5000"
+            7,
+            "0.5001-0.6000"
         ],
         [
-            4,
-            "0.5001-0.7000"
-        ],
-        [
-            8,
-            "0.7001-1.0000"
+            15,
+            "0.6001-1.0000"
         ]
     ],
     "lista_tiempo": [
         [
-            5,
-            "0.0000-0.2000"
-        ],
-        [
             10,
-            "0.2001-0.5000"
+            "0.0000-0.4000"
         ],
         [
             15,
-            "0.5001-0.9000"
+            "0.4001-0.6000"
         ],
         [
             20,
-            "0.9001-1.0000"
+            "0.6001-1.0000"
         ]
     ]
 }
