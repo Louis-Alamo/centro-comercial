@@ -4,6 +4,10 @@ from departamentoMR.SIMULACION_VETERINARIA import SimulacionVeterinaria
 from departamentoMR.SIMULACION_GIMNASIO import SimulacionGimnasio
 from departamentoMR.SIMULACION_BANCO import SimulacionBanco
 
+from departamentoRH.Simulacion_ropa import SimulacionRopa
+from departamentoRH.Simulacion_farmacia import SimulacionFarmacia
+from departamentoRH.configuracion_estacionamiento import SimulacionEstacionamiento
+
 class CentroComercial():
 
     def __init__(self, cantidad_dias):
@@ -34,13 +38,13 @@ class CentroComercial():
         boton_veterinaria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_veterinaria(), nombre_boton="Veterinaria")
         boton_veterinaria.grid(row=0, column=2, padx=20, pady=20)
 
-        boton_estacionamiento = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Estacionamiento")
+        boton_estacionamiento = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_estacionamiento(), nombre_boton="Estacionamiento")
         boton_estacionamiento.grid(row=1, column=0, padx=20, pady=20)
 
-        boton_farmacia = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Farmacia")
+        boton_farmacia = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_farmacia, nombre_boton="Farmacia")
         boton_farmacia.grid(row=1, column=1, padx=20, pady=20)
 
-        boton_ropa = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Ropa")
+        boton_ropa = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_ropa(), nombre_boton="Ropa")
         boton_ropa.grid(row=1, column=2, padx=20, pady=20)
 
         boton_jugueteria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Jugueteria")
@@ -62,10 +66,10 @@ class CentroComercial():
         SimulacionVeterinaria(self.cantidad_dias)
 
     def abrir_estacionamiento(self):
-        pass
+        SimulacionEstacionamiento(self.cantidad_dias)
 
     def abrir_farmacia(self):
-        pass
+        SimulacionFarmacia(self.cantidad_dias)
 
     def abrir_ropa(self):
-        pass
+        SimulacionRopa(self.cantidad_dias)
