@@ -6,6 +6,7 @@ from departamentoMR.SIMULACION_BANCO import SimulacionBanco
 
 from departamentoRH.Simulacion_ropa import SimulacionRopa
 from departamentoRH.Simulacion_farmacia import SimulacionFarmacia
+from departamentoRH.configuracion_estacionamiento import SimulacionEstacionamiento
 
 class CentroComercial():
 
@@ -37,7 +38,7 @@ class CentroComercial():
         boton_veterinaria = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_veterinaria(), nombre_boton="Veterinaria")
         boton_veterinaria.grid(row=0, column=2, padx=20, pady=20)
 
-        boton_estacionamiento = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_tienda(), nombre_boton="Estacionamiento")
+        boton_estacionamiento = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_estacionamiento(), nombre_boton="Estacionamiento")
         boton_estacionamiento.grid(row=1, column=0, padx=20, pady=20)
 
         boton_farmacia = LtkButtonFill(frame_botones, funcion=lambda: self.abrir_farmacia, nombre_boton="Farmacia")
@@ -65,7 +66,7 @@ class CentroComercial():
         SimulacionVeterinaria(self.cantidad_dias)
 
     def abrir_estacionamiento(self):
-        pass
+        SimulacionEstacionamiento(self.cantidad_dias)
 
     def abrir_farmacia(self):
         SimulacionFarmacia(self.cantidad_dias)
